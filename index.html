@@ -1,0 +1,4974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>The Foothill Farmstay — Elevated Luxury Living & Private Villas</title>
+  <meta name="description"
+    content="An exclusive sanctuary nestled in serene elevated landscapes. Experience bespoke living, architectural mastery, and timeless tranquility at The Foothill Farmstay.">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Manrope:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-dark: #08090c;
+      --bg-surface: #0e1017;
+      --bg-card: rgba(255, 255, 255, 0.025);
+      --bg-card-hover: rgba(255, 255, 255, 0.055);
+      --bg-glass: rgba(8, 9, 12, 0.82);
+
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color-hover: rgba(223, 183, 108, 0.35);
+
+      --text-primary: #f7f8f9;
+      --text-secondary: #9aa0a6;
+      --text-muted: #6e747a;
+
+      --accent-gold: #dfb76c;
+      --accent-gold-light: #f4d087;
+      --accent-gold-dark: #b89146;
+      --accent-glow: rgba(223, 183, 108, 0.15);
+
+      --font-heading: 'Playfair Display', 'Gelasio', Georgia, serif;
+      --font-body: 'Manrope', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 30px rgba(223, 183, 108, 0.2);
+
+      --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Reset & Base Styles */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 18px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+      line-height: 1.6;
+      overflow-y: hidden;
+      /* Lock scroll until preloader finishes */
+    }
+
+    body.loaded {
+      overflow-y: auto;
+    }
+
+    /* Accessibility Focus Outline */
+    :focus-visible {
+      outline: 2px solid var(--accent-gold);
+      outline-offset: 4px;
+    }
+
+    /* Grain Overlay */
+    .grain-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 900;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    }
+
+    /* ==========================================================================
+       PRELOADER UI
+       ========================================================================== */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background-color: var(--bg-dark);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+    }
+
+    #preloader.loader-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      display: none !important;
+    }
+
+    .loader-content {
+      text-align: center;
+      max-width: 340px;
+      width: 90%;
+    }
+
+    .loader-logo {
+      height: 90px;
+      width: auto;
+      object-fit: contain;
+      margin-bottom: 1.25rem;
+      filter: drop-shadow(0 4px 15px rgba(223, 183, 108, 0.3));
+      animation: loaderLogoPulse 2.5s infinite ease-in-out;
+    }
+
+    @keyframes loaderLogoPulse {
+      0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 4px 15px rgba(223, 183, 108, 0.3));
+      }
+      50% {
+        transform: scale(1.04);
+        filter: drop-shadow(0 6px 22px rgba(223, 183, 108, 0.5));
+      }
+    }
+
+    .loader-brand {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    .loader-brand span {
+      color: var(--accent-gold);
+    }
+
+    .loader-bar-bg {
+      width: 100%;
+      height: 2px;
+      background: var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .loader-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-gold-dark), var(--accent-gold-light));
+      transition: width 0.15s ease-out;
+      box-shadow: 0 0 12px var(--accent-gold);
+    }
+
+    .loader-status {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .loader-percentage {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       FLOATING GLASS NAVIGATION BAR (LUXURY HOSPITALITY)
+       ========================================================================== */
+    .navbar {
+      position: fixed;
+      top: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 85%;
+      max-width: 1150px;
+      z-index: 1000;
+      padding: 0.75rem 1.75rem;
+      background: rgba(12, 12, 12, 0.55);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: var(--transition-smooth);
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    .navbar.scrolled {
+      top: 0.85rem;
+      background: rgba(10, 10, 10, 0.85);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6);
+    }
+
+    .nav-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .nav-logo img {
+      height: 38px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(1.5rem, 2.5vw, 2.5rem);
+      list-style: none;
+    }
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+      position: relative;
+      padding: 0.3rem 0;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 1px;
+      background: var(--accent-gold);
+      transition: var(--transition-smooth);
+    }
+
+    .nav-link:hover {
+      color: #ffffff;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      min-width: 44px;
+      min-height: 44px;
+      z-index: 1001;
+    }
+
+    /* ==========================================================================
+       VIRTUAL SCROLL LOCKED HERO VIEWPORT (EDITORIAL LUXURY)
+       ========================================================================== */
+    .hero-viewport {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      z-index: 1;
+      margin: 0;
+      padding: 0;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      display: block;
+      z-index: 1;
+      filter: brightness(0.75) contrast(1.08) saturate(0.9);
+    }
+
+    /* Hero Cinematic Gradient Overlay */
+    .hero-gradient-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background: linear-gradient(to bottom,
+          rgba(8, 10, 14, 0.72) 0%,
+          rgba(8, 10, 14, 0.35) 50%,
+          rgba(8, 10, 14, 0.50) 100%);
+    }
+
+    /* Hero Overlay Content (Left Aligned, 10% From Left, Vertically Centered) */
+    .hero-overlay {
+      position: absolute;
+      top: 52%;
+      left: clamp(1.5rem, 8vw, 10%);
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 90%;
+      max-width: 600px;
+      text-align: left;
+      pointer-events: auto;
+      transition: opacity 0.15s linear;
+      will-change: opacity;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 0.85rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 4.2vw, 60px);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin: 0;
+      max-width: 540px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-description {
+      font-family: var(--font-body);
+      font-size: 17px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.88);
+      max-width: 420px;
+      margin: 16px 0 0 0;
+      line-height: 1.7;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 28px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.85rem 2.25rem;
+      min-height: 46px;
+      min-width: 44px;
+      background: var(--accent-gold);
+      color: #08090c;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(223, 183, 108, 0.25);
+      transition: var(--transition-smooth);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(223, 183, 108, 0.4);
+      background: var(--accent-gold-light);
+    }
+
+    /* Minimal Scroll Indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      opacity: 0.75;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .scroll-hint-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 500;
+    }
+
+    .scroll-hint-arrow {
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      animation: scrollArrowAnim 2s infinite ease-in-out;
+    }
+
+    @keyframes scrollArrowAnim {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.6;
+      }
+
+      50% {
+        transform: translateY(4px);
+        opacity: 1;
+      }
+    }
+
+    /* ScrollFloat Component Styles (React Bits Luxury Variant) */
+    .hero-scroll-float {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 12;
+      width: 90%;
+      max-width: 1000px;
+      text-align: center;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .scroll-float {
+      overflow: hidden;
+      display: block;
+    }
+
+    .scroll-float-text {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4.8vw, 4.2rem);
+      font-weight: 400;
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #ffffff;
+      white-space: nowrap;
+      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+    }
+
+    .char {
+      display: inline-block;
+      will-change: opacity, transform;
+      transform-origin: 50% 0%;
+      opacity: 0;
+    }
+
+    /* Floating Call Now Button */
+    .floating-call-btn {
+      position: fixed;
+      bottom: 90px;
+      right: 132px;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-gold, #dfb76c), var(--accent-gold-dark, #b89146));
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45), 0 0 20px rgba(223, 183, 108, 0.35);
+      z-index: 9990;
+      text-decoration: none;
+      transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+      cursor: pointer;
+    }
+
+    body:not(.loaded) .floating-call-btn {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
+    .floating-call-btn:hover {
+      transform: scale(1.12) translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 28px rgba(223, 183, 108, 0.6);
+      background: linear-gradient(135deg, var(--accent-gold-light, #f4d087), var(--accent-gold, #dfb76c));
+      color: #ffffff;
+    }
+
+    .floating-call-btn:active {
+      transform: scale(0.95);
+    }
+
+    @media (max-width: 1024px) {
+      .floating-call-btn {
+        display: none !important;
+      }
+    }
+
+    /* Floating Persistent Primary CTA Button (Enlarged, Bottom Right) */
+    .floating-cta-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 999999;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+      padding: 1rem 2.25rem;
+      min-width: 210px;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
+      color: #08090c;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 25px rgba(223, 183, 108, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      animation: ctaPulse 4s infinite ease-in-out;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+
+    .floating-cta-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 32px rgba(223, 183, 108, 0.6);
+      background: var(--accent-gold-light);
+    }
+
+    @keyframes ctaPulse {
+
+      0%,
+      100% {
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45), 0 0 16px rgba(223, 183, 108, 0.25);
+      }
+
+      50% {
+        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), 0 0 28px rgba(223, 183, 108, 0.55);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .floating-cta-btn {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: auto;
+        padding: 0.75rem 1.35rem;
+        font-size: 0.725rem;
+      }
+    }
+
+    /* Hero Spacer (Provides 100vh fold in document flow) */
+    .hero-spacer {
+      height: 100vh;
+      height: 100dvh;
+      width: 100%;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       CONTENT SECTIONS (REVEALED ONLY AFTER VIRTUAL SCRUB REACHES 100%)
+       ========================================================================== */
+    .main-content {
+      position: relative;
+      z-index: 20;
+      background-color: var(--bg-dark);
+      margin: 0;
+      padding: 0;
+      box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.9);
+    }
+
+    .section {
+      padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 5vw, 4rem);
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      scroll-margin-top: 90px;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto clamp(3rem, 6vw, 5rem) auto;
+    }
+
+    .section-tag {
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+      display: block;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw + 0.5rem, 3.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+    }
+
+    .section-subtitle {
+      font-size: clamp(1rem, 1.2vw, 1.15rem);
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    /* ==========================================================================
+       SECTION 1: DISCOVER THE FOOTHILL (EDITORIAL LUXURY — AMAN & SIX SENSES STYLE)
+       ========================================================================== */
+    .section-overview-brochure {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background-color: #F8F3EA;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)' opacity='0.035'/%3E%3C/svg%3E");
+      color: #4A4A4A;
+      position: relative;
+      overflow: hidden;
+      border-radius: 0;
+      padding: clamp(3.5rem, 5vw, 5rem) clamp(1.5rem, 5vw, 4rem) !important;
+    }
+
+    .overview-brochure-container {
+      width: 100%;
+      max-width: 1540px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brochure-header {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 2.25rem auto;
+    }
+
+    .brochure-tag {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #C89740;
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      padding: 0.45rem 1.25rem;
+      background: rgba(200, 151, 64, 0.08);
+      border: 1px solid rgba(200, 151, 64, 0.28);
+      border-radius: 9999px;
+    }
+
+    .brochure-tag span {
+      color: #163523;
+    }
+
+    .brochure-title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 500;
+      line-height: 1.15;
+      color: #163523;
+      margin: 0 0 0.65rem 0;
+    }
+
+    .brochure-intro {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: #4A4A4A;
+      max-width: 520px;
+      margin: 0.5rem auto 0 auto;
+    }
+
+    .brochure-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      margin: 1.25rem auto 0 auto;
+      color: #C89740;
+      font-size: 0.8rem;
+      opacity: 0.85;
+    }
+
+    .brochure-divider::before,
+    .brochure-divider::after {
+      content: '';
+      height: 1px;
+      width: 60px;
+      background: linear-gradient(90deg, transparent, #C89740, transparent);
+    }
+
+    /* 4 Feature Highlights Cards (Compact 120-140px Height) */
+    .brochure-highlights-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+
+    .highlight-card {
+      background: #ffffff;
+      border: 1px solid rgba(22, 53, 35, 0.08);
+      border-radius: 16px;
+      padding: 1.15rem 1.25rem;
+      min-height: 120px;
+      max-height: 138px;
+      box-shadow: 0 6px 20px rgba(22, 53, 35, 0.04);
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .highlight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(22, 53, 35, 0.10);
+      border-color: rgba(200, 151, 64, 0.35);
+    }
+
+    .highlight-icon-wrapper {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(22, 53, 35, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #163523;
+      margin-bottom: 0.65rem;
+      transition: var(--transition-smooth);
+    }
+
+    .highlight-icon-wrapper svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .highlight-card:hover .highlight-icon-wrapper {
+      background: #163523;
+      color: #C89740;
+    }
+
+    .highlight-card h4 {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #163523;
+      margin-bottom: 0.2rem;
+      line-height: 1.2;
+    }
+
+    .highlight-card p {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: #555555;
+      margin: 0;
+    }
+
+    /* Main Content Two-Column Layout (Left Paragraph, Right Image) */
+    .brochure-main-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(1.5rem, 3.5vw, 3.5rem);
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .brochure-content-col {
+      grid-column: span 5;
+      order: 1;
+    }
+
+    .brochure-content-col h3 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.75rem, 2.8vw, 2.3rem);
+      font-weight: 500;
+      color: #163523;
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .brochure-narrative {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #4A4A4A;
+      margin-bottom: 1.25rem;
+    }
+
+    .brochure-narrative:last-child {
+      margin-bottom: 0;
+    }
+
+    .brochure-img-col {
+      grid-column: span 7;
+      order: 2;
+    }
+
+    .brochure-img-frame {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(22, 53, 35, 0.10);
+      border: 2px solid #EFE4D2;
+    }
+
+    .brochure-img-frame img {
+      width: 100%;
+      height: 410px;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .brochure-img-frame:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Feature Chips (Compact 8px 14px Padding) */
+    .feature-chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.5rem;
+    }
+
+    .feature-chip {
+      background: rgba(200, 151, 64, 0.10);
+      border: 1px solid #C89740;
+      color: #163523;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 9999px;
+      transition: var(--transition-smooth);
+      cursor: default;
+      user-select: none;
+    }
+
+    .feature-chip:hover {
+      background: #C89740;
+      color: #163523;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(200, 151, 64, 0.35);
+    }
+
+    /* Bottom Information (4 Compact 110px Height Stat Blocks) */
+    .brochure-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid rgba(200, 151, 64, 0.25);
+    }
+
+    .hospitality-card {
+      background: #ffffff;
+      border: 1px solid rgba(200, 151, 64, 0.22);
+      border-radius: 16px;
+      padding: 1.1rem 1rem;
+      max-height: 108px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(22, 53, 35, 0.04);
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hospitality-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(22, 53, 35, 0.08);
+      border-color: #C89740;
+    }
+
+    .hospitality-icon {
+      color: #C89740;
+      font-size: 0.95rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .hospitality-number {
+      font-family: var(--font-heading);
+      font-size: clamp(1.6rem, 2.2vw, 2.1rem);
+      font-weight: 700;
+      color: #163523;
+      line-height: 1;
+      margin-bottom: 0.15rem;
+    }
+
+    .hospitality-label {
+      font-family: var(--font-body);
+      font-size: 0.725rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #284A33;
+    }
+
+    .brochure-btn-wrapper {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+
+    .btn-brochure-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.8rem 2.25rem;
+      background: #163523;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.825rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 22px rgba(22, 53, 35, 0.18);
+      transition: var(--transition-smooth);
+    }
+
+    .btn-brochure-primary:hover {
+      background: #C89740;
+      color: #163523;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(200, 151, 64, 0.35);
+    }
+
+    /* Responsive Section 1 Adjustments */
+    @media (max-width: 1024px) {
+      .brochure-highlights-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .highlight-card {
+        max-height: none;
+      }
+
+      .brochure-img-col,
+      .brochure-content-col {
+        grid-column: span 12;
+      }
+
+      .brochure-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hospitality-card {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .brochure-highlights-grid,
+      .brochure-stats-grid {
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
+
+    /* ==========================================================================
+       SECTION 2: WHAT MAKES THE FOOTHILL FARMSTAY UNIQUE (EXACT REFERENCE LAYOUT)
+       ========================================================================== */
+    .section-uniqueness-foothill {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background-color: #F8F3EA;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise2)' opacity='0.035'/%3E%3C/svg%3E");
+      color: #4A4A4A;
+      position: relative;
+      padding: 120px clamp(1.5rem, 5vw, 4rem) !important;
+      border-radius: 0 !important;
+    }
+
+    .uniqueness-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .uniqueness-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 5rem auto;
+    }
+
+    .uniqueness-title {
+      font-family: var(--font-heading);
+      font-size: clamp(42px, 5vw, 60px);
+      font-weight: 500;
+      line-height: 1.1;
+      color: #163523;
+      margin: 0 0 1.25rem 0;
+      text-align: center;
+    }
+
+    .uniqueness-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      margin: 1.25rem auto 0 auto;
+      color: #C89740;
+      font-size: 0.85rem;
+      opacity: 0.85;
+    }
+
+    .uniqueness-divider::before,
+    .uniqueness-divider::after {
+      content: '';
+      height: 1px;
+      width: 60px;
+      background: linear-gradient(90deg, transparent, #C89740, transparent);
+    }
+
+    /* 2 Columns x 3 Rows Centered Grid */
+    .uniqueness-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(320px, 420px));
+      justify-content: center;
+      column-gap: clamp(3rem, 6vw, 7rem);
+      row-gap: 70px;
+      margin: 0 auto;
+    }
+
+    .uniqueness-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.75rem;
+    }
+
+    /* Icon Box: 78px x 78px, 22px border radius */
+    .uniqueness-icon-box {
+      width: 78px;
+      height: 78px;
+      min-width: 78px;
+      min-height: 78px;
+      border-radius: 22px;
+      background: rgba(200, 151, 64, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #C89740;
+      transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease;
+    }
+
+    .uniqueness-icon-box svg {
+      width: 32px;
+      height: 32px;
+      transition: transform 0.4s ease;
+    }
+
+    .uniqueness-item:hover .uniqueness-icon-box {
+      background: #163523;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .uniqueness-item:hover .uniqueness-icon-box svg {
+      transform: scale(1.08);
+    }
+
+    .uniqueness-item-content {
+      max-width: 320px;
+    }
+
+    .uniqueness-item-content h3 {
+      font-family: var(--font-heading);
+      font-size: 30px;
+      font-weight: 500;
+      color: #163523;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .uniqueness-item-content p {
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.8;
+      color: #666666;
+      margin: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .uniqueness-grid {
+        column-gap: 50px;
+        row-gap: 60px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .uniqueness-grid {
+        grid-template-columns: 1fr;
+        row-gap: 50px;
+      }
+
+      .uniqueness-item-content {
+        max-width: 100%;
+      }
+    }
+
+    .section-overview-brochure,
+    .section-uniqueness-foothill,
+    .section-cottage-tariffs {
+      border: none !important;
+      border-top: none !important;
+      border-bottom: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    /* ==========================================================================
+       SECTION 3: COTTAGE COLLECTION & PRICE LIST (OFFICIAL BROCHURE TARIFFS)
+       ========================================================================== */
+    .section-cottage-tariffs {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background-color: #F8F3EA;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise3)' opacity='0.035'/%3E%3C/svg%3E");
+      color: #4A4A4A;
+      position: relative;
+      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
+      border: none !important;
+    }
+
+    .tariffs-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .tariffs-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 4rem auto;
+    }
+
+    .tariffs-title {
+      font-family: var(--font-heading);
+      font-size: clamp(38px, 4.5vw, 54px);
+      font-weight: 500;
+      line-height: 1.15;
+      color: #163523;
+      margin: 0 0 0.85rem 0;
+    }
+
+    .tariffs-subtitle {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      color: #555555;
+      max-width: 620px;
+      margin: 0.5rem auto 0 auto;
+    }
+
+    /* Cottage Cards Grid (2x2) */
+    .cottages-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+      margin-bottom: 5rem;
+    }
+
+    .cottage-card {
+      background: #ffffff;
+      border: 1px solid rgba(200, 151, 64, 0.28);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(22, 53, 35, 0.06);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cottage-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 45px rgba(22, 53, 35, 0.12);
+      border-color: rgba(200, 151, 64, 0.5);
+    }
+
+    .cottage-card-img-wrapper {
+      position: relative;
+      height: 250px;
+      overflow: hidden;
+    }
+
+    .cottage-card-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cottage-card:hover .cottage-card-img-wrapper img {
+      transform: scale(1.05);
+    }
+
+    .cottage-badge {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      background: #163523;
+      color: #C89740;
+      font-family: var(--font-body);
+      font-size: 0.725rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.4rem 1.1rem;
+      border-radius: 9999px;
+      border: 1px solid rgba(200, 151, 64, 0.4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .cottage-plan-tag {
+      position: absolute;
+      bottom: 1rem;
+      right: 1.25rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      color: #163523;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.85rem;
+      border-radius: 6px;
+      border: 1px solid rgba(22, 53, 35, 0.15);
+    }
+
+    .cottage-card-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .cottage-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 500;
+      color: #163523;
+      margin-bottom: 0.75rem;
+    }
+
+    .cottage-features-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cottage-feature-pill {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: #333333;
+      background: rgba(22, 53, 35, 0.05);
+      border: 1px solid rgba(22, 53, 35, 0.1);
+      padding: 0.3rem 0.75rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Price Table inside Card */
+    .cottage-price-matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      background: #FBF8F3;
+      border: 1px solid #EFE4D2;
+      border-radius: 14px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      margin-top: auto;
+    }
+
+    .price-box-item {
+      text-align: center;
+    }
+
+    .price-box-label {
+      font-family: var(--font-body);
+      font-size: 0.725rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #888888;
+      margin-bottom: 0.25rem;
+    }
+
+    .price-box-amount {
+      font-family: var(--font-heading);
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: #163523;
+      line-height: 1.1;
+    }
+
+    .price-box-sub {
+      font-family: var(--font-body);
+      font-size: 0.725rem;
+      color: #666666;
+      margin-top: 0.2rem;
+    }
+
+    .extra-charges-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: #555555;
+      padding-top: 0.75rem;
+      border-top: 1px dashed rgba(200, 151, 64, 0.3);
+    }
+
+    .extra-charge-item span {
+      font-weight: 700;
+      color: #163523;
+    }
+
+    /* Comparison Table Section */
+    .brochure-table-wrapper {
+      background: #ffffff;
+      border: 2px solid #C89740;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(22, 53, 35, 0.08);
+    }
+
+    .brochure-table-header {
+      background: #163523;
+      padding: 1.75rem 2rem;
+      text-align: center;
+      border-bottom: 2px solid #C89740;
+    }
+
+    .brochure-table-header h3 {
+      font-family: var(--font-heading);
+      font-size: 1.85rem;
+      font-weight: 500;
+      color: #C89740;
+      margin: 0 0 0.35rem 0;
+      letter-spacing: 0.06em;
+    }
+
+    .brochure-table-header p {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: #EFE4D2;
+      margin: 0;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .brochure-table-container {
+      overflow-x: auto;
+    }
+
+    .brochure-price-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-family: var(--font-body);
+    }
+
+    .brochure-price-table th {
+      background: #1B3F2B;
+      color: #ffffff;
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1.15rem 1rem;
+      border: 1px solid rgba(200, 151, 64, 0.3);
+    }
+
+    .brochure-price-table th small {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.725rem;
+      font-weight: 400;
+      text-transform: none;
+      color: #C89740;
+      margin-top: 0.2rem;
+    }
+
+    .brochure-price-table td {
+      padding: 1.25rem 1rem;
+      border: 1px solid #EFE4D2;
+      font-size: 0.9rem;
+      color: #333333;
+      vertical-align: middle;
+    }
+
+    .brochure-price-table tr:nth-child(even) td {
+      background: #FBF8F3;
+    }
+
+    .brochure-price-table tr:hover td {
+      background: rgba(200, 151, 64, 0.06);
+    }
+
+    .tbl-category-name {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #163523;
+      text-align: left;
+      padding-left: 1.5rem !important;
+    }
+
+    .tbl-category-features {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      color: #666666;
+      margin-top: 0.35rem;
+      line-height: 1.45;
+    }
+
+    .tbl-price {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #163523;
+      line-height: 1.1;
+    }
+
+    .tbl-price-sub {
+      font-family: var(--font-body);
+      font-size: 0.725rem;
+      color: #777777;
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 992px) {
+      .cottages-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    /* ==========================================================================
+       SECTION 4: EVENT SPACES (CONFERENCE HALL & THE LAWN)
+       ========================================================================== */
+    .section-event-spaces {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background-color: #F8F3EA;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise4'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise4)' opacity='0.035'/%3E%3C/svg%3E");
+      color: #4A4A4A;
+      position: relative;
+      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
+      border: none !important;
+    }
+
+    .events-container {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .events-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 4.5rem auto;
+    }
+
+    .events-title {
+      font-family: var(--font-heading);
+      font-size: clamp(38px, 4.5vw, 54px);
+      font-weight: 500;
+      line-height: 1.15;
+      color: #163523;
+      margin: 0 0 0.85rem 0;
+      letter-spacing: 0.04em;
+    }
+
+    .events-subtitle {
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.6;
+      color: #555555;
+      max-width: 580px;
+      margin: 0.5rem auto 0 auto;
+    }
+
+    /* Event Space Cards Stack */
+    .event-spaces-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
+
+    .event-space-card {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 3.5rem;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid rgba(200, 151, 64, 0.28);
+      border-radius: 24px;
+      padding: 3rem;
+      box-shadow: 0 16px 40px rgba(22, 53, 35, 0.06);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .event-space-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 50px rgba(22, 53, 35, 0.1);
+      border-color: rgba(200, 151, 64, 0.45);
+    }
+
+    .event-space-card.reverse {
+      grid-template-columns: 1.1fr 1fr;
+    }
+
+    .event-space-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .event-icon-badge {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(200, 151, 64, 0.1);
+      border: 1px solid rgba(200, 151, 64, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #C89740;
+      margin-bottom: 1.25rem;
+    }
+
+    .event-space-title {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-weight: 500;
+      color: #163523;
+      margin: 0 0 0.85rem 0;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .event-space-desc {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.75;
+      color: #555555;
+      margin-bottom: 2rem;
+    }
+
+    .event-specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .event-spec-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #333333;
+      background: #FBF8F3;
+      border: 1px solid #EFE4D2;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+    }
+
+    .event-spec-icon {
+      color: #C89740;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .event-space-image-wrapper {
+      position: relative;
+      height: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(200, 151, 64, 0.2);
+    }
+
+    .event-space-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .event-space-card:hover .event-space-image-wrapper img {
+      transform: scale(1.04);
+    }
+
+    @media (max-width: 992px) {
+
+      .event-space-card,
+      .event-space-card.reverse {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+        gap: 2rem;
+      }
+
+      .event-space-card.reverse .event-space-image-wrapper {
+        order: -1;
+      }
+
+      .event-space-image-wrapper {
+        height: 280px;
+      }
+
+      .event-specs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ==========================================================================
+       SECTION 5: LOCATION & NEARBY ATTRACTIONS (DIAGONAL ROADMAP TRAIL)
+       ========================================================================== */
+    .section-location-map {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background-color: #F8F3EA;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise5'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise5)' opacity='0.035'/%3E%3C/svg%3E");
+      color: #4A4A4A;
+      position: relative;
+      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
+      border: none !important;
+      overflow: hidden;
+    }
+
+    .location-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .location-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 4rem auto;
+    }
+
+    .location-title {
+      font-family: var(--font-heading);
+      font-size: clamp(38px, 4.5vw, 54px);
+      font-weight: 500;
+      line-height: 1.15;
+      color: #163523;
+      margin: 0 0 0.85rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .location-title-icon {
+      color: #A45331;
+    }
+
+    .location-subtitle {
+      font-family: var(--font-body);
+      font-size: 17px;
+      line-height: 1.6;
+      color: #555555;
+      margin: 0.5rem auto 0 auto;
+    }
+
+    /* Diagonal Trail Container */
+    .map-trail-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      min-height: 950px;
+      margin: 0 auto;
+    }
+
+    .map-svg-line {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Individual Nodes on Diagonal Path */
+    .map-node {
+      position: absolute;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: transform 0.3s ease;
+    }
+
+    .map-node:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Node Positioning (Diagonal Staircase Layout matching reference) */
+    .node-midubanda {
+      left: 4%;
+      top: 88%;
+    }
+
+    .node-rainbow {
+      left: 24%;
+      top: 76%;
+    }
+
+    .node-farmstay {
+      left: 22%;
+      top: 58%;
+    }
+
+    .node-pine {
+      left: 34%;
+      top: 43%;
+    }
+
+    .node-coffee {
+      left: 46%;
+      top: 29%;
+    }
+
+    .node-daringbadi {
+      left: 60%;
+      top: 15%;
+    }
+
+    .node-sunset {
+      left: 32%;
+      top: 5%;
+    }
+
+    .node-pin-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .node-pin {
+      width: 44px;
+      height: 44px;
+      border-radius: 50% 50% 50% 0;
+      background: #A45331;
+      transform: rotate(-45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(164, 83, 49, 0.35);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .map-node:hover .node-pin {
+      background: #163523;
+      transform: rotate(-45deg) scale(1.1);
+    }
+
+    .node-pin-icon {
+      transform: rotate(45deg);
+      color: #ffffff;
+      font-size: 1.1rem;
+    }
+
+    /* Special Highlight for Foothill Farm Stay Node */
+    .node-farmstay .node-pin {
+      width: 58px;
+      height: 58px;
+      background: #163523;
+      border: 2px solid #C89740;
+      box-shadow: 0 10px 25px rgba(22, 53, 35, 0.4);
+    }
+
+    .node-farmstay .node-pin-icon {
+      color: #C89740;
+      font-size: 1.4rem;
+    }
+
+    .node-card {
+      background: #ffffff;
+      border: 1px solid rgba(200, 151, 64, 0.3);
+      border-radius: 16px;
+      padding: 0.85rem 1.35rem;
+      box-shadow: 0 10px 30px rgba(22, 53, 35, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      min-width: 220px;
+    }
+
+    .node-farmstay .node-card {
+      background: #163523;
+      color: #ffffff;
+      border-color: #C89740;
+      box-shadow: 0 12px 35px rgba(22, 53, 35, 0.25);
+    }
+
+    .node-icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FBF8F3;
+      border: 1px solid rgba(200, 151, 64, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .node-farmstay .node-icon-circle {
+      background: rgba(200, 151, 64, 0.15);
+      border-color: #C89740;
+    }
+
+    .node-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #163523;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .node-farmstay .node-title {
+      color: #C89740;
+      font-size: 1.35rem;
+    }
+
+    .node-dist {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #888888;
+      margin-top: 0.2rem;
+    }
+
+    .node-farmstay .node-dist {
+      color: #EFE4D2;
+    }
+
+    @media (max-width: 868px) {
+      .map-trail-wrapper {
+        min-height: 1100px;
+      }
+
+      .node-midubanda {
+        left: 2%;
+        top: 90%;
+      }
+
+      .node-rainbow {
+        left: 15%;
+        top: 76%;
+      }
+
+      .node-farmstay {
+        left: 10%;
+        top: 60%;
+      }
+
+      .node-pine {
+        left: 25%;
+        top: 45%;
+      }
+
+      .node-coffee {
+        left: 35%;
+        top: 30%;
+      }
+
+      .node-daringbadi {
+        left: 45%;
+        top: 16%;
+      }
+
+      .node-sunset {
+        left: 20%;
+        top: 4%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .map-trail-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        min-height: auto;
+      }
+
+      .map-svg-line {
+        display: none;
+      }
+
+      .map-node {
+        position: relative;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100%;
+      }
+
+      .node-card {
+        width: 100%;
+      }
+    }
+
+    /* ==========================================================================
+       SECTION: RESORT AMENITIES
+       ========================================================================== */
+    .section-resort-amenities {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background-color: #F8F3EA;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise6'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise6)' opacity='0.035'/%3E%3C/svg%3E");
+      color: #4A4A4A;
+      position: relative;
+      padding: 90px clamp(1.5rem, 5vw, 4rem) !important;
+      border: none !important;
+    }
+
+    .amenities-container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .amenities-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 3.5rem auto;
+    }
+
+    .amenities-title {
+      font-family: var(--font-heading);
+      font-size: clamp(38px, 4.5vw, 54px);
+      font-weight: 500;
+      line-height: 1.15;
+      color: #163523;
+      margin: 0 0 0.85rem 0;
+    }
+
+    .amenities-subtitle {
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      color: #555555;
+      margin: 0.5rem auto 0 auto;
+    }
+
+    /* 2 Columns x 5 Rows Grid matching Brochure Layout */
+    .brochure-amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: clamp(3rem, 7vw, 8rem);
+      row-gap: 2.25rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .brochure-amenity-card {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: #ffffff;
+      border: 1px solid rgba(200, 151, 64, 0.25);
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(22, 53, 35, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .brochure-amenity-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 35px rgba(22, 53, 35, 0.1);
+      border-color: rgba(200, 151, 64, 0.5);
+    }
+
+    .brochure-amenity-icon {
+      width: 52px;
+      height: 52px;
+      min-width: 52px;
+      border-radius: 14px;
+      background: rgba(22, 53, 35, 0.06);
+      border: 1px solid rgba(22, 53, 35, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #163523;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .brochure-amenity-card:hover .brochure-amenity-icon {
+      background: #163523;
+      color: #C89740;
+    }
+
+    .brochure-amenity-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: #163523;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    @media (max-width: 768px) {
+      .brochure-amenities-grid {
+        grid-template-columns: 1fr;
+        row-gap: 1.25rem;
+      }
+    }
+
+    /* ==========================================================================
+       BOOK NOW — WHATSAPP CTA BUTTON (rooms + events)
+       ========================================================================== */
+    .btn-book-now {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-top: 1.25rem;
+      padding: 0.85rem 1.6rem;
+      width: 100%;
+      justify-content: center;
+      background: #25D366;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 12px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    .btn-book-now:hover {
+      background: #1ebe5d;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
+    }
+
+    .btn-book-now svg {
+      flex-shrink: 0;
+    }
+
+    /* Book Now on event space cards */
+    .event-book-now {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-top: 1.5rem;
+      padding: 0.85rem 1.8rem;
+      background: #25D366;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    .event-book-now:hover {
+      background: #1ebe5d;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
+    }
+
+    /* ==========================================================================
+       SECTION: CONTACT US
+       ========================================================================== */
+    .section-contact {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background: #F8F3EA;
+      color: #163523;
+      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-info-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .contact-tag {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #C89740;
+      margin-bottom: 1rem;
+    }
+
+    .contact-title {
+      font-family: var(--font-heading);
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 500;
+      line-height: 1.12;
+      color: #163523;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .contact-title span {
+      color: #C89740;
+    }
+
+    .contact-divider {
+      width: 60px;
+      height: 2px;
+      background: #C89740;
+      margin: 1.5rem 0 2rem 0;
+      border-radius: 2px;
+    }
+
+
+
+    .contact-details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .contact-detail-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .contact-detail-icon {
+      width: 42px;
+      height: 42px;
+      min-width: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(200, 151, 64, 0.4);
+      background: rgba(200, 151, 64, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #C89740;
+    }
+
+    .contact-detail-text {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: #163523;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-detail-text:hover {
+      color: #C89740;
+    }
+
+    /* Contact Form */
+    .contact-form-col {}
+
+    .contact-form-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #163523;
+      margin: 0 0 1.75rem 0;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .contact-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .contact-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .contact-field label {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(200, 151, 64, 0.8);
+    }
+
+    .contact-field input,
+    .contact-field select,
+    .contact-field textarea {
+      padding: 0.85rem 1rem;
+      background: #ffffff;
+      border: 1px solid rgba(22, 53, 35, 0.15);
+      border-radius: 10px;
+      color: #163523;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      outline: none;
+    }
+
+    .contact-field input:focus,
+    .contact-field select:focus,
+    .contact-field textarea:focus {
+      border-color: #C89740;
+      background: #ffffff;
+    }
+
+    .contact-field input::placeholder,
+    .contact-field textarea::placeholder {
+      color: rgba(22, 53, 35, 0.4);
+    }
+
+    .contact-field select option {
+      background: #ffffff;
+      color: #163523;
+    }
+
+    .contact-field textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .contact-submit-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      background: var(--accent-gold);
+      color: #163523;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 0.5rem;
+    }
+
+    .contact-submit-btn:hover {
+      background: var(--accent-gold-dark);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(200, 151, 64, 0.3);
+    }
+
+    .contact-wa-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem 2rem;
+      background: #163523;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 0.5rem;
+    }
+
+    .contact-wa-btn:hover {
+      background: #0f2719;
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(22, 53, 35, 0.3);
+    }
+
+    .contact-btns-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       SECTION: FAQ (LUXURY ACCORDION THEME)
+       ========================================================================== */
+    .section-faq {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      background: #F8F3EA;
+      color: #163523;
+      padding: 90px clamp(1.5rem, 5vw, 4rem) !important;
+      position: relative;
+      z-index: 20;
+      overflow: hidden;
+    }
+
+    .faq-container {
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .faq-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+
+    .faq-tag {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #C89740;
+      margin-bottom: 0.85rem;
+      font-weight: 700;
+    }
+
+    .faq-title {
+      font-family: var(--font-heading);
+      font-size: clamp(32px, 3.8vw, 48px);
+      font-weight: 500;
+      color: #163523;
+      margin-bottom: 0.85rem;
+      line-height: 1.15;
+    }
+
+    .faq-subtitle {
+      font-family: var(--font-body);
+      color: rgba(22, 53, 35, 0.75);
+      font-size: 1.05rem;
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    .faq-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .faq-item {
+      background: #ffffff;
+      border: 1px solid rgba(200, 151, 64, 0.25);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(22, 53, 35, 0.05);
+      transition: border-color 0.35s ease, background-color 0.35s ease, box-shadow 0.35s ease, transform 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: #C89740;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(200, 151, 64, 0.18);
+    }
+
+    .faq-item[open] {
+      border-color: #C89740;
+      background: #F5EFE4;
+      box-shadow: 0 12px 35px rgba(22, 53, 35, 0.08), 0 0 20px rgba(200, 151, 64, 0.12);
+    }
+
+    .faq-question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      padding: 1.45rem 1.85rem;
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: #163523;
+      cursor: pointer;
+      list-style: none !important;
+      user-select: none;
+      transition: color 0.3s ease;
+    }
+
+    /* Reset default browser summary disclosure markers completely */
+    .faq-question::-webkit-details-marker,
+    .faq-question::marker {
+      display: none !important;
+      content: "" !important;
+    }
+
+    .faq-item[open] .faq-question {
+      color: #C89740;
+    }
+
+    .faq-icon-badge {
+      width: 34px;
+      height: 34px;
+      min-width: 34px;
+      border-radius: 50%;
+      background: rgba(200, 151, 64, 0.1);
+      border: 1px solid rgba(200, 151, 64, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #C89740;
+      font-size: 0.9rem;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .faq-item[open] .faq-icon-badge {
+      transform: rotate(180deg);
+      background: #C89740;
+      color: #ffffff;
+      border-color: #C89740;
+      box-shadow: 0 4px 15px rgba(200, 151, 64, 0.3);
+    }
+
+    .faq-answer {
+      padding: 0 1.85rem 1.65rem 1.85rem;
+      font-family: var(--font-body);
+      color: rgba(22, 53, 35, 0.82);
+      font-size: 0.975rem;
+      line-height: 1.75;
+      border-top: 1px solid rgba(200, 151, 64, 0.15);
+      margin-top: 0.2rem;
+      padding-top: 1.15rem;
+    }
+
+    /* Live Google Maps Integration */
+    .map-embed-wrapper {
+      margin-top: 3.5rem;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(22, 53, 35, 0.12);
+      border: 1px solid rgba(200, 151, 64, 0.3);
+      position: relative;
+      background: #ffffff;
+    }
+
+    .map-embed-iframe {
+      width: 100%;
+      height: 420px;
+      border: 0;
+      display: block;
+      filter: saturate(0.95) contrast(1.02);
+    }
+
+    .map-embed-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      background: #ffffff;
+      border-top: 1px solid rgba(22, 53, 35, 0.08);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .map-embed-info {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      color: #163523;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .map-embed-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.6rem;
+      background: #163523;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(22, 53, 35, 0.2);
+    }
+
+    .map-embed-btn:hover {
+      background: #C89740;
+      color: #163523;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(200, 151, 64, 0.3);
+    }
+
+    @media (max-width: 900px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .contact-form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    .image-card {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-md);
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 100%;
+      max-height: 520px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .image-card:hover img {
+      transform: scale(1.04);
+    }
+
+    /* Section 2: Villas Showcase Cards */
+    .villas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: clamp(1.5rem, 3vw, 2.5rem);
+    }
+
+    .villa-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .villa-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-color-hover);
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .villa-img-wrapper {
+      position: relative;
+      height: 260px;
+      overflow: hidden;
+    }
+
+    .villa-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .villa-card:hover .villa-img-wrapper img {
+      transform: scale(1.06);
+    }
+
+    .villa-badge {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      padding: 0.4rem 1rem;
+      background: rgba(8, 9, 12, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color-gold);
+      border-radius: var(--radius-pill);
+      color: var(--accent-gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .villa-body {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .villa-title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 2vw, 1.85rem);
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+    }
+
+    .villa-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .villa-specs {
+      display: flex;
+      gap: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: auto;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .villa-specs span {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Section 3: Amenities Grid */
+    .amenities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.75rem;
+    }
+
+    .amenity-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2.25rem 1.75rem;
+      transition: var(--transition-smooth);
+    }
+
+    .amenity-item:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-color-hover);
+      transform: translateY(-5px);
+    }
+
+    .amenity-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(223, 183, 108, 0.1);
+      border: 1px solid rgba(223, 183, 108, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-gold);
+      font-size: 1.35rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .amenity-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 0.75rem;
+    }
+
+    .amenity-text {
+      color: var(--text-secondary);
+      font-size: 0.925rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* Section 4: Visual Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      height: 320px;
+    }
+
+    .gallery-item.col-4 {
+      grid-column: span 4;
+    }
+
+    .gallery-item.col-8 {
+      grid-column: span 8;
+    }
+
+    .gallery-item.col-6 {
+      grid-column: span 6;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .gallery-caption {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8, 9, 12, 0.85) 0%, transparent 60%);
+      padding: 1.5rem;
+      display: flex;
+      align-items: flex-end;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .gallery-item:hover .gallery-caption {
+      opacity: 1;
+    }
+
+    .gallery-caption-text {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--text-primary);
+    }
+
+    /* Section 5: Inquiry & Reservation Form */
+    .inquiry-box {
+      background: linear-gradient(135deg, rgba(14, 16, 23, 0.9), rgba(8, 9, 12, 0.95));
+      border: 1px solid var(--border-color-gold);
+      border-radius: var(--radius-lg);
+      padding: clamp(2rem, 5vw, 4rem);
+      box-shadow: var(--shadow-md), var(--shadow-glow);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 0.9rem 1.25rem;
+      min-height: 48px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: var(--transition-smooth);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--accent-gold);
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 15px rgba(223, 183, 108, 0.15);
+    }
+
+    .form-select option {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+    }
+
+    /* Modal Confirmation */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(8, 9, 12, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color-gold);
+      border-radius: var(--radius-lg);
+      padding: 3rem 2.5rem;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow-md), var(--shadow-glow);
+    }
+
+    .modal-icon {
+      font-size: 3rem;
+      color: var(--accent-gold);
+      margin-bottom: 1rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-desc {
+      color: var(--text-secondary);
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border-color);
+      padding: 4rem 1.25rem 2rem 1.25rem;
+      background: #050608;
+    }
+
+    .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-logo-text {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: var(--transition-smooth);
+    }
+
+    .footer-link:hover {
+      color: var(--accent-gold);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* ==========================================================================
+       INTERSECTION OBSERVER REVEAL ANIMATIONS
+       ========================================================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 {
+      transition-delay: 0.08s;
+    }
+
+    .delay-2 {
+      transition-delay: 0.15s;
+    }
+
+    .delay-3 {
+      transition-delay: 0.22s;
+    }
+
+    .delay-4 {
+      transition-delay: 0.29s;
+    }
+
+    .delay-5 {
+      transition-delay: 0.36s;
+    }
+
+    .delay-6 {
+      transition-delay: 0.43s;
+    }
+
+    .delay-7 {
+      transition-delay: 0.50s;
+    }
+
+    .delay-8 {
+      transition-delay: 0.57s;
+    }
+
+    .delay-9 {
+      transition-delay: 0.64s;
+    }
+
+    .delay-10 {
+      transition-delay: 0.70s;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE BREAKPOINTS & MOBILE DRAWER CSS
+       ========================================================================== */
+    .mobile-menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+    }
+
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .mobile-menu-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+
+    .mobile-nav-link {
+      color: var(--text-primary);
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .mobile-nav-link:hover {
+      color: var(--accent-gold);
+    }
+
+    @media (max-width: 1024px) {
+      .navbar {
+        width: 90%;
+        padding: 0.65rem 1.25rem;
+      }
+
+      .nav-links {
+        display: none !important;
+      }
+
+      .menu-toggle {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .overview-text-col,
+      .overview-image-col {
+        grid-column: span 12;
+      }
+
+      .gallery-item.col-4,
+      .gallery-item.col-8,
+      .gallery-item.col-6 {
+        grid-column: span 6;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        width: 92%;
+        padding: 0.45rem 0.9rem;
+      }
+
+      .nav-container {
+        gap: 0.5rem;
+      }
+
+      .nav-logo {
+        gap: 0.4rem;
+      }
+
+      .nav-logo img {
+        height: 26px;
+      }
+
+      .nav-logo-text {
+        display: inline-block !important;
+        font-size: clamp(0.62rem, 2.4vw, 0.75rem) !important;
+        letter-spacing: 0.05em !important;
+        white-space: nowrap !important;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1.25rem;
+      }
+
+      .gallery-item.col-6,
+      .gallery-item.col-4,
+      .gallery-item.col-8 {
+        grid-column: span 12;
+        height: 240px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+    }
+
+    /* Landscape Phone Optimization (~740x360) */
+    @media (max-height: 480px) and (orientation: landscape) {
+      .hero-subtitle {
+        margin-bottom: 0.5rem;
+      }
+
+      .hero-title {
+        font-size: 2.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .hero-description {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .hero-actions {
+        flex-direction: row;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Noise Grain Overlay -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Preloader UI -->
+  <div id="preloader" role="status" aria-live="polite">
+    <div class="loader-content">
+      <img src="logo new.png" alt="The Foothill Farmstay Logo" class="loader-logo">
+      <h1 class="loader-brand">The Foothill <span>Farmstay</span></h1>
+      <div class="loader-bar-bg">
+        <div id="loader-fill" class="loader-bar-fill"></div>
+      </div>
+      <div class="loader-status">
+        <span>Loading Experience</span>
+        <span id="loader-percentage" class="loader-percentage">0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo" aria-label="The Foothill Farmstay Homepage">
+        <img src="logo new.png" alt="Foothill Logo">
+        <span class="nav-logo-text">The Foothill Farmstay</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#" class="nav-link">Home</a></li>
+        <li><a href="#stay" class="nav-link">Stay</a></li>
+        <li><a href="#amenities" class="nav-link">Amenities</a></li>
+        <li><a href="#events" class="nav-link">Events</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" aria-label="Toggle Mobile Menu" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         VIRTUAL SCROLL LOCKED HERO VIEWPORT (LUXURY EDITORIAL)
+         ========================================================================== -->
+    <div id="hero-viewport" class="hero-viewport">
+      <!-- Main Canvas for Frame-by-Frame Intercepted Scrubbing -->
+      <canvas id="hero-canvas" role="img"
+        aria-label="Cinematic interactive 3D mountain landscape scroll experience"></canvas>
+
+      <!-- Hero Subtle Dark Gradient Overlay -->
+      <div class="hero-gradient-overlay" aria-hidden="true"></div>
+
+      <!-- Hero Overlay Content (Left Aligned, Editorial Style) -->
+      <div id="hero-overlay" class="hero-overlay">
+        <span class="hero-tag">LUXURY FARMSTAY • ODISHA</span>
+        <h1 class="hero-title">Reserve Your Escape <br>to Nature</h1>
+        <p class="hero-description">
+          Escape into handcrafted luxury villas surrounded by peaceful landscapes, private pools, and unforgettable
+          countryside experiences.
+        </p>
+        <div class="hero-actions">
+          <a href="#stay" class="btn-primary">Book Your Stay</a>
+        </div>
+      </div>
+
+      <!-- Second Floating Text Overlay (Appears during middle of scroll animation - React Bits ScrollFloat) -->
+      <div id="hero-scroll-float" class="hero-scroll-float" aria-hidden="true">
+        <h2 class="scroll-float">
+          <span class="scroll-float-text">COMFORT IN NATURE</span>
+        </h2>
+      </div>
+
+      <!-- Minimal Scroll Indicator Hint -->
+      <div id="scroll-hint" class="scroll-hint">
+        <span class="scroll-hint-label">SCROLL</span>
+        <span class="scroll-hint-arrow">↓</span>
+      </div>
+    </div>
+
+    <!-- Invisible 100vh spacer providing the first fold in document flow -->
+    <div id="hero-spacer" class="hero-spacer"></div>
+
+    <!-- ==========================================================================
+         MAIN CONTENT SECTIONS (REVEALED ONLY AFTER VIRTUAL SCRUB REACHES 100%)
+         ========================================================================== -->
+    <div id="main-content" class="main-content">
+
+      <!-- SECTION 1: DISCOVER THE FOOTHILL (OFFICIAL BROCHURE HOSPITALITY THEME) -->
+      <section id="overview" class="section section-overview-brochure">
+        <div class="overview-brochure-container">
+
+          <!-- Section Header -->
+          <div class="brochure-header reveal">
+            <span class="brochure-tag">WELCOME TO <span>THE FOOTHILL FARMSTAY</span></span>
+            <h2 class="brochure-title">More Than A Stay — An Experience</h2>
+            <div class="brochure-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <!-- Feature Highlights (4 Cards) -->
+          <div class="brochure-highlights-grid">
+            <div class="highlight-card reveal delay-1">
+              <div class="highlight-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+              </div>
+              <h4>Luxury Rooms</h4>
+              <p>Bespoke villas & suites surrounded by serene mountain greenery.</p>
+            </div>
+
+            <div class="highlight-card reveal delay-2">
+              <div class="highlight-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12h20"></path>
+                  <path d="M2 16h20"></path>
+                  <path d="M2 20h20"></path>
+                  <path d="M12 2v6"></path>
+                </svg>
+              </div>
+              <h4>Swimming Pool</h4>
+              <p>Refreshing infinity pool nestled amid panoramic mountain views.</p>
+            </div>
+
+            <div class="highlight-card reveal delay-3">
+              <div class="highlight-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                  </polygon>
+                </svg>
+              </div>
+              <h4>Event Spaces</h4>
+              <p>Grand celebration lawn & state-of-the-art conference facilities.</p>
+            </div>
+
+            <div class="highlight-card reveal delay-4">
+              <div class="highlight-icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                  <line x1="6" y1="1" x2="6" y2="4"></line>
+                  <line x1="10" y1="1" x2="10" y2="4"></line>
+                  <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+              </div>
+              <h4>Restaurant</h4>
+              <p>Authentic Odia cuisine & organic farm-to-table dining delights.</p>
+            </div>
+          </div>
+
+          <!-- Main Content (Left Paragraph, Right Image Layout) -->
+          <div class="brochure-main-grid">
+            <div class="brochure-content-col reveal">
+              <h3>Where Nature Meets Luxury</h3>
+              <p class="brochure-narrative">
+                Nestled amidst the tranquil hills of Daringbadi, The Foothill Farmstay invites you to experience a
+                peaceful retreat surrounded by lush greenery, handcrafted luxury villas, private pools, and authentic
+                Odia hospitality.
+              </p>
+              <p class="brochure-narrative">
+                Whether you seek a relaxing family getaway, a serene venue for grand celebrations, or outdoor adventures
+                in nature, our sanctuary offers an unforgettable escape crafted for comfort and lifelong memories.
+              </p>
+            </div>
+
+            <div class="brochure-img-col reveal delay-1">
+              <div class="brochure-img-frame">
+                <img src="IMG_9712.PNG" alt="Foothill Farmstay Luxury Cottages and Gardens" loading="lazy">
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="brochure-btn-wrapper reveal">
+            <a href="#stay" class="btn-brochure-primary">Explore Experiences & Book</a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 2: WHAT MAKES THE FOOTHILL FARMSTAY UNIQUE -->
+      <section id="villas" class="section section-uniqueness-foothill">
+        <div class="uniqueness-container">
+
+          <div class="uniqueness-header reveal">
+            <h2 class="uniqueness-title">
+              What Makes<br>
+              The Foothill Farmstay<br>
+              Unique
+            </h2>
+            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <div class="uniqueness-grid">
+
+            <!-- Feature 1 -->
+            <div class="uniqueness-item reveal delay-1">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m8 3 4 8 5-5 5 15H2L8 3z"></path>
+                  <circle cx="18" cy="6" r="2"></circle>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Scenic & Peaceful Location</h3>
+                <p>Surrounded by serene hills and natural beauty.</p>
+              </div>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="uniqueness-item reveal delay-2">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a9 9 0 0 0-9 9v2h18v-2a9 9 0 0 0-9-9z"></path>
+                  <path d="M2 17h20"></path>
+                  <path d="M12 2v2"></path>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Delicious Catering Options</h3>
+                <p>Savor a variety of local and multi-cuisine delights.</p>
+              </div>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="uniqueness-item reveal delay-3">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                  <path d="m9 14 2 2 4-4"></path>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Personalized Event Planning</h3>
+                <p>Tailored arrangements to match your vision.</p>
+              </div>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="uniqueness-item reveal delay-4">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2">
+                  </path>
+                  <circle cx="7" cy="17" r="2"></circle>
+                  <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Parking & Easy Accessibility</h3>
+                <p>Ample parking with convenient access.</p>
+              </div>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="uniqueness-item reveal delay-5">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                  <path d="M12 6a6 6 0 0 1 6 6c0 3.314-2.686 6-6 6s-6-2.686-6-6a6 6 0 0 1 6-6z"></path>
+                  <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Tribal Hospitality & Culture</h3>
+                <p>Experience warm Odia hospitality and culture.</p>
+              </div>
+            </div>
+
+            <!-- Feature 6 -->
+            <div class="uniqueness-item reveal delay-6">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z">
+                  </path>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Memorable Experiences</h3>
+                <p>We create moments that last a lifetime.</p>
+              </div>
+            </div>
+
+            <!-- Feature 7 -->
+            <div class="uniqueness-item reveal delay-7">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18"></path>
+                  <path d="M5 21V10l7-5 7 5v11"></path>
+                  <path d="M9 21v-4a3 3 0 0 1 6 0v4"></path>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Perfect for Every Occasion</h3>
+                <p>Weddings, corporate events, birthdays, family gatherings and more.</p>
+              </div>
+            </div>
+
+            <!-- Feature 8 -->
+            <div class="uniqueness-item reveal delay-8">
+              <div class="uniqueness-icon-box">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <ellipse cx="12" cy="6" rx="8" ry="3"></ellipse>
+                  <path d="M4 6v12c0 1.657 3.582 3 8 3s8-1.343 8-3V6"></path>
+                  <path d="M4 12c0 1.657 3.582 3 8 3s8-1.343 8-3"></path>
+                </svg>
+              </div>
+              <div class="uniqueness-item-content">
+                <h3>Festivals & Tribal Events</h3>
+                <p>Celebrate traditions with authentic tribal experiences.</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 3: COTTAGE COLLECTION & PRICE LIST -->
+      <section id="stay" class="section section-cottage-tariffs">
+        <div class="tariffs-container">
+
+          <!-- Section Header -->
+          <div class="tariffs-header reveal">
+            <span class="brochure-tag">ACCOMMODATIONS & TARIFFS</span>
+            <h2 class="tariffs-title">Cottage Collection & Price List</h2>
+            <p class="tariffs-subtitle">
+              Handcrafted luxury cottages nestled in the scenic hills of Daringbadi, featuring bespoke interiors,
+              private sit-outs, and farm-to-table dining experiences.
+            </p>
+            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <!-- 4 Cottage Cards Grid (2x2 Layout) -->
+          <div class="cottages-cards-grid">
+
+            <!-- Deluxe Cottage -->
+            <div class="cottage-card reveal delay-1">
+              <div class="cottage-card-img-wrapper">
+                <img src="deluxe_cottage.png" alt="Deluxe Cottage at Foothill Farmstay" loading="lazy">
+                <span class="cottage-badge">DELUXE COTTAGE</span>
+              </div>
+              <div class="cottage-card-body">
+                <h3 class="cottage-card-title">Deluxe Cottage</h3>
+                <div class="cottage-features-list">
+                  <span class="cottage-feature-pill">🛏️ King Bed</span>
+                  <span class="cottage-feature-pill">🌿 Private Sit-out</span>
+                  <span class="cottage-feature-pill">✨ Premium Interiors</span>
+                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
+                </div>
+
+                <div class="cottage-price-matrix">
+                  <div class="price-box-item">
+                    <div class="price-box-label">Mon – Thu</div>
+                    <div class="price-box-amount">₹ 4,499</div>
+                    <div class="price-box-sub">Per Night (2 Persons)</div>
+                  </div>
+                  <div class="price-box-item">
+                    <div class="price-box-label">Fri – Sun</div>
+                    <div class="price-box-amount">₹ 4,999</div>
+                    <div class="price-box-sub">Per Night (2 Persons)</div>
+                  </div>
+                </div>
+
+                <div class="extra-charges-row">
+                  <div class="extra-charge-item">Extra Adult: <span>₹ 1,499</span></div>
+                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
+                </div>
+                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Deluxe%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
+                  target="_blank" rel="noopener" class="btn-book-now">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  Book Now on WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <!-- Superior Cottage -->
+            <div class="cottage-card reveal delay-2">
+              <div class="cottage-card-img-wrapper">
+                <img src="superior_cottage.png" alt="Superior Cottage at Foothill Farmstay" loading="lazy">
+                <span class="cottage-badge">SUPERIOR COTTAGE</span>
+              </div>
+              <div class="cottage-card-body">
+                <h3 class="cottage-card-title">Superior Cottage</h3>
+                <div class="cottage-features-list">
+                  <span class="cottage-feature-pill">🛏️ King Bed + Single Bed</span>
+                  <span class="cottage-feature-pill">🌿 Private Sit-out</span>
+                  <span class="cottage-feature-pill">✨ Premium Interiors</span>
+                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
+                </div>
+
+                <div class="cottage-price-matrix">
+                  <div class="price-box-item">
+                    <div class="price-box-label">Mon – Thu</div>
+                    <div class="price-box-amount">₹ 5,499</div>
+                    <div class="price-box-sub">Per Night (3 Persons)</div>
+                  </div>
+                  <div class="price-box-item">
+                    <div class="price-box-label">Fri – Sun</div>
+                    <div class="price-box-amount">₹ 5,999</div>
+                    <div class="price-box-sub">Per Night (3 Persons)</div>
+                  </div>
+                </div>
+
+                <div class="extra-charges-row">
+                  <div class="extra-charge-item">Extra Adult: <span>₹ 1,499</span></div>
+                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
+                </div>
+                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Superior%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
+                  target="_blank" rel="noopener" class="btn-book-now">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  Book Now on WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <!-- Family Cottage -->
+            <div class="cottage-card reveal delay-3">
+              <div class="cottage-card-img-wrapper">
+                <img src="family_cottage.png" alt="Family Cottage Suite at Foothill Farmstay" loading="lazy">
+                <span class="cottage-badge">FAMILY COTTAGE</span>
+              </div>
+              <div class="cottage-card-body">
+                <h3 class="cottage-card-title">Family Cottage</h3>
+                <div class="cottage-features-list">
+                  <span class="cottage-feature-pill">🛏️ 2 Queen Beds</span>
+                  <span class="cottage-feature-pill">✨ Premium Interiors</span>
+                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
+                  <span class="cottage-feature-pill">👨‍👩‍👧‍👦 Family Suite</span>
+                </div>
+
+                <div class="cottage-price-matrix">
+                  <div class="price-box-item">
+                    <div class="price-box-label">Mon – Thu</div>
+                    <div class="price-box-amount">₹ 6,499</div>
+                    <div class="price-box-sub">Per Night (4 Persons)</div>
+                  </div>
+                  <div class="price-box-item">
+                    <div class="price-box-label">Fri – Sun</div>
+                    <div class="price-box-amount">₹ 6,999</div>
+                    <div class="price-box-sub">Per Night (4 Persons)</div>
+                  </div>
+                </div>
+
+                <div class="extra-charges-row">
+                  <div class="extra-charge-item">Extra Adult: <span>—</span></div>
+                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
+                </div>
+                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Family%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
+                  target="_blank" rel="noopener" class="btn-book-now">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  Book Now on WhatsApp
+                </a>
+              </div>
+            </div>
+
+            <!-- Premium Cottage -->
+            <div class="cottage-card reveal delay-4">
+              <div class="cottage-card-img-wrapper">
+                <img src="premium_cottage.png" alt="Premium Mountain View Cottage at Foothill Farmstay" loading="lazy">
+                <span class="cottage-badge">PREMIUM COTTAGE</span>
+              </div>
+              <div class="cottage-card-body">
+                <h3 class="cottage-card-title">Premium Cottage</h3>
+                <div class="cottage-features-list">
+                  <span class="cottage-feature-pill">🛏️ King Bed</span>
+                  <span class="cottage-feature-pill">⛰️ Private Balcony (Mountain View)</span>
+                  <span class="cottage-feature-pill">🛋️ Spacious Living Area</span>
+                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
+                </div>
+
+                <div class="cottage-price-matrix">
+                  <div class="price-box-item">
+                    <div class="price-box-label">Mon – Thu</div>
+                    <div class="price-box-amount">₹ 6,499</div>
+                    <div class="price-box-sub">Per Night (2 Persons)</div>
+                  </div>
+                  <div class="price-box-item">
+                    <div class="price-box-label">Fri – Sun</div>
+                    <div class="price-box-amount">₹ 6,999</div>
+                    <div class="price-box-sub">Per Night (2 Persons)</div>
+                  </div>
+                </div>
+
+                <div class="extra-charges-row">
+                  <div class="extra-charge-item">Extra Adult: <span>₹ 1,999</span></div>
+                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
+                </div>
+                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Premium%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
+                  target="_blank" rel="noopener" class="btn-book-now">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  Book Now on WhatsApp
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+      </section>
+
+      <!-- SECTION: RESORT AMENITIES -->
+      <section id="amenities" class="section section-resort-amenities">
+        <div class="amenities-container">
+
+          <div class="amenities-header reveal">
+            <span class="brochure-tag">FACILITIES & SERVICES</span>
+            <h2 class="amenities-title">Resort Amenities</h2>
+            <p class="amenities-subtitle">Everything you need for an unforgettable stay at The Foothill Farmstay</p>
+            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <div class="brochure-amenities-grid">
+
+            <!-- Deluxe & Family Rooms -->
+            <div class="brochure-amenity-card reveal delay-1">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                  <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Deluxe & Family Rooms</h3>
+            </div>
+
+            <!-- Restaurant -->
+            <div class="brochure-amenity-card reveal delay-2">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                  <line x1="6" y1="1" x2="6" y2="4"></line>
+                  <line x1="10" y1="1" x2="10" y2="4"></line>
+                  <line x1="14" y1="1" x2="14" y2="4"></line>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Restaurant</h3>
+            </div>
+
+            <!-- Swimming Pool -->
+            <div class="brochure-amenity-card reveal delay-3">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12h20"></path>
+                  <path d="M2 16h20"></path>
+                  <path d="M12 2v6"></path>
+                  <path d="M7 7h10"></path>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Swimming Pool</h3>
+            </div>
+
+            <!-- Ample Parking -->
+            <div class="brochure-amenity-card reveal delay-4">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2">
+                  </path>
+                  <circle cx="7" cy="17" r="2"></circle>
+                  <circle cx="17" cy="17" r="2"></circle>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Ample Parking</h3>
+            </div>
+
+            <!-- Indoor & Outdoor Games -->
+            <div class="brochure-amenity-card reveal delay-5">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M8 12h8"></path>
+                  <path d="M12 8v8"></path>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Indoor & Outdoor Games</h3>
+            </div>
+
+            <!-- Free Wi-Fi -->
+            <div class="brochure-amenity-card reveal delay-6">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+                  <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+                  <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+                  <circle cx="12" cy="20" r="1"></circle>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Free Wi-Fi</h3>
+            </div>
+
+            <!-- Hot Water -->
+            <div class="brochure-amenity-card reveal delay-7">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z">
+                  </path>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Hot Water</h3>
+            </div>
+
+            <!-- Guided Sightseeing -->
+            <div class="brochure-amenity-card reveal delay-8">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">Guided Sightseeing</h3>
+            </div>
+
+            <!-- CCTV Security -->
+            <div class="brochure-amenity-card reveal delay-9">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 7 16 12 23 17V7z"></path>
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">CCTV Security</h3>
+            </div>
+
+            <!-- 24x7 Power Backup -->
+            <div class="brochure-amenity-card reveal delay-10">
+              <div class="brochure-amenity-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
+              </div>
+              <h3 class="brochure-amenity-title">24×7 Power Backup</h3>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 4: EVENT SPACES -->
+      <section id="events" class="section section-event-spaces">
+        <div class="events-container">
+
+          <!-- Section Header -->
+          <div class="events-header reveal">
+            <span class="brochure-tag">VENUE & CELEBRATIONS</span>
+            <h2 class="events-title">Event Spaces</h2>
+            <p class="events-subtitle">Perfect settings for every occasion</p>
+            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <!-- Event Spaces Stack -->
+          <div class="event-spaces-stack">
+
+            <!-- Event 1: Conference Hall -->
+            <div class="event-space-card reveal delay-1">
+              <div class="event-space-info">
+                <div class="event-icon-badge">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                  </svg>
+                </div>
+                <h3 class="event-space-title">Conference Hall</h3>
+                <p class="event-space-desc">
+                  A modern, well-equipped hall ideal for meetings, seminars, workshops, and corporate events.
+                </p>
+
+                <div class="event-specs-grid">
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">👥</span>
+                    <span>Capacity: 150 Guests</span>
+                  </div>
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">📺</span>
+                    <span>Audio-Visual Setup</span>
+                  </div>
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">📶</span>
+                    <span>Wi-Fi & Projection</span>
+                  </div>
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">🪑</span>
+                    <span>Custom Seating</span>
+                  </div>
+                </div>
+                <a href="https://wa.me/918249659996?text=Hi%2C%20I%27m%20interested%20in%20booking%20the%20Conference%20Hall%20at%20The%20Foothill%20Farmstay.%20Please%20share%20details."
+                  target="_blank" rel="noopener" class="event-book-now">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  Enquire on WhatsApp
+                </a>
+              </div>
+
+              <div class="event-space-image-wrapper">
+                <img src="conference_hall.png" alt="Foothill Conference Hall and Event Space" loading="lazy">
+              </div>
+            </div>
+
+            <!-- Event 2: The Lawn -->
+            <div class="event-space-card reverse reveal delay-2">
+              <div class="event-space-image-wrapper">
+                <img src="the_lawn.png" alt="Foothill Outdoor Celebration Lawn" loading="lazy">
+              </div>
+
+              <div class="event-space-info">
+                <div class="event-icon-badge">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                  </svg>
+                </div>
+                <h3 class="event-space-title">The Lawn</h3>
+                <p class="event-space-desc">
+                  A sprawling open lawn surrounded by nature – perfect for outdoor celebrations, ceremonies, and grand
+                  gatherings.
+                </p>
+
+                <div class="event-specs-grid">
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">👥</span>
+                    <span>Capacity: 300+ Guests</span>
+                  </div>
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">🎪</span>
+                    <span>Stage & Lighting Setup</span>
+                  </div>
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">🌿</span>
+                    <span>Open Air Experience</span>
+                  </div>
+                  <div class="event-spec-item">
+                    <span class="event-spec-icon">✨</span>
+                    <span>Fully Customizable</span>
+                  </div>
+                </div>
+                <a href="https://wa.me/918249659996?text=Hi%2C%20I%27m%20interested%20in%20booking%20The%20Lawn%20at%20The%20Foothill%20Farmstay.%20Please%20share%20details."
+                  target="_blank" rel="noopener" class="event-book-now">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  Enquire on WhatsApp
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION 5: LOCATION & NEARBY ATTRACTIONS -->
+      <section id="location" class="section section-location-map">
+        <div class="location-container">
+
+          <!-- Section Header -->
+          <div class="location-header reveal">
+            <h2 class="location-title">
+              <span class="location-title-icon">📍</span> LOCATION
+            </h2>
+            <p class="location-subtitle">Explore the scenic highlights & key destinations surrounding The Foothill
+              Farmstay</p>
+            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <!-- Diagonal Winding Roadmap Trail -->
+          <div class="map-trail-wrapper reveal">
+
+            <!-- Organic Winding Road Path SVG -->
+            <svg class="map-svg-line" viewBox="0 0 1000 950" fill="none" preserveAspectRatio="none">
+              <!-- Background Outer Glow Path -->
+              <path
+                d="M 60 880 C 120 840 220 820 250 740 C 270 680 200 640 240 560 C 280 480 340 460 360 410 C 390 340 450 320 480 270 C 520 200 590 180 620 140 C 650 100 480 80 380 50"
+                stroke="rgba(164, 83, 49, 0.25)" stroke-width="8" stroke-dasharray="10 8" stroke-linecap="round" />
+              <!-- Solid Main Road Path -->
+              <path
+                d="M 60 880 C 120 840 220 820 250 740 C 270 680 200 640 240 560 C 280 480 340 460 360 410 C 390 340 450 320 480 270 C 520 200 590 180 620 140 C 650 100 480 80 380 50"
+                stroke="#A45331" stroke-width="4" stroke-linecap="round" />
+            </svg>
+
+            <!-- Node 1: Midubanda Waterfall (6km) -->
+            <div class="map-node node-midubanda">
+              <div class="node-pin-wrapper">
+                <div class="node-pin"><span class="node-pin-icon">💧</span></div>
+              </div>
+              <div class="node-card">
+                <div class="node-icon-circle">🌊</div>
+                <div>
+                  <h3 class="node-title">Midubanda Waterfall</h3>
+                  <div class="node-dist">6 km away</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Node 2: Rainbow Waterfall (2.5km) -->
+            <div class="map-node node-rainbow">
+              <div class="node-pin-wrapper">
+                <div class="node-pin"><span class="node-pin-icon">🌈</span></div>
+              </div>
+              <div class="node-card">
+                <div class="node-icon-circle">🏞️</div>
+                <div>
+                  <h3 class="node-title">Rainbow Waterfall</h3>
+                  <div class="node-dist">2.5 km away</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Node 3: The Foothill Farm Stay (Main Anchor Hub) -->
+            <a href="https://share.google/FoBXsTpv2UvCgC68r" target="_blank" rel="noopener" class="map-node node-farmstay" style="text-decoration: none;">
+              <div class="node-pin-wrapper">
+                <div class="node-pin"><span class="node-pin-icon">🏡</span></div>
+              </div>
+              <div class="node-card">
+                <div class="node-icon-circle">🌿</div>
+                <div>
+                  <h3 class="node-title">The Foothill Farmstay</h3>
+                  <div class="node-dist">Your Sanctuary Hub 📍</div>
+                </div>
+              </div>
+            </a>
+
+            <!-- Node 4: Pine Forest (2km) -->
+            <div class="map-node node-pine">
+              <div class="node-pin-wrapper">
+                <div class="node-pin"><span class="node-pin-icon">🌲</span></div>
+              </div>
+              <div class="node-card">
+                <div class="node-icon-circle">🌲</div>
+                <div>
+                  <h3 class="node-title">Pine Forest</h3>
+                  <div class="node-dist">2 km away</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Node 5: Coffee Garden (4km) -->
+            <div class="map-node node-coffee">
+              <div class="node-pin-wrapper">
+                <div class="node-pin"><span class="node-pin-icon">☕</span></div>
+              </div>
+              <div class="node-card">
+                <div class="node-icon-circle">🌱</div>
+                <div>
+                  <h3 class="node-title">Coffee Garden</h3>
+                  <div class="node-dist">4 km away</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Node 6: Daringbadi (6km) -->
+            <div class="map-node node-daringbadi">
+              <div class="node-pin-wrapper">
+                <div class="node-pin"><span class="node-pin-icon">🏔️</span></div>
+              </div>
+              <div class="node-card">
+                <div class="node-icon-circle">⛰️</div>
+                <div>
+                  <h3 class="node-title">Daringbadi Town</h3>
+                  <div class="node-dist">6 km away</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Node 7: Sunset Point (8km) -->
+            <div class="map-node node-sunset">
+              <div class="node-pin-wrapper">
+                <div class="node-pin"><span class="node-pin-icon">🌅</span></div>
+              </div>
+              <div class="node-card">
+                <div class="node-icon-circle">🌄</div>
+                <div>
+                  <h3 class="node-title">Sunset Point</h3>
+                  <div class="node-dist">8 km away</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Live Interactive Google Map Card -->
+          <div class="map-embed-wrapper reveal delay-1">
+            <iframe class="map-embed-iframe"
+              src="https://maps.google.com/maps?q=The+Foothill+Farmstay+Daringbadi&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+              title="The Foothill Farmstay Google Map Location"></iframe>
+            <div class="map-embed-bar">
+              <div class="map-embed-info">
+                <span>📍</span>
+                <span>The Foothill Farmstay, Daringbadi, Odisha</span>
+              </div>
+              <a href="https://share.google/FoBXsTpv2UvCgC68r" target="_blank" rel="noopener" class="map-embed-btn">
+                <span>🧭 Open Live Location in Google Maps</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SECTION: FREQUENTLY ASKED QUESTIONS (FAQ) -->
+      <section id="faq" class="section section-faq">
+        <div class="faq-container">
+          <div class="faq-header reveal">
+            <span class="faq-tag">Need Assistance?</span>
+            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <p class="faq-subtitle">Everything you need to know about your stay, amenities, bookings, and location at The Foothill Farmstay.</p>
+          </div>
+
+          <div class="faq-accordion reveal delay-1">
+            <details class="faq-item" open>
+              <summary class="faq-question">
+                <span>What are the check-in and check-out times?</span>
+                <div class="faq-icon-badge">▾</div>
+              </summary>
+              <div class="faq-answer">
+                Standard check-in time is from 12:00 PM onwards and check-out time is until 11:00 AM. Early check-in or late check-out options are available subject to room availability and prior notice.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Where is The Foothill Farmstay located and how do I reach there?</span>
+                <div class="faq-icon-badge">▾</div>
+              </summary>
+              <div class="faq-answer">
+                We are nestled in the serene elevated landscapes of Daringbadi, Odisha ("The Kashmir of Odisha"). We offer assistance with private transfers from Berhampur / Bhubaneswar railway stations or airports upon request.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>What types of cottages and accommodations are available?</span>
+                <div class="faq-icon-badge">▾</div>
+              </summary>
+              <div class="faq-answer">
+                We offer four handcrafted luxury cottage categories: Deluxe Cottages, Superior Cottages, Family Suites, and Premium Mountain View Cottages — each featuring private sit-outs, king beds, and modern luxury amenities.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>Are meals included in the stay?</span>
+                <div class="faq-icon-badge">▾</div>
+              </summary>
+              <div class="faq-answer">
+                Yes! We offer farm-to-table dining experiences featuring authentic local Odia cuisine, North & South Indian dishes, and customized dining plans upon request.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>What activities and amenities are available for guests?</span>
+                <div class="faq-icon-badge">▾</div>
+              </summary>
+              <div class="faq-answer">
+                Guests can enjoy our private swimming pool, campfire & barbecue sessions, pine forest and coffee plantation tours, tribal cultural events, conference facilities, and expansive lawn spaces.
+              </div>
+            </details>
+
+            <details class="faq-item">
+              <summary class="faq-question">
+                <span>How can I book or check room availability?</span>
+                <div class="faq-icon-badge">▾</div>
+              </summary>
+              <div class="faq-answer">
+                You can book directly via WhatsApp (+91 8249659996), call our reservations team directly, or fill out the enquiry form in the contact section below.
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: CONTACT US -->
+      <section id="contact" class="section section-contact">
+        <div class="contact-container">
+
+          <!-- Left: Info -->
+          <div class="contact-info-col reveal">
+            <span class="contact-tag">Get In Touch</span>
+            <h2 class="contact-title">Let's Plan Your<br><span>Perfect Stay</span></h2>
+            <div class="contact-divider"></div>
+
+            <ul class="contact-details-list">
+              <li class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.64 1.14h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.74a16 16 0 0 0 6.29 6.29l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z">
+                    </path>
+                  </svg>
+                </div>
+                <a href="tel:+918249659996" class="contact-detail-text">+91 8249659996</a>
+              </li>
+              <li class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                    <path
+                      d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                    </path>
+                  </svg>
+                </div>
+                <a href="https://www.thefoothillfarmstay.com" target="_blank" rel="noopener"
+                  class="contact-detail-text">www.thefoothillfarmstay.com</a>
+              </li>
+              <li class="contact-detail-item">
+                <div class="contact-detail-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <span class="contact-detail-text">Daringbadi, Odisha</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Right: Form -->
+          <div class="contact-form-col reveal delay-2">
+            <h3 class="contact-form-title">Send an Enquiry</h3>
+            <form class="contact-form" onsubmit="handleContactSubmit(event)">
+              <div class="contact-form-row">
+                <div class="contact-field">
+                  <label for="c-name">Your Name</label>
+                  <input type="text" id="c-name" placeholder="e.g. Rahul Sharma" required>
+                </div>
+                <div class="contact-field">
+                  <label for="c-phone">Phone</label>
+                  <input type="tel" id="c-phone" placeholder="+91 XXXXX XXXXX" required>
+                </div>
+              </div>
+              <div class="contact-field">
+                <label for="c-interest">I'm interested in</label>
+                <select id="c-interest">
+                  <option value="">Select…</option>
+                  <option>Deluxe Cottage</option>
+                  <option>Superior Cottage</option>
+                  <option>Family Cottage</option>
+                  <option>Premium Cottage</option>
+                  <option>Conference Hall</option>
+                  <option>The Lawn</option>
+                  <option>Just a general query</option>
+                </select>
+              </div>
+              <div class="contact-form-row">
+                <div class="contact-field">
+                  <label for="c-checkin">Check-in Date</label>
+                  <input type="date" id="c-checkin">
+                </div>
+                <div class="contact-field">
+                  <label for="c-checkout">Check-out Date</label>
+                  <input type="date" id="c-checkout">
+                </div>
+              </div>
+              <div class="contact-field">
+                <label for="c-msg">Message (optional)</label>
+                <textarea id="c-msg" placeholder="Any special requests or questions?"></textarea>
+              </div>
+              <div class="contact-btns-row">
+                <button type="submit" class="contact-submit-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  Send Enquiry
+                </button>
+                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20enquire%20about%20The%20Foothill%20Farmstay."
+                  target="_blank" rel="noopener" class="contact-wa-btn">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
+                    <path
+                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  WhatsApp
+                </a>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-top">
+            <div class="footer-logo-text">The Foothill <span>Farmstay</span></div>
+            <ul class="footer-links">
+              <li><a href="#" class="footer-link">Home</a></li>
+              <li><a href="#stay" class="footer-link">Stay</a></li>
+              <li><a href="#amenities" class="footer-link">Amenities</a></li>
+              <li><a href="#events" class="footer-link">Events</a></li>
+              <li><a href="#contact" class="footer-link">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-bottom">
+            <span>&copy; 2026 The Foothill Farmstay. All rights reserved.</span>
+            <span>Daringbadi, Odisha</span>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- ==========================================================================
+       JAVASCRIPT LOGIC — APPLE-STYLE VIRTUAL SCROLL INTERCEPTOR ENGINE (OPTIMIZED)
+       ========================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      // NEW FRAME CONFIGURATION (hdframes/002.png ... hdframes/200.png)
+      const FRAMES_DIR = 'hdframes/';
+      const START_FRAME = 2;
+      const END_FRAME = 200;
+      const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 199 frames (002 to 200)
+
+      // Sensitivity configuration
+      const WHEEL_SENSITIVITY = 0.065; // Wheel delta -> Virtual frame advancement
+      const TOUCH_SENSITIVITY = 0.20;  // Touch swipe delta -> Virtual frame advancement
+
+      // DOM Elements
+      const preloader = document.getElementById('preloader');
+      const loaderFill = document.getElementById('loader-fill');
+      const loaderPercentage = document.getElementById('loader-percentage');
+      const navbar = document.getElementById('navbar');
+      const heroCanvas = document.getElementById('hero-canvas');
+      const heroOverlay = document.getElementById('hero-overlay');
+      const scrollHint = document.getElementById('scroll-hint');
+      const heroScrollFloat = document.getElementById('hero-scroll-float');
+      const scrollFloatText = document.querySelector('.scroll-float-text');
+      let charElements = [];
+
+      // Low-latency canvas context with desynchronized direct GPU rendering
+      const ctx = heroCanvas.getContext('2d', {
+        alpha: false,
+        desynchronized: true
+      });
+
+      // State Variables
+      const frameImages = new Array(TOTAL_FRAMES);
+      let loadedCount = 0;
+      let currentFrameFloat = 0;
+      let targetFrameFloat = 0;
+      let lastDrawnFrame = -1;
+      let isLocked = true; // Virtual scroll lock active
+      let dpr = 1;
+      let touchStartY = 0;
+
+      // Telemetry metrics
+      const preloadStartTime = performance.now();
+      let totalPreloadTimeMs = 0;
+
+      // Helper function to build frame path e.g. hdframes/002.png
+      function getFrameUrl(index) {
+        const frameNum = (START_FRAME + index).toString().padStart(3, '0');
+        return `${FRAMES_DIR}${frameNum}.png`;
+      }
+
+      /* ------------------------------------------------------------------------
+         1. SCROLLFLOAT CHARACTER SPLITTER (REACT BITS COMPONENT INTEGRATION)
+         ------------------------------------------------------------------------ */
+      function setupScrollFloat() {
+        if (scrollFloatText) {
+          const htmlContent = scrollFloatText.innerHTML;
+          const lines = htmlContent.split(/<br\s*\/?>/i);
+          scrollFloatText.innerHTML = '';
+          lines.forEach((lineText, lineIdx) => {
+            if (lineIdx > 0) {
+              scrollFloatText.appendChild(document.createElement('br'));
+            }
+            const cleanText = lineText.replace(/<[^>]*>/g, '').trim();
+            cleanText.split('').forEach((char, index) => {
+              const span = document.createElement('span');
+              span.className = 'char';
+              span.textContent = char === ' ' ? '\u00A0' : char;
+              scrollFloatText.appendChild(span);
+            });
+          });
+          charElements = Array.from(scrollFloatText.querySelectorAll('.char'));
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         2. HIGH-PERFORMANCE GPU ASYNC PRELOADING ENGINE
+         ------------------------------------------------------------------------ */
+      function preloadFrames() {
+        for (let i = 0; i < TOTAL_FRAMES; i++) {
+          const img = new Image();
+          img.src = getFrameUrl(i);
+
+          const processDecodedImage = () => {
+            // Force browser to decode raw PNG byte stream into GPU bitmap asynchronously
+            if ('decode' in img) {
+              img.decode().then(() => {
+                registerFrame(i, img);
+              }).catch(() => {
+                registerFrame(i, img);
+              });
+            } else {
+              registerFrame(i, img);
+            }
+          };
+
+          if (img.complete) {
+            processDecodedImage();
+          } else {
+            img.onload = processDecodedImage;
+            img.onerror = () => {
+              // Fallback check if extension is .jpg instead of .png
+              if (img.src.endsWith('.png')) {
+                img.src = img.src.replace('.png', '.jpg');
+                return;
+              }
+              registerFrame(i, img);
+            };
+          }
+        }
+      }
+
+      function registerFrame(index, img) {
+        frameImages[index] = img;
+        loadedCount++;
+        const pct = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+
+        // Update Loading Indicator
+        loaderFill.style.width = pct + '%';
+        loaderPercentage.textContent = pct + '%';
+
+        if (loadedCount === TOTAL_FRAMES) {
+          totalPreloadTimeMs = performance.now() - preloadStartTime;
+          onAllFramesLoaded();
+        }
+      }
+
+      function onAllFramesLoaded() {
+        const avgTimePerFrame = (totalPreloadTimeMs / TOTAL_FRAMES).toFixed(1);
+        console.log(`[Foothill Engine] Loaded & decoded ${TOTAL_FRAMES} HD frames (002-200) in ${totalPreloadTimeMs.toFixed(0)}ms (Avg: ${avgTimePerFrame}ms/frame).`);
+
+        // Hide preloader & enable body interaction
+        preloader.classList.add('loader-hidden');
+        document.body.classList.add('loaded');
+
+        // Initial setup
+        resizeCanvas();
+
+        // Draw frame 002 (index 0) immediately
+        drawCoverImage(frameImages[0]);
+        lastDrawnFrame = 0;
+
+        // Kick off continuous 60fps animation loop
+        requestAnimationFrame(renderLoop);
+      }
+
+      /* ------------------------------------------------------------------------
+         3. OPTIMIZED CANVAS RESIZING & COVER ALGORITHM
+         ------------------------------------------------------------------------ */
+      function resizeCanvas() {
+        const viewportW = window.innerWidth;
+        const viewportH = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        // Physical pixel resolution matching device pixel ratio
+        heroCanvas.width = Math.floor(viewportW * dpr);
+        heroCanvas.height = Math.floor(viewportH * dpr);
+
+        // Set fast smoothing filter for 60fps performance
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'medium';
+
+        // Redraw current frame
+        const currentFrameIndex = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
+        if (frameImages[currentFrameIndex]) {
+          drawCoverImage(frameImages[currentFrameIndex]);
+        }
+      }
+
+      function drawCoverImage(img) {
+        if (!img) return;
+
+        const canvasW = heroCanvas.width;
+        const canvasH = heroCanvas.height;
+
+        const imgW = img.naturalWidth || 1920;
+        const imgH = img.naturalHeight || 1080;
+        const imgRatio = imgW / imgH;
+        const canvasRatio = canvasW / canvasH;
+
+        let renderW, renderH, offsetX, offsetY;
+
+        if (canvasRatio > imgRatio) {
+          // Viewport is wider than image aspect ratio -> fit width, crop top/bottom
+          renderW = canvasW;
+          renderH = canvasW / imgRatio;
+          offsetX = 0;
+          offsetY = (canvasH - renderH) / 2;
+        } else {
+          // Viewport is taller than image aspect ratio -> fit height, crop sides
+          renderH = canvasH;
+          renderW = canvasH * imgRatio;
+          offsetX = (canvasW - renderW) / 2;
+          offsetY = 0;
+        }
+
+        ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
+      }
+
+      /* ------------------------------------------------------------------------
+         4. VIRTUAL SCROLL INTERCEPTOR & WHEEL/TOUCH CONTROLLER
+         ------------------------------------------------------------------------ */
+      function handleWheel(e) {
+        if (!isLocked) {
+          // If unlocked (scrolling content below), check if user scrolled back to top
+          if (window.scrollY <= 2 && e.deltaY < 0) {
+            isLocked = true;
+            targetFrameFloat = TOTAL_FRAMES - 1;
+            currentFrameFloat = TOTAL_FRAMES - 1;
+            window.scrollTo(0, 0);
+            e.preventDefault();
+          }
+          return;
+        }
+
+        // Lock Active: Intercept scroll! Prevent document movement!
+        e.preventDefault();
+        window.scrollTo(0, 0);
+
+        // Accumulate wheel delta
+        const delta = e.deltaY * WHEEL_SENSITIVITY;
+        targetFrameFloat += delta;
+
+        // Clamp minimum frame
+        if (targetFrameFloat < 0) {
+          targetFrameFloat = 0;
+        }
+
+        // Handle reaching last frame (200.png)
+        if (targetFrameFloat >= TOTAL_FRAMES - 1) {
+          targetFrameFloat = TOTAL_FRAMES - 1;
+
+          // If user scrolls DOWN further when already at final frame (200):
+          if (e.deltaY > 5) {
+            isLocked = false;
+            // Smoothly release and allow document to scroll
+            window.scrollTo({ top: 10, behavior: 'instant' });
+          }
+        }
+      }
+
+      function handleTouchStart(e) {
+        if (e.touches && e.touches.length > 0) {
+          touchStartY = e.touches[0].clientY;
+        }
+      }
+
+      function handleTouchMove(e) {
+        if (!e.touches || e.touches.length === 0) return;
+        const currentY = e.touches[0].clientY;
+        const deltaY = (touchStartY - currentY) * TOUCH_SENSITIVITY;
+        touchStartY = currentY;
+
+        if (!isLocked) {
+          if (window.scrollY <= 2 && deltaY < 0) {
+            isLocked = true;
+            targetFrameFloat = TOTAL_FRAMES - 1;
+            currentFrameFloat = TOTAL_FRAMES - 1;
+            window.scrollTo(0, 0);
+            if (e.cancelable) e.preventDefault();
+          }
+          return;
+        }
+
+        if (e.cancelable) e.preventDefault();
+        window.scrollTo(0, 0);
+
+        targetFrameFloat += deltaY;
+        if (targetFrameFloat < 0) targetFrameFloat = 0;
+
+        if (targetFrameFloat >= TOTAL_FRAMES - 1) {
+          targetFrameFloat = TOTAL_FRAMES - 1;
+          if (deltaY > 2) {
+            isLocked = false;
+            window.scrollTo({ top: 10, behavior: 'instant' });
+          }
+        }
+      }
+
+      function handleKeyDown(e) {
+        if (!isLocked) return;
+
+        if (['ArrowDown', 'PageDown', 'Space'].includes(e.code)) {
+          e.preventDefault();
+          targetFrameFloat += 14;
+          if (targetFrameFloat >= TOTAL_FRAMES - 1) {
+            targetFrameFloat = TOTAL_FRAMES - 1;
+            isLocked = false;
+            window.scrollTo({ top: 10, behavior: 'instant' });
+          }
+        } else if (['ArrowUp', 'PageUp'].includes(e.code)) {
+          e.preventDefault();
+          targetFrameFloat -= 14;
+          if (targetFrameFloat < 0) targetFrameFloat = 0;
+        }
+      }
+
+      // Enforce zero document scroll while locked
+      window.addEventListener('scroll', () => {
+        if (isLocked && window.scrollY > 0) {
+          window.scrollTo(0, 0);
+        }
+
+        // Navbar blur styling
+        if (window.scrollY > 80) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      }, { passive: false });
+
+      /* ------------------------------------------------------------------------
+         5. CONTINUOUS HIGH-FPS ANIMATION RENDER LOOP (RAF)
+         ------------------------------------------------------------------------ */
+      function renderLoop() {
+        // Butter-smooth lerp interpolation: current += (target - current) * 0.28
+        currentFrameFloat += (targetFrameFloat - currentFrameFloat) * 0.28;
+
+        const roundedFrame = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
+
+        // A. Persistent Navbar (Always 100% visible across all scroll positions)
+        navbar.style.opacity = '1';
+        navbar.style.pointerEvents = 'auto';
+
+        // B. Initial Hero Main Overlay Fade (0 -> 25 frames)
+        const initialTextOpacity = Math.max(0, 1 - roundedFrame / 25);
+        heroOverlay.style.opacity = initialTextOpacity.toFixed(3);
+        heroOverlay.style.pointerEvents = initialTextOpacity <= 0.05 ? 'none' : 'auto';
+
+        if (scrollHint) {
+          scrollHint.style.opacity = Math.max(0, 1 - (roundedFrame / 25) * 2.5).toFixed(3);
+        }
+
+        // C. ScrollFloat Character Floating Animation (React Bits Component Integration)
+        if (charElements.length > 0) {
+          const numChars = charElements.length;
+          let floatPhaseProgress = 0;
+
+          if (roundedFrame >= 25 && roundedFrame < 85) {
+            // Entrance Phase: Ramps 0 -> 1 between frame 25 and 85
+            floatPhaseProgress = (roundedFrame - 25) / 60;
+          } else if (roundedFrame >= 85 && roundedFrame <= 140) {
+            // Active Phase: Held at 1
+            floatPhaseProgress = 1;
+          } else if (roundedFrame > 140 && roundedFrame <= 175) {
+            // Exit Phase: Ramps 1 -> 0 between frame 140 and 175
+            floatPhaseProgress = Math.max(0, 1 - (roundedFrame - 140) / 35);
+          } else {
+            floatPhaseProgress = 0;
+          }
+
+          charElements.forEach((charEl, idx) => {
+            const staggerDelay = (idx / numChars) * 0.35;
+            let charProgress = 0;
+
+            if (floatPhaseProgress > 0) {
+              charProgress = Math.min(1, Math.max(0, (floatPhaseProgress - staggerDelay) / (1 - staggerDelay)));
+            }
+
+            // Smooth cubic ease matching back.inOut(2) style
+            const easeProgress = charProgress < 0.5
+              ? 4 * charProgress * charProgress * charProgress
+              : 1 - Math.pow(-2 * charProgress + 2, 3) / 2;
+
+            const opacity = easeProgress;
+            const yPercent = (1 - easeProgress) * 120;
+            const scaleY = 2.3 - 1.3 * easeProgress;
+            const scaleX = 0.7 + 0.3 * easeProgress;
+
+            charEl.style.opacity = opacity.toFixed(3);
+            charEl.style.transform = `translate3d(0, ${yPercent.toFixed(1)}%, 0) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
+          });
+        }
+
+        // D. Draw frame if index changed
+        if (roundedFrame !== lastDrawnFrame) {
+          lastDrawnFrame = roundedFrame;
+          const img = frameImages[roundedFrame];
+          if (img) {
+            drawCoverImage(img);
+          }
+        }
+
+        requestAnimationFrame(renderLoop);
+      }
+
+      /* ------------------------------------------------------------------------
+         6. INTERSECTION OBSERVER FOR REVEAL ANIMATIONS
+         ------------------------------------------------------------------------ */
+      function setupIntersectionObserver() {
+        const observerOptions = {
+          root: null,
+          rootMargin: '0px 0px 40px 0px',
+          threshold: 0.02
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+            }
+          });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      }
+
+      /* ------------------------------------------------------------------------
+         7. ATTACH EVENT LISTENERS
+         ------------------------------------------------------------------------ */
+      window.addEventListener('resize', resizeCanvas);
+      window.addEventListener('wheel', handleWheel, { passive: false });
+      window.addEventListener('touchstart', handleTouchStart, { passive: true });
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      window.addEventListener('keydown', handleKeyDown, { passive: false });
+
+      // Handle smooth scrolling for navigation anchor links (including navbar & hero CTA)
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+
+        const href = link.getAttribute('href');
+        if (!href) return;
+
+        if (href === '#' || href === '#top') {
+          e.preventDefault();
+          isLocked = true;
+          targetFrameFloat = 0;
+          currentFrameFloat = 0;
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+
+        const targetEl = document.querySelector(href);
+        if (targetEl) {
+          e.preventDefault();
+          isLocked = false;
+          targetFrameFloat = TOTAL_FRAMES - 1;
+          currentFrameFloat = TOTAL_FRAMES - 1;
+
+          const navOffset = 90;
+          const elementPosition = targetEl.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+
+      // Initialize engine on DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', () => {
+        setupIntersectionObserver();
+        setupScrollFloat();
+        preloadFrames();
+      });
+
+      // Telemetry metrics endpoint
+      window.__FOOTHILL_METRICS__ = function () {
+        return {
+          totalFramesLoaded: loadedCount,
+          totalPreloadTimeMs: totalPreloadTimeMs.toFixed(0) + 'ms',
+          averagePreloadTimePerFrame: (totalPreloadTimeMs / TOTAL_FRAMES).toFixed(1) + 'ms',
+          firstFrame: getFrameUrl(0),
+          lastFrame: getFrameUrl(TOTAL_FRAMES - 1),
+          isLocked: isLocked
+        };
+      };
+
+    })();
+
+    // Form Submission & Modal Feedback
+    function handleFormSubmit(e) {
+      e.preventDefault();
+      const modal = document.getElementById('modal-confirm');
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal-confirm');
+      modal.classList.remove('active');
+    }
+
+    function toggleMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) {
+        overlay.classList.toggle('active');
+      }
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('c-name').value.trim();
+      const phone = document.getElementById('c-phone').value.trim();
+      const interest = document.getElementById('c-interest').value;
+      const checkin = document.getElementById('c-checkin').value;
+      const checkout = document.getElementById('c-checkout').value;
+      const msg = document.getElementById('c-msg').value.trim();
+
+      let text = `Hi, I'm ${name} (${phone}) and I would like to enquire about The Foothill Farmstay.`;
+      if (interest) text += `\nInterested in: ${interest}`;
+      if (checkin) text += `\nCheck-in: ${checkin}`;
+      if (checkout) text += `\nCheck-out: ${checkout}`;
+      if (msg) text += `\nMessage: ${msg}`;
+
+      const waUrl = `https://wa.me/918249659996?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank');
+    }
+  </script>
+
+  <!-- Mobile Navigation Drawer Overlay -->
+  <div id="mobile-menu-overlay" class="mobile-menu-overlay" aria-hidden="true">
+    <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close Menu"
+      onclick="toggleMobileMenu()">✕</button>
+    <ul class="mobile-nav-links">
+      <li><a href="#" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a></li>
+      <li><a href="#stay" class="mobile-nav-link" onclick="toggleMobileMenu()">Stay</a></li>
+      <li><a href="#amenities" class="mobile-nav-link" onclick="toggleMobileMenu()">Amenities</a></li>
+      <li><a href="#events" class="mobile-nav-link" onclick="toggleMobileMenu()">Events</a></li>
+      <li><a href="#faq" class="mobile-nav-link" onclick="toggleMobileMenu()">FAQ</a></li>
+      <li><a href="#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a></li>
+    </ul>
+  </div>
+  <!-- Floating Call Now Action Button -->
+  <a href="tel:+918249659996" class="floating-call-btn" aria-label="Call Now">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.2"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path
+        d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.64 1.14h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.74a16 16 0 0 0 6.29 6.29l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z">
+      </path>
+    </svg>
+  </a>
+</body>
+
+</html>
