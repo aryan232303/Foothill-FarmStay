@@ -81,12 +81,6 @@
       width: 100%;
       position: relative;
       line-height: 1.6;
-      overflow-y: hidden;
-      /* Lock scroll until preloader finishes */
-    }
-
-    body.loaded {
-      overflow-y: auto;
     }
 
     /* Accessibility Focus Outline */
@@ -324,10 +318,16 @@
     }
 
     /* ==========================================================================
-       VIRTUAL SCROLL LOCKED HERO VIEWPORT (EDITORIAL LUXURY)
+       GSAP SCROLLTRIGGER PINNED HERO SECTION (100% FIXED UNTIL LAST FRAME)
        ========================================================================== */
+    .hero-track {
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
     .hero-viewport {
-      position: fixed;
+      position: relative;
       top: 0;
       left: 0;
       width: 100vw;
@@ -633,13 +633,7 @@
       }
     }
 
-    /* Hero Spacer (Provides 100vh fold in document flow) */
-    .hero-spacer {
-      height: 100vh;
-      height: 100dvh;
-      width: 100%;
-      pointer-events: none;
-    }
+
 
     /* ==========================================================================
        CONTENT SECTIONS (REVEALED ONLY AFTER VIRTUAL SCRUB REACHES 100%)
@@ -3454,45 +3448,44 @@
 
   <main>
     <!-- ==========================================================================
-         VIRTUAL SCROLL LOCKED HERO VIEWPORT (LUXURY EDITORIAL)
+         HERO SECTION NATIVE SCROLL TRACK (APPLE-STYLE STICKY SCRUBBING)
          ========================================================================== -->
-    <div id="hero-viewport" class="hero-viewport">
-      <!-- Main Canvas for Frame-by-Frame Intercepted Scrubbing -->
-      <canvas id="hero-canvas" role="img"
-        aria-label="Cinematic interactive 3D mountain landscape scroll experience"></canvas>
+    <div id="hero-track" class="hero-track">
+      <div id="hero-viewport" class="hero-viewport">
+        <!-- Main Canvas for Frame-by-Frame Intercepted Scrubbing -->
+        <canvas id="hero-canvas" role="img"
+          aria-label="Cinematic interactive 3D mountain landscape scroll experience"></canvas>
 
-      <!-- Hero Subtle Dark Gradient Overlay -->
-      <div class="hero-gradient-overlay" aria-hidden="true"></div>
+        <!-- Hero Subtle Dark Gradient Overlay -->
+        <div class="hero-gradient-overlay" aria-hidden="true"></div>
 
-      <!-- Hero Overlay Content (Left Aligned, Editorial Style) -->
-      <div id="hero-overlay" class="hero-overlay">
-        <span class="hero-tag">LUXURY FARMSTAY • ODISHA</span>
-        <h1 class="hero-title">Reserve Your Escape <br>to Nature</h1>
-        <p class="hero-description">
-          Escape into handcrafted luxury villas surrounded by peaceful landscapes, private pools, and unforgettable
-          countryside experiences.
-        </p>
-        <div class="hero-actions">
-          <a href="#stay" class="btn-primary">Book Your Stay</a>
+        <!-- Hero Overlay Content (Left Aligned, Editorial Style) -->
+        <div id="hero-overlay" class="hero-overlay">
+          <span class="hero-tag">LUXURY FARMSTAY • ODISHA</span>
+          <h1 class="hero-title">Reserve Your Escape <br>to Nature</h1>
+          <p class="hero-description">
+            Escape into handcrafted luxury villas surrounded by peaceful landscapes, private pools, and unforgettable
+            countryside experiences.
+          </p>
+          <div class="hero-actions">
+            <a href="#stay" class="btn-primary">Book Your Stay</a>
+          </div>
+        </div>
+
+        <!-- Second Floating Text Overlay (Appears during middle of scroll animation - React Bits ScrollFloat) -->
+        <div id="hero-scroll-float" class="hero-scroll-float" aria-hidden="true">
+          <h2 class="scroll-float">
+            <span class="scroll-float-text">COMFORT IN<br>NATURE</span>
+          </h2>
+        </div>
+
+        <!-- Minimal Scroll Indicator Hint -->
+        <div id="scroll-hint" class="scroll-hint">
+          <span class="scroll-hint-label">SCROLL</span>
+          <span class="scroll-hint-arrow">↓</span>
         </div>
       </div>
-
-      <!-- Second Floating Text Overlay (Appears during middle of scroll animation - React Bits ScrollFloat) -->
-      <div id="hero-scroll-float" class="hero-scroll-float" aria-hidden="true">
-        <h2 class="scroll-float">
-          <span class="scroll-float-text">COMFORT IN<br>NATURE</span>
-        </h2>
-      </div>
-
-      <!-- Minimal Scroll Indicator Hint -->
-      <div id="scroll-hint" class="scroll-hint">
-        <span class="scroll-hint-label">SCROLL</span>
-        <span class="scroll-hint-arrow">↓</span>
-      </div>
     </div>
-
-    <!-- Invisible 100vh spacer providing the first fold in document flow -->
-    <div id="hero-spacer" class="hero-spacer"></div>
 
     <!-- ==========================================================================
          MAIN CONTENT SECTIONS (REVEALED ONLY AFTER VIRTUAL SCRUB REACHES 100%)
@@ -4566,28 +4559,29 @@
     </div>
   </main>
 
+  <!-- GSAP & ScrollTrigger Animation Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
   <!-- ==========================================================================
-       JAVASCRIPT LOGIC — APPLE-STYLE VIRTUAL SCROLL INTERCEPTOR ENGINE (OPTIMIZED)
+       JAVASCRIPT LOGIC — GSAP SCROLLTRIGGER PINNED HERO ENGINE
        ========================================================================== -->
   <script>
     (function () {
       'use strict';
 
-      // NEW FRAME CONFIGURATION (hdframes/002.png ... hdframes/200.png)
-      const FRAMES_DIR = 'hdframes/';
+      // WEBP FRAME CONFIGURATION (hdframes_webp/002.webp ... hdframes_webp/200.webp)
+      const FRAMES_DIR = 'hdframes_webp/';
       const START_FRAME = 2;
       const END_FRAME = 200;
       const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 199 frames (002 to 200)
-
-      // Sensitivity configuration
-      const WHEEL_SENSITIVITY = 0.065; // Wheel delta -> Virtual frame advancement
-      const TOUCH_SENSITIVITY = 0.20;  // Touch swipe delta -> Virtual frame advancement
 
       // DOM Elements
       const preloader = document.getElementById('preloader');
       const loaderFill = document.getElementById('loader-fill');
       const loaderPercentage = document.getElementById('loader-percentage');
       const navbar = document.getElementById('navbar');
+      const heroTrack = document.getElementById('hero-track');
       const heroCanvas = document.getElementById('hero-canvas');
       const heroOverlay = document.getElementById('hero-overlay');
       const scrollHint = document.getElementById('scroll-hint');
@@ -4607,18 +4601,16 @@
       let currentFrameFloat = 0;
       let targetFrameFloat = 0;
       let lastDrawnFrame = -1;
-      let isLocked = true; // Virtual scroll lock active
       let dpr = 1;
-      let touchStartY = 0;
 
       // Telemetry metrics
       const preloadStartTime = performance.now();
       let totalPreloadTimeMs = 0;
 
-      // Helper function to build frame path e.g. hdframes/002.png
+      // Helper function to build frame path e.g. hdframes_webp/002.webp
       function getFrameUrl(index) {
         const frameNum = (START_FRAME + index).toString().padStart(3, '0');
-        return `${FRAMES_DIR}${frameNum}.png`;
+        return `${FRAMES_DIR}${frameNum}.webp`;
       }
 
       /* ------------------------------------------------------------------------
@@ -4646,9 +4638,9 @@
       }
 
       /* ------------------------------------------------------------------------
-         2. HIGH-PERFORMANCE PROGRESSIVE PRELOADER ENGINE
+         2. HIGH-PERFORMANCE WEBP PROGRESSIVE PRELOADER ENGINE
          ------------------------------------------------------------------------ */
-      const ESSENTIAL_FRAMES_COUNT = 10; // First 10 frames needed for instant unlock
+      const ESSENTIAL_FRAMES_COUNT = 15; // 15 WebP frames (~2 MB) load in <300ms
       let preloaderDismissed = false;
       let preloaderTimer = null;
 
@@ -4668,8 +4660,8 @@
           } else {
             img.onload = done;
             img.onerror = () => {
-              if (img.src.endsWith('.png')) {
-                img.src = img.src.replace('.png', '.jpg');
+              if (img.src.endsWith('.webp')) {
+                img.src = img.src.replace('.webp', '.png').replace('hdframes_webp', 'hdframes');
                 img.onload = done;
                 img.onerror = done;
               } else {
@@ -4683,12 +4675,10 @@
       function preloadFrames() {
         let essentialLoaded = 0;
 
-        // Failsafe maximum timer: dismiss preloader after 1.5 seconds max on any network
         preloaderTimer = setTimeout(() => {
           dismissPreloader();
-        }, 1500);
+        }, 1200);
 
-        // Load essential initial frames first to unlock preloader fast
         for (let i = 0; i < ESSENTIAL_FRAMES_COUNT; i++) {
           loadSingleFrame(i).then(() => {
             essentialLoaded++;
@@ -4703,27 +4693,26 @@
           });
         }
 
-        // Lazy-load remaining frames progressively in small background batches
         setTimeout(() => {
           let batchIndex = ESSENTIAL_FRAMES_COUNT;
           function loadNextBatch() {
             if (batchIndex >= TOTAL_FRAMES) return;
-            const batchEnd = Math.min(TOTAL_FRAMES, batchIndex + 6);
+            const batchEnd = Math.min(TOTAL_FRAMES, batchIndex + 8);
             const promises = [];
             for (let b = batchIndex; b < batchEnd; b++) {
-              promises.push(loadSingleFrame(b));
+              promises.push(loadSingleFrame(b).then(() => { loadedCount++; }));
             }
             batchIndex = batchEnd;
             Promise.all(promises).then(() => {
               if (window.requestIdleCallback) {
-                requestIdleCallback(loadNextBatch, { timeout: 1000 });
+                requestIdleCallback(loadNextBatch, { timeout: 800 });
               } else {
-                setTimeout(loadNextBatch, 60);
+                setTimeout(loadNextBatch, 40);
               }
             });
           }
           loadNextBatch();
-        }, 400);
+        }, 200);
       }
 
       function dismissPreloader() {
@@ -4739,6 +4728,7 @@
           document.body.classList.add('loaded');
 
           resizeCanvas();
+
           const firstAvailable = frameImages.find(img => img && img.complete) || frameImages[0];
           if (firstAvailable) {
             drawCoverImage(firstAvailable);
@@ -4755,18 +4745,14 @@
       function resizeCanvas() {
         const viewportW = window.innerWidth;
         const viewportH = window.innerHeight;
-        // DPR capped at 1 on mobile screens to prevent GPU canvas lag and ensure 60fps scrolling
         dpr = viewportW <= 768 ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 
-        // Physical pixel resolution matching device pixel ratio
         heroCanvas.width = Math.floor(viewportW * dpr);
         heroCanvas.height = Math.floor(viewportH * dpr);
 
-        // Set fast smoothing filter for 60fps performance
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = 'medium';
 
-        // Redraw current frame
         const currentFrameIndex = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
         if (frameImages[currentFrameIndex]) {
           drawCoverImage(frameImages[currentFrameIndex]);
@@ -4782,21 +4768,19 @@
         const canvasW = heroCanvas.width;
         const canvasH = heroCanvas.height;
 
-        const imgW = img.naturalWidth || 1920;
-        const imgH = img.naturalHeight || 1080;
+        const imgW = img.naturalWidth || 1280;
+        const imgH = img.naturalHeight || 720;
         const imgRatio = imgW / imgH;
         const canvasRatio = canvasW / canvasH;
 
         let renderW, renderH, offsetX, offsetY;
 
         if (canvasRatio > imgRatio) {
-          // Viewport is wider than image aspect ratio -> fit width, crop top/bottom
           renderW = canvasW;
           renderH = canvasW / imgRatio;
           offsetX = 0;
           offsetY = (canvasH - renderH) / 2;
         } else {
-          // Viewport is taller than image aspect ratio -> fit height, crop sides
           renderH = canvasH;
           renderW = canvasH * imgRatio;
           offsetX = (canvasW - renderW) / 2;
@@ -4807,131 +4791,80 @@
       }
 
       /* ------------------------------------------------------------------------
-         4. VIRTUAL SCROLL INTERCEPTOR & WHEEL/TOUCH CONTROLLER
+         4. GSAP SCROLLTRIGGER FIXED PINNING & FRAME SCRUBBER ENGINE
          ------------------------------------------------------------------------ */
-      function handleWheel(e) {
-        if (!isLocked) {
-          // If unlocked (scrolling content below), check if user scrolled back to top
-          if (window.scrollY <= 2 && e.deltaY < 0) {
-            isLocked = true;
+      const PIN_DISTANCE_PX = 3600; // Pinned scroll distance (3600px vertical scroll = 100% frame progress)
+
+      function setupGSAPScrollTrigger() {
+        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+          gsap.registerPlugin(ScrollTrigger);
+
+          ScrollTrigger.create({
+            trigger: '#hero-track',
+            pin: '#hero-viewport',
+            start: 'top top',
+            end: `+=${PIN_DISTANCE_PX}`,
+            pinSpacing: true, // Pushes next section completely out of view until 100% unpin
+            scrub: true,
+            onUpdate: (self) => {
+              targetFrameFloat = self.progress * (TOTAL_FRAMES - 1);
+            }
+          });
+        } else {
+          setupNativePinningFallback();
+        }
+      }
+
+      function setupNativePinningFallback() {
+        if (!heroTrack || !heroViewport) return;
+        heroTrack.style.height = `calc(100vh + ${PIN_DISTANCE_PX}px)`;
+
+        function updateNativePin() {
+          const scrolled = Math.max(0, window.pageYOffset || document.documentElement.scrollTop);
+
+          if (scrolled <= PIN_DISTANCE_PX) {
+            heroViewport.style.position = 'fixed';
+            heroViewport.style.top = '0px';
+            heroViewport.style.left = '0px';
+            heroViewport.style.width = '100vw';
+            heroViewport.style.height = '100vh';
+
+            const progress = scrolled / PIN_DISTANCE_PX;
+            targetFrameFloat = progress * (TOTAL_FRAMES - 1);
+          } else {
+            heroViewport.style.position = 'absolute';
+            heroViewport.style.top = PIN_DISTANCE_PX + 'px';
+            heroViewport.style.left = '0px';
+
             targetFrameFloat = TOTAL_FRAMES - 1;
-            currentFrameFloat = TOTAL_FRAMES - 1;
-            window.scrollTo(0, 0);
-            e.preventDefault();
-          }
-          return;
-        }
-
-        // Lock Active: Intercept scroll! Prevent document movement!
-        e.preventDefault();
-        window.scrollTo(0, 0);
-
-        // Accumulate wheel delta
-        const delta = e.deltaY * WHEEL_SENSITIVITY;
-        targetFrameFloat += delta;
-
-        // Clamp minimum frame
-        if (targetFrameFloat < 0) {
-          targetFrameFloat = 0;
-        }
-
-        // Handle reaching last frame (200.png)
-        if (targetFrameFloat >= TOTAL_FRAMES - 1) {
-          targetFrameFloat = TOTAL_FRAMES - 1;
-
-          // If user scrolls DOWN further when already at final frame (200):
-          if (e.deltaY > 5) {
-            isLocked = false;
-            // Smoothly release and allow document to scroll
-            window.scrollTo({ top: 10, behavior: 'instant' });
           }
         }
+
+        window.addEventListener('scroll', updateNativePin, { passive: true });
+        updateNativePin();
       }
 
-      function handleTouchStart(e) {
-        if (e.touches && e.touches.length > 0) {
-          touchStartY = e.touches[0].clientY;
-        }
-      }
+      const heroViewport = document.getElementById('hero-viewport');
 
-      function handleTouchMove(e) {
-        if (!e.touches || e.touches.length === 0) return;
-        const currentY = e.touches[0].clientY;
-        const deltaY = (touchStartY - currentY) * TOUCH_SENSITIVITY;
-        touchStartY = currentY;
-
-        if (!isLocked) {
-          if (window.scrollY <= 2 && deltaY < 0) {
-            isLocked = true;
-            targetFrameFloat = TOTAL_FRAMES - 1;
-            currentFrameFloat = TOTAL_FRAMES - 1;
-            window.scrollTo(0, 0);
-            if (e.cancelable) e.preventDefault();
-          }
-          return;
-        }
-
-        if (e.cancelable) e.preventDefault();
-        window.scrollTo(0, 0);
-
-        targetFrameFloat += deltaY;
-        if (targetFrameFloat < 0) targetFrameFloat = 0;
-
-        if (targetFrameFloat >= TOTAL_FRAMES - 1) {
-          targetFrameFloat = TOTAL_FRAMES - 1;
-          if (deltaY > 2) {
-            isLocked = false;
-            window.scrollTo({ top: 10, behavior: 'instant' });
-          }
-        }
-      }
-
-      function handleKeyDown(e) {
-        if (!isLocked) return;
-
-        if (['ArrowDown', 'PageDown', 'Space'].includes(e.code)) {
-          e.preventDefault();
-          targetFrameFloat += 14;
-          if (targetFrameFloat >= TOTAL_FRAMES - 1) {
-            targetFrameFloat = TOTAL_FRAMES - 1;
-            isLocked = false;
-            window.scrollTo({ top: 10, behavior: 'instant' });
-          }
-        } else if (['ArrowUp', 'PageUp'].includes(e.code)) {
-          e.preventDefault();
-          targetFrameFloat -= 14;
-          if (targetFrameFloat < 0) targetFrameFloat = 0;
-        }
-      }
-
-      // Enforce zero document scroll while locked
       window.addEventListener('scroll', () => {
-        if (isLocked && window.scrollY > 0) {
-          window.scrollTo(0, 0);
-        }
-
-        // Navbar blur styling
         if (window.scrollY > 80) {
           navbar.classList.add('scrolled');
         } else {
           navbar.classList.remove('scrolled');
         }
-      }, { passive: false });
+      }, { passive: true });
 
       /* ------------------------------------------------------------------------
          5. CONTINUOUS HIGH-FPS ANIMATION RENDER LOOP (RAF)
          ------------------------------------------------------------------------ */
       function renderLoop() {
-        // Butter-smooth lerp interpolation: current += (target - current) * 0.28
-        currentFrameFloat += (targetFrameFloat - currentFrameFloat) * 0.28;
+        currentFrameFloat += (targetFrameFloat - currentFrameFloat) * 0.25;
 
         const roundedFrame = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
 
-        // A. Persistent Navbar (Always 100% visible across all scroll positions)
         navbar.style.opacity = '1';
         navbar.style.pointerEvents = 'auto';
 
-        // B. Initial Hero Main Overlay Fade (0 -> 25 frames)
         const initialTextOpacity = Math.max(0, 1 - roundedFrame / 25);
         heroOverlay.style.opacity = initialTextOpacity.toFixed(3);
         heroOverlay.style.pointerEvents = initialTextOpacity <= 0.05 ? 'none' : 'auto';
@@ -4940,19 +4873,15 @@
           scrollHint.style.opacity = Math.max(0, 1 - (roundedFrame / 25) * 2.5).toFixed(3);
         }
 
-        // C. ScrollFloat Character Floating Animation (React Bits Component Integration)
         if (charElements.length > 0) {
           const numChars = charElements.length;
           let floatPhaseProgress = 0;
 
           if (roundedFrame >= 25 && roundedFrame < 85) {
-            // Entrance Phase: Ramps 0 -> 1 between frame 25 and 85
             floatPhaseProgress = (roundedFrame - 25) / 60;
           } else if (roundedFrame >= 85 && roundedFrame <= 140) {
-            // Active Phase: Held at 1
             floatPhaseProgress = 1;
           } else if (roundedFrame > 140 && roundedFrame <= 175) {
-            // Exit Phase: Ramps 1 -> 0 between frame 140 and 175
             floatPhaseProgress = Math.max(0, 1 - (roundedFrame - 140) / 35);
           } else {
             floatPhaseProgress = 0;
@@ -4966,7 +4895,6 @@
               charProgress = Math.min(1, Math.max(0, (floatPhaseProgress - staggerDelay) / (1 - staggerDelay)));
             }
 
-            // Smooth cubic ease matching back.inOut(2) style
             const easeProgress = charProgress < 0.5
               ? 4 * charProgress * charProgress * charProgress
               : 1 - Math.pow(-2 * charProgress + 2, 3) / 2;
@@ -4981,10 +4909,12 @@
           });
         }
 
-        // D. Draw frame if index changed
         if (roundedFrame !== lastDrawnFrame) {
           lastDrawnFrame = roundedFrame;
-          const img = frameImages[roundedFrame] || frameImages.find(i => i && i.complete) || frameImages[0];
+          let img = frameImages[roundedFrame];
+          if (!img || !img.complete) {
+            img = frameImages.find(i => i && i.complete) || frameImages[0];
+          }
           if (img) {
             drawCoverImage(img);
           }
@@ -5017,13 +4947,13 @@
       /* ------------------------------------------------------------------------
          7. ATTACH EVENT LISTENERS
          ------------------------------------------------------------------------ */
-      window.addEventListener('resize', resizeCanvas);
-      window.addEventListener('wheel', handleWheel, { passive: false });
-      window.addEventListener('touchstart', handleTouchStart, { passive: true });
-      window.addEventListener('touchmove', handleTouchMove, { passive: false });
-      window.addEventListener('keydown', handleKeyDown, { passive: false });
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+        }
+      }, { passive: true });
 
-      // Handle smooth scrolling for navigation anchor links (including navbar & hero CTA)
       document.addEventListener('click', (e) => {
         const link = e.target.closest('a[href^="#"]');
         if (!link) return;
@@ -5033,9 +4963,6 @@
 
         if (href === '#' || href === '#top') {
           e.preventDefault();
-          isLocked = true;
-          targetFrameFloat = 0;
-          currentFrameFloat = 0;
           window.scrollTo({ top: 0, behavior: 'smooth' });
           return;
         }
@@ -5043,10 +4970,6 @@
         const targetEl = document.querySelector(href);
         if (targetEl) {
           e.preventDefault();
-          isLocked = false;
-          targetFrameFloat = TOTAL_FRAMES - 1;
-          currentFrameFloat = TOTAL_FRAMES - 1;
-
           const navOffset = 90;
           const elementPosition = targetEl.getBoundingClientRect().top;
           const offsetPosition = elementPosition + window.pageYOffset - navOffset;
@@ -5058,22 +4981,20 @@
         }
       });
 
-      // Initialize engine on DOMContentLoaded
       document.addEventListener('DOMContentLoaded', () => {
         setupIntersectionObserver();
         setupScrollFloat();
         preloadFrames();
+        setupGSAPScrollTrigger();
       });
 
-      // Telemetry metrics endpoint
       window.__FOOTHILL_METRICS__ = function () {
         return {
           totalFramesLoaded: loadedCount,
           totalPreloadTimeMs: totalPreloadTimeMs.toFixed(0) + 'ms',
           averagePreloadTimePerFrame: (totalPreloadTimeMs / TOTAL_FRAMES).toFixed(1) + 'ms',
           firstFrame: getFrameUrl(0),
-          lastFrame: getFrameUrl(TOTAL_FRAMES - 1),
-          isLocked: isLocked
+          lastFrame: getFrameUrl(TOTAL_FRAMES - 1)
         };
       };
 
