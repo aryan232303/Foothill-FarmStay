@@ -514,14 +514,14 @@
     .scroll-float-text {
       display: inline-block;
       font-family: var(--font-heading);
-      font-size: clamp(2rem, 4.8vw, 4.2rem);
+      font-size: clamp(1.8rem, 4.8vw, 4.2rem);
       font-weight: 400;
       text-align: center;
-      line-height: 1.2;
+      line-height: 1.25;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       color: #ffffff;
-      white-space: nowrap;
+      white-space: normal;
       text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
     }
 
@@ -3197,6 +3197,140 @@
     }
 
     @media (max-width: 768px) {
+      html {
+        font-size: 14px !important;
+      }
+
+      /* Compact Mobile Section Padding */
+      .section {
+        padding: 3rem 1.15rem !important;
+      }
+
+      .section-contact,
+      .section-faq {
+        padding: 3.25rem 1.15rem !important;
+      }
+
+      /* Compact Mobile Heading Typography */
+      .brochure-title,
+      .uniqueness-title,
+      .tariffs-title,
+      .amenities-title,
+      .events-title,
+      .location-title,
+      .faq-title,
+      .contact-title {
+        font-size: clamp(1.45rem, 5vw, 1.95rem) !important;
+        margin-bottom: 0.45rem !important;
+        line-height: 1.25 !important;
+      }
+
+      .brochure-subtitle,
+      .events-subtitle,
+      .location-subtitle,
+      .faq-subtitle {
+        font-size: 0.85rem !important;
+        margin-bottom: 1.35rem !important;
+        line-height: 1.5 !important;
+      }
+
+      .brochure-tag,
+      .faq-tag,
+      .contact-tag {
+        font-size: 0.65rem !important;
+        margin-bottom: 0.45rem !important;
+        letter-spacing: 0.16em !important;
+      }
+
+      .uniqueness-divider {
+        font-size: 0.7rem !important;
+        margin: 0.6rem 0 1.25rem 0 !important;
+      }
+
+      /* Compact Mobile Cards Layout */
+      .brochure-highlights-grid,
+      .uniqueness-grid,
+      .tariffs-grid,
+      .brochure-amenities-grid,
+      .faq-accordion {
+        gap: 0.75rem !important;
+      }
+
+      .highlight-card,
+      .uniqueness-item,
+      .cottage-card,
+      .brochure-amenity-card,
+      .event-space-card,
+      .faq-item {
+        padding: 1rem 1.15rem !important;
+        border-radius: 14px !important;
+      }
+
+      /* Compact Card Headers & Text */
+      .highlight-title,
+      .uniqueness-item h3,
+      .cottage-title,
+      .brochure-amenity-title,
+      .event-space-title,
+      .faq-question {
+        font-size: 1rem !important;
+        padding: 0.95rem 1.15rem !important;
+      }
+
+      .highlight-desc,
+      .uniqueness-item p,
+      .cottage-desc,
+      .event-space-desc,
+      .faq-answer {
+        font-size: 0.85rem !important;
+        line-height: 1.5 !important;
+        padding: 0 1.15rem 1rem 1.15rem !important;
+      }
+
+      /* Compact Icon Badges */
+      .highlight-icon-badge,
+      .uniqueness-icon-badge,
+      .event-icon-badge,
+      .faq-icon-badge {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        font-size: 0.85rem !important;
+      }
+
+      /* Compact Mobile Buttons */
+      .btn-primary,
+      .btn-secondary,
+      .btn-brochure-primary,
+      .contact-submit-btn,
+      .contact-wa-btn,
+      .map-embed-btn,
+      .event-book-now {
+        padding: 0.7rem 1.25rem !important;
+        font-size: 0.8rem !important;
+        border-radius: 10px !important;
+      }
+
+      .contact-btns-row {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+      }
+
+      .map-embed-iframe {
+        height: 270px !important;
+      }
+
+      .map-embed-bar {
+        padding: 0.9rem 1.15rem !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+
+      .map-embed-btn {
+        width: 100% !important;
+        justify-content: center !important;
+      }
+
       .navbar {
         width: 92%;
         padding: 0.45rem 0.9rem;
@@ -3346,7 +3480,7 @@
       <!-- Second Floating Text Overlay (Appears during middle of scroll animation - React Bits ScrollFloat) -->
       <div id="hero-scroll-float" class="hero-scroll-float" aria-hidden="true">
         <h2 class="scroll-float">
-          <span class="scroll-float-text">COMFORT IN NATURE</span>
+          <span class="scroll-float-text">COMFORT IN<br>NATURE</span>
         </h2>
       </div>
 
@@ -4512,74 +4646,107 @@
       }
 
       /* ------------------------------------------------------------------------
-         2. HIGH-PERFORMANCE GPU ASYNC PRELOADING ENGINE
+         2. HIGH-PERFORMANCE PROGRESSIVE PRELOADER ENGINE
          ------------------------------------------------------------------------ */
-      function preloadFrames() {
-        for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const ESSENTIAL_FRAMES_COUNT = 10; // First 10 frames needed for instant unlock
+      let preloaderDismissed = false;
+      let preloaderTimer = null;
+
+      function loadSingleFrame(index) {
+        return new Promise((resolve) => {
+          if (frameImages[index] && frameImages[index].complete) {
+            return resolve(frameImages[index]);
+          }
           const img = new Image();
-          img.src = getFrameUrl(i);
-
-          const processDecodedImage = () => {
-            // Force browser to decode raw PNG byte stream into GPU bitmap asynchronously
-            if ('decode' in img) {
-              img.decode().then(() => {
-                registerFrame(i, img);
-              }).catch(() => {
-                registerFrame(i, img);
-              });
-            } else {
-              registerFrame(i, img);
-            }
+          img.src = getFrameUrl(index);
+          const done = () => {
+            frameImages[index] = img;
+            resolve(img);
           };
-
           if (img.complete) {
-            processDecodedImage();
+            done();
           } else {
-            img.onload = processDecodedImage;
+            img.onload = done;
             img.onerror = () => {
-              // Fallback check if extension is .jpg instead of .png
               if (img.src.endsWith('.png')) {
                 img.src = img.src.replace('.png', '.jpg');
-                return;
+                img.onload = done;
+                img.onerror = done;
+              } else {
+                done();
               }
-              registerFrame(i, img);
             };
           }
-        }
+        });
       }
 
-      function registerFrame(index, img) {
-        frameImages[index] = img;
-        loadedCount++;
-        const pct = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+      function preloadFrames() {
+        let essentialLoaded = 0;
 
-        // Update Loading Indicator
-        loaderFill.style.width = pct + '%';
-        loaderPercentage.textContent = pct + '%';
+        // Failsafe maximum timer: dismiss preloader after 1.5 seconds max on any network
+        preloaderTimer = setTimeout(() => {
+          dismissPreloader();
+        }, 1500);
 
-        if (loadedCount === TOTAL_FRAMES) {
-          totalPreloadTimeMs = performance.now() - preloadStartTime;
-          onAllFramesLoaded();
+        // Load essential initial frames first to unlock preloader fast
+        for (let i = 0; i < ESSENTIAL_FRAMES_COUNT; i++) {
+          loadSingleFrame(i).then(() => {
+            essentialLoaded++;
+            loadedCount++;
+            const pct = Math.min(100, Math.round((essentialLoaded / ESSENTIAL_FRAMES_COUNT) * 100));
+            loaderFill.style.width = pct + '%';
+            loaderPercentage.textContent = pct + '%';
+
+            if (essentialLoaded >= ESSENTIAL_FRAMES_COUNT) {
+              dismissPreloader();
+            }
+          });
         }
+
+        // Lazy-load remaining frames progressively in small background batches
+        setTimeout(() => {
+          let batchIndex = ESSENTIAL_FRAMES_COUNT;
+          function loadNextBatch() {
+            if (batchIndex >= TOTAL_FRAMES) return;
+            const batchEnd = Math.min(TOTAL_FRAMES, batchIndex + 6);
+            const promises = [];
+            for (let b = batchIndex; b < batchEnd; b++) {
+              promises.push(loadSingleFrame(b));
+            }
+            batchIndex = batchEnd;
+            Promise.all(promises).then(() => {
+              if (window.requestIdleCallback) {
+                requestIdleCallback(loadNextBatch, { timeout: 1000 });
+              } else {
+                setTimeout(loadNextBatch, 60);
+              }
+            });
+          }
+          loadNextBatch();
+        }, 400);
       }
 
-      function onAllFramesLoaded() {
-        const avgTimePerFrame = (totalPreloadTimeMs / TOTAL_FRAMES).toFixed(1);
-        console.log(`[Foothill Engine] Loaded & decoded ${TOTAL_FRAMES} HD frames (002-200) in ${totalPreloadTimeMs.toFixed(0)}ms (Avg: ${avgTimePerFrame}ms/frame).`);
+      function dismissPreloader() {
+        if (preloaderDismissed) return;
+        preloaderDismissed = true;
+        if (preloaderTimer) clearTimeout(preloaderTimer);
 
-        // Hide preloader & enable body interaction
-        preloader.classList.add('loader-hidden');
-        document.body.classList.add('loaded');
+        loaderFill.style.width = '100%';
+        loaderPercentage.textContent = '100%';
 
-        // Initial setup
-        resizeCanvas();
+        setTimeout(() => {
+          preloader.classList.add('loader-hidden');
+          document.body.classList.add('loaded');
 
-        // Draw frame 002 (index 0) immediately
-        drawCoverImage(frameImages[0]);
-        lastDrawnFrame = 0;
+          resizeCanvas();
+          const firstAvailable = frameImages.find(img => img && img.complete) || frameImages[0];
+          if (firstAvailable) {
+            drawCoverImage(firstAvailable);
+          }
+          lastDrawnFrame = 0;
 
-        // Kick off continuous 60fps animation loop
-        requestAnimationFrame(renderLoop);
+          requestAnimationFrame(renderLoop);
+        }, 150);
       }
 
       /* ------------------------------------------------------------------------
@@ -4588,7 +4755,8 @@
       function resizeCanvas() {
         const viewportW = window.innerWidth;
         const viewportH = window.innerHeight;
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        // DPR capped at 1 on mobile screens to prevent GPU canvas lag and ensure 60fps scrolling
+        dpr = viewportW <= 768 ? 1 : Math.min(window.devicePixelRatio || 1, 2);
 
         // Physical pixel resolution matching device pixel ratio
         heroCanvas.width = Math.floor(viewportW * dpr);
@@ -4606,6 +4774,9 @@
       }
 
       function drawCoverImage(img) {
+        if (!img || !img.complete) {
+          img = frameImages.find(i => i && i.complete) || frameImages[0];
+        }
         if (!img) return;
 
         const canvasW = heroCanvas.width;
@@ -4813,7 +4984,7 @@
         // D. Draw frame if index changed
         if (roundedFrame !== lastDrawnFrame) {
           lastDrawnFrame = roundedFrame;
-          const img = frameImages[roundedFrame];
+          const img = frameImages[roundedFrame] || frameImages.find(i => i && i.complete) || frameImages[0];
           if (img) {
             drawCoverImage(img);
           }
