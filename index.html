@@ -4589,10 +4589,9 @@
       const scrollFloatText = document.querySelector('.scroll-float-text');
       let charElements = [];
 
-      // Low-latency canvas context with desynchronized direct GPU rendering
+      // Production-safe canvas context (avoiding experimental desynchronized flag which causes GPU compositing loss on Vercel)
       const ctx = heroCanvas.getContext('2d', {
-        alpha: false,
-        desynchronized: true
+        alpha: false
       });
 
       // State Variables
@@ -4611,6 +4610,11 @@
       function getFrameUrl(index) {
         const frameNum = (START_FRAME + index).toString().padStart(3, '0');
         return `${FRAMES_DIR}${frameNum}.webp`;
+      }
+
+      // Safe image ready check (verifies element exists, fully loaded, and bitmap decoded)
+      function isImageReady(img) {
+        return Boolean(img && img.complete && img.naturalWidth > 0);
       }
 
       /* ------------------------------------------------------------------------
@@ -4646,16 +4650,20 @@
 
       function loadSingleFrame(index) {
         return new Promise((resolve) => {
-          if (frameImages[index] && frameImages[index].complete) {
+          if (isImageReady(frameImages[index])) {
             return resolve(frameImages[index]);
           }
           const img = new Image();
           img.src = getFrameUrl(index);
           const done = () => {
             frameImages[index] = img;
-            resolve(img);
+            if (img.decode) {
+              img.decode().then(() => resolve(img)).catch(() => resolve(img));
+            } else {
+              resolve(img);
+            }
           };
-          if (img.complete) {
+          if (isImageReady(img)) {
             done();
           } else {
             img.onload = done;
@@ -4729,11 +4737,11 @@
 
           resizeCanvas();
 
-          const firstAvailable = frameImages.find(img => img && img.complete) || frameImages[0];
-          if (firstAvailable) {
-            drawCoverImage(firstAvailable);
+          const firstAvailable = frameImages.find(img => isImageReady(img));
+          if (firstAvailable && drawCoverImage(firstAvailable)) {
+            const idx = frameImages.indexOf(firstAvailable);
+            if (idx !== -1) lastDrawnFrame = idx;
           }
-          lastDrawnFrame = 0;
 
           requestAnimationFrame(renderLoop);
         }, 150);
@@ -4754,22 +4762,26 @@
         ctx.imageSmoothingQuality = 'medium';
 
         const currentFrameIndex = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
-        if (frameImages[currentFrameIndex]) {
-          drawCoverImage(frameImages[currentFrameIndex]);
+        let imgToDraw = frameImages[currentFrameIndex];
+        if (!isImageReady(imgToDraw)) {
+          imgToDraw = (lastDrawnFrame >= 0 && isImageReady(frameImages[lastDrawnFrame]))
+            ? frameImages[lastDrawnFrame]
+            : frameImages.find(i => isImageReady(i));
+        }
+        if (imgToDraw) {
+          drawCoverImage(imgToDraw);
         }
       }
 
       function drawCoverImage(img) {
-        if (!img || !img.complete) {
-          img = frameImages.find(i => i && i.complete) || frameImages[0];
-        }
-        if (!img) return;
+        if (!isImageReady(img)) return false;
 
         const canvasW = heroCanvas.width;
         const canvasH = heroCanvas.height;
+        if (canvasW === 0 || canvasH === 0) return false;
 
-        const imgW = img.naturalWidth || 1280;
-        const imgH = img.naturalHeight || 720;
+        const imgW = img.naturalWidth;
+        const imgH = img.naturalHeight;
         const imgRatio = imgW / imgH;
         const canvasRatio = canvasW / canvasH;
 
@@ -4787,7 +4799,13 @@
           offsetY = 0;
         }
 
-        ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
+        try {
+          ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
+          return true;
+        } catch (err) {
+          console.warn('[HeroCanvas] drawImage failed:', err, { src: img.src, canvasW, canvasH });
+          return false;
+        }
       }
 
       /* ------------------------------------------------------------------------
@@ -4807,7 +4825,8 @@
             pinSpacing: true, // Pushes next section completely out of view until 100% unpin
             scrub: true,
             onUpdate: (self) => {
-              targetFrameFloat = self.progress * (TOTAL_FRAMES - 1);
+              const progress = Math.max(0, Math.min(1, self.progress));
+              targetFrameFloat = progress * (TOTAL_FRAMES - 1);
             }
           });
         } else {
@@ -4829,7 +4848,7 @@
             heroViewport.style.width = '100vw';
             heroViewport.style.height = '100vh';
 
-            const progress = scrolled / PIN_DISTANCE_PX;
+            const progress = Math.max(0, Math.min(1, scrolled / PIN_DISTANCE_PX));
             targetFrameFloat = progress * (TOTAL_FRAMES - 1);
           } else {
             heroViewport.style.position = 'absolute';
@@ -4910,13 +4929,31 @@
         }
 
         if (roundedFrame !== lastDrawnFrame) {
-          lastDrawnFrame = roundedFrame;
           let img = frameImages[roundedFrame];
-          if (!img || !img.complete) {
-            img = frameImages.find(i => i && i.complete) || frameImages[0];
-          }
-          if (img) {
-            drawCoverImage(img);
+          if (isImageReady(img)) {
+            if (drawCoverImage(img)) {
+              lastDrawnFrame = roundedFrame;
+            }
+          } else {
+            // Target frame image is mid-flight downloading/decoding over network.
+            // Do NOT update lastDrawnFrame = roundedFrame, so that as soon as the image loads,
+            // (roundedFrame !== lastDrawnFrame) remains true and draws it immediately.
+            // If no frame has been drawn yet at start, fallback to nearest ready frame.
+            if (lastDrawnFrame === -1) {
+              let fallbackImg = null;
+              for (let i = roundedFrame - 1; i >= 0; i--) {
+                if (isImageReady(frameImages[i])) { fallbackImg = frameImages[i]; break; }
+              }
+              if (!fallbackImg) {
+                for (let i = roundedFrame + 1; i < TOTAL_FRAMES; i++) {
+                  if (isImageReady(frameImages[i])) { fallbackImg = frameImages[i]; break; }
+                }
+              }
+              if (fallbackImg && drawCoverImage(fallbackImg)) {
+                const idx = frameImages.indexOf(fallbackImg);
+                if (idx !== -1) lastDrawnFrame = idx;
+              }
+            }
           }
         }
 
@@ -4995,6 +5032,21 @@
           averagePreloadTimePerFrame: (totalPreloadTimeMs / TOTAL_FRAMES).toFixed(1) + 'ms',
           firstFrame: getFrameUrl(0),
           lastFrame: getFrameUrl(TOTAL_FRAMES - 1)
+        };
+      };
+
+      window.__FOOTHILL_DEBUG__ = function () {
+        const reqFrame = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
+        const img = frameImages[reqFrame];
+        return {
+          currentRequestedFrame: reqFrame,
+          lastDrawnFrame: lastDrawnFrame,
+          isImageDecoded: isImageReady(img),
+          canvasWidth: heroCanvas.width,
+          canvasHeight: heroCanvas.height,
+          dpr: dpr,
+          totalLoaded: loadedCount,
+          totalFrames: TOTAL_FRAMES
         };
       };
 
