@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Gallery — The Foothill Farmstay Daringbadi</title>
+  <meta name="description"
+    content="Explore the photo gallery of The Foothill Farmstay in Daringbadi, Odisha. Visual highlights of our luxury cottages, private pools, mountain vistas, and serene pine forests.">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Manrope:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="page-light page-gallery">
+
+    <!-- Navigation Bar -->
+  <header class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo" aria-label="The Foothill Farmstay Homepage">
+        <img src="logo new.png" alt="Foothill Logo">
+        <span class="nav-logo-text">The Foothill Farm Stay</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="stay.html" class="nav-link">Stay</a></li>
+        <li><a href="index.html#about" class="nav-link">About Us</a></li>
+        <li><a href="gallery.html" class="nav-link active">Gallery</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
+      </ul>
+      <button class="menu-toggle" aria-label="Toggle Mobile Menu" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO HEADER -->
+    <section class="gallery-hero">
+      <div class="gallery-hero-badge">
+        <span>✦</span> VISUAL JOURNEY <span>✦</span>
+      </div>
+      <h1 class="gallery-hero-title">Experience the Magic of<br><em>The Foothill Farmstay</em></h1>
+      <p class="gallery-hero-desc">
+        Explore our collection of photographs capturing the serene pine hills, luxury private villas, handcrafted interiors, manicured lawns, and tranquil pool decks in Daringbadi.
+      </p>
+      <div class="gallery-divider">◇ ─── ❖ ─── ◇</div>
+    </section>
+
+    <!-- CATEGORY FILTER TABS -->
+    <section class="filter-section">
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">All Photos</button>
+        <button class="filter-btn" data-filter="grounds">Resort & Grounds</button>
+        <button class="filter-btn" data-filter="cottages">Cottages & Villas</button>
+        <button class="filter-btn" data-filter="pool">Pool & Leisure</button>
+      </div>
+    </section>
+
+    <!-- GALLERY PHOTO GRID -->
+    <section class="gallery-container">
+      <div class="gallery-grid" id="galleryGrid">
+
+        <!-- 1. IMG_0368 -->
+        <div class="gallery-card" data-category="grounds" data-src="gallery/IMG_0368.PNG" data-title="Lush Hillside & Valley View">
+          <div class="gallery-card-img-wrapper">
+            <img src="gallery/IMG_0368.PNG" alt="Lush Hillside & Valley View at Foothill Farmstay" loading="lazy">
+            <div class="gallery-card-overlay">
+              <div class="zoom-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-info">
+            <span class="gallery-card-category">Resort & Grounds</span>
+            <h3 class="gallery-card-title">Lush Hillside & Valley View</h3>
+          </div>
+        </div>
+
+        <!-- 2. IMG_0369 -->
+        <div class="gallery-card" data-category="cottages" data-src="gallery/IMG_0369.PNG" data-title="Serene Villa Architecture">
+          <div class="gallery-card-img-wrapper">
+            <img src="gallery/IMG_0369.PNG" alt="Serene Villa Architecture" loading="lazy">
+            <div class="gallery-card-overlay">
+              <div class="zoom-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-info">
+            <span class="gallery-card-category">Cottages & Villas</span>
+            <h3 class="gallery-card-title">Serene Villa Architecture</h3>
+          </div>
+        </div>
+
+        <!-- 3. IMG_0375 -->
+        <div class="gallery-card" data-category="grounds" data-src="gallery/IMG_0375.PNG" data-title="Sunset Horizon & Twilight Vistas">
+          <div class="gallery-card-img-wrapper">
+            <img src="gallery/IMG_0375.PNG" alt="Sunset Horizon & Twilight Vistas" loading="lazy">
+            <div class="gallery-card-overlay">
+              <div class="zoom-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-info">
+            <span class="gallery-card-category">Resort & Grounds</span>
+            <h3 class="gallery-card-title">Sunset Horizon & Twilight Vistas</h3>
+          </div>
+        </div>
+
+        <!-- 4. IMG_9710 -->
+        <div class="gallery-card" data-category="cottages" data-src="gallery/IMG_9710.PNG" data-title="Private Villa Courtyard & Sit-Out">
+          <div class="gallery-card-img-wrapper">
+            <img src="gallery/IMG_9710.PNG" alt="Private Villa Courtyard" loading="lazy">
+            <div class="gallery-card-overlay">
+              <div class="zoom-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-info">
+            <span class="gallery-card-category">Cottages & Villas</span>
+            <h3 class="gallery-card-title">Private Villa Courtyard & Sit-Out</h3>
+          </div>
+        </div>
+
+        <!-- 5. IMG_9711 -->
+        <div class="gallery-card" data-category="grounds" data-src="gallery/IMG_9711.PNG" data-title="Main Farmstay Estate at Dusk">
+          <div class="gallery-card-img-wrapper">
+            <img src="gallery/IMG_9711.PNG" alt="Main Farmstay Estate at Dusk" loading="lazy">
+            <div class="gallery-card-overlay">
+              <div class="zoom-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-info">
+            <span class="gallery-card-category">Resort & Grounds</span>
+            <h3 class="gallery-card-title">Main Farmstay Estate at Dusk</h3>
+          </div>
+        </div>
+
+        <!-- 6. IMG_9712 -->
+        <div class="gallery-card" data-category="cottages" data-src="gallery/IMG_9712.PNG" data-title="Manicured Gardens & Pathways">
+          <div class="gallery-card-img-wrapper">
+            <img src="gallery/IMG_9712.PNG" alt="Manicured Gardens & Pathways" loading="lazy">
+            <div class="gallery-card-overlay">
+              <div class="zoom-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-info">
+            <span class="gallery-card-category">Cottages & Villas</span>
+            <h3 class="gallery-card-title">Manicured Gardens & Pathways</h3>
+          </div>
+        </div>
+
+        <!-- 7. IMG_9713 -->
+        <div class="gallery-card" data-category="pool" data-src="gallery/IMG_9713.PNG" data-title="Swimming Pool & Evening Reflection">
+          <div class="gallery-card-img-wrapper">
+            <img src="gallery/IMG_9713.PNG" alt="Swimming Pool & Evening Reflection" loading="lazy">
+            <div class="gallery-card-overlay">
+              <div class="zoom-icon-badge">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="gallery-card-info">
+            <span class="gallery-card-category">Pool & Leisure</span>
+            <h3 class="gallery-card-title">Swimming Pool & Evening Reflection</h3>
+          </div>
+        </div>
+
+
+
+      </div>
+    </section>
+
+    <!-- CALL TO ACTION SECTION -->
+    <section class="gallery-cta-section">
+      <div class="gallery-cta-box">
+        <h2 class="gallery-cta-title">Ready to Experience Foothill in Person?</h2>
+        <p class="gallery-cta-desc">
+          Plan your escape to Daringbadi. Book your stay today and experience elevated luxury living surrounded by nature.
+        </p>
+        <div class="gallery-cta-btns">
+          <a href="stay.html" class="btn-gold">Book Your Stay</a>
+          <a href="https://wa.me/918249659996?text=Hi%2C%20I%20saw%20the%20gallery%20and%20would%20like%20to%20book%20a%20stay%20at%20The%20Foothill%20Farmstay."
+            target="_blank" rel="noopener" class="btn-outline">
+            Book via WhatsApp
+          </a>
+          <a href="tel:+918249659996" class="btn-outline">Call +91 82496 59996</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true" aria-label="Photo View">
+    <div class="lightbox-container">
+      <button class="lightbox-close-btn" id="lightboxClose" aria-label="Close Lightbox">✕</button>
+
+      <button class="lightbox-nav-btn prev" id="lightboxPrev" aria-label="Previous Image">‹</button>
+      <div class="lightbox-img-wrapper">
+        <img id="lightboxImg" src="" alt="Full View">
+      </div>
+      <button class="lightbox-nav-btn next" id="lightboxNext" aria-label="Next Image">›</button>
+
+      <div class="lightbox-caption-bar">
+        <h4 class="lightbox-title" id="lightboxTitle">Photo Caption</h4>
+        <span class="lightbox-counter" id="lightboxCounter">1 of 12</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-logo-text">The Foothill <span>Farmstay</span></div>
+        <ul class="footer-links">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="index.html#about" class="footer-link">About Us</a></li>
+          <li><a href="gallery.html" class="footer-link">Gallery</a></li>
+          <li><a href="index.html#contact" class="footer-link">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 The Foothill Farmstay. All rights reserved.</span>
+        <span>Daringbadi, Odisha</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MOBILE NAVIGATION DRAWER OVERLAY -->
+  <div id="mobile-menu-overlay" class="mobile-menu-overlay" aria-hidden="true">
+    <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close Menu"
+      onclick="toggleMobileMenu()">✕</button>
+    <ul class="mobile-nav-links">
+      <li><a href="index.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a></li>
+      <li><a href="stay.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Stay</a></li>
+      <li><a href="index.html#about" class="mobile-nav-link" onclick="toggleMobileMenu()">About Us</a></li>
+      <li><a href="gallery.html" class="mobile-nav-link active" onclick="toggleMobileMenu()">Gallery</a></li>
+      <li><a href="index.html#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a></li>
+    </ul>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // Navbar Scroll Shadow effect
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }, { passive: true });
+
+    // Mobile Menu Toggle
+    function toggleMobileMenu() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      if (overlay) {
+        overlay.classList.toggle('active');
+      }
+    }
+
+    // Category Filter Tabs
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const galleryCards = document.querySelectorAll('.gallery-card');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filterValue = btn.getAttribute('data-filter');
+
+        galleryCards.forEach(card => {
+          const cardCat = card.getAttribute('data-category');
+          if (filterValue === 'all' || cardCat === filterValue) {
+            card.classList.remove('hidden');
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Lightbox Logic
+    const lightboxModal = document.getElementById('lightboxModal');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+
+    let visibleCards = [];
+    let currentIndex = 0;
+
+    function getVisibleCards() {
+      return Array.from(document.querySelectorAll('.gallery-card:not(.hidden)'));
+    }
+
+    function openLightbox(index) {
+      visibleCards = getVisibleCards();
+      if (!visibleCards.length) return;
+
+      currentIndex = ((index % visibleCards.length) + visibleCards.length) % visibleCards.length;
+      const targetCard = visibleCards[currentIndex];
+
+      const src = targetCard.getAttribute('data-src');
+      const title = targetCard.getAttribute('data-title');
+
+      lightboxImg.src = src;
+      lightboxTitle.textContent = title;
+      lightboxCounter.textContent = `${currentIndex + 1} of ${visibleCards.length}`;
+
+      lightboxModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightboxModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function showNext() {
+      openLightbox(currentIndex + 1);
+    }
+
+    function showPrev() {
+      openLightbox(currentIndex - 1);
+    }
+
+    galleryCards.forEach(card => {
+      card.addEventListener('click', () => {
+        visibleCards = getVisibleCards();
+        const cardIndex = visibleCards.indexOf(card);
+        if (cardIndex !== -1) {
+          openLightbox(cardIndex);
+        }
+      });
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxNext.addEventListener('click', showNext);
+    lightboxPrev.addEventListener('click', showPrev);
+
+    lightboxModal.addEventListener('click', (e) => {
+      if (e.target === lightboxModal) {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (!lightboxModal.classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') showNext();
+      if (e.key === 'ArrowLeft') showPrev();
+    });
+  </script>
+</body>
+
+</html>

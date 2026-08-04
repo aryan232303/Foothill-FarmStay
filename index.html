@@ -14,3397 +14,7 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400..700;1,400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Manrope:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
-
-  <style>
-    /* ==========================================================================
-       DESIGN SYSTEM & CSS VARIABLES
-       ========================================================================== */
-    :root {
-      --bg-dark: #08090c;
-      --bg-surface: #0e1017;
-      --bg-card: rgba(255, 255, 255, 0.025);
-      --bg-card-hover: rgba(255, 255, 255, 0.055);
-      --bg-glass: rgba(8, 9, 12, 0.82);
-
-      --border-color: rgba(255, 255, 255, 0.08);
-      --border-color-hover: rgba(223, 183, 108, 0.35);
-
-      --text-primary: #f7f8f9;
-      --text-secondary: #9aa0a6;
-      --text-muted: #6e747a;
-
-      --accent-gold: #dfb76c;
-      --accent-gold-light: #f4d087;
-      --accent-gold-dark: #b89146;
-      --accent-glow: rgba(223, 183, 108, 0.15);
-
-      --font-heading: 'Playfair Display', 'Gelasio', Georgia, serif;
-      --font-body: 'Manrope', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-
-      --radius-sm: 8px;
-      --radius-md: 16px;
-      --radius-lg: 24px;
-      --radius-pill: 9999px;
-
-      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.5);
-      --shadow-glow: 0 0 30px rgba(223, 183, 108, 0.2);
-
-      --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Reset & Base Styles */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      background-color: var(--bg-dark);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      font-size: 18px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
-      width: 100%;
-    }
-
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      width: 100%;
-      position: relative;
-      line-height: 1.6;
-    }
-
-    /* Accessibility Focus Outline */
-    :focus-visible {
-      outline: 2px solid var(--accent-gold);
-      outline-offset: 4px;
-    }
-
-    /* Grain Overlay */
-    .grain-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 900;
-      opacity: 0.03;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    }
-
-    /* ==========================================================================
-       PRELOADER UI
-       ========================================================================== */
-    #preloader {
-      position: fixed;
-      inset: 0;
-      background-color: var(--bg-dark);
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
-    }
-
-    #preloader.loader-hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      display: none !important;
-    }
-
-    .loader-content {
-      text-align: center;
-      max-width: 340px;
-      width: 90%;
-    }
-
-    .loader-logo {
-      height: 90px;
-      width: auto;
-      object-fit: contain;
-      margin-bottom: 1.25rem;
-      filter: drop-shadow(0 4px 15px rgba(223, 183, 108, 0.3));
-      animation: loaderLogoPulse 2.5s infinite ease-in-out;
-    }
-
-    @keyframes loaderLogoPulse {
-      0%, 100% {
-        transform: scale(1);
-        filter: drop-shadow(0 4px 15px rgba(223, 183, 108, 0.3));
-      }
-      50% {
-        transform: scale(1.04);
-        filter: drop-shadow(0 6px 22px rgba(223, 183, 108, 0.5));
-      }
-    }
-
-    .loader-brand {
-      font-family: var(--font-heading);
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--text-primary);
-      margin-bottom: 2rem;
-      font-weight: 400;
-    }
-
-    .loader-brand span {
-      color: var(--accent-gold);
-    }
-
-    .loader-bar-bg {
-      width: 100%;
-      height: 2px;
-      background: var(--border-color);
-      border-radius: 4px;
-      overflow: hidden;
-      position: relative;
-      margin-bottom: 1.5rem;
-    }
-
-    .loader-bar-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent-gold-dark), var(--accent-gold-light));
-      transition: width 0.15s ease-out;
-      box-shadow: 0 0 12px var(--accent-gold);
-    }
-
-    .loader-status {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.875rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-    }
-
-    .loader-percentage {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      color: var(--accent-gold);
-      font-weight: 600;
-    }
-
-    /* ==========================================================================
-       FLOATING GLASS NAVIGATION BAR (LUXURY HOSPITALITY)
-       ========================================================================== */
-    .navbar {
-      position: fixed;
-      top: 1.25rem;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 85%;
-      max-width: 1150px;
-      z-index: 1000;
-      padding: 0.75rem 1.75rem;
-      background: rgba(12, 12, 12, 0.55);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-      transition: var(--transition-smooth);
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    .navbar.scrolled {
-      top: 0.85rem;
-      background: rgba(10, 10, 10, 0.85);
-      border-color: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6);
-    }
-
-    .nav-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: var(--text-primary);
-    }
-
-    .nav-logo img {
-      height: 38px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
-    }
-
-    .nav-logo-text {
-      font-family: var(--font-heading);
-      font-size: 1.15rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: #ffffff;
-      white-space: nowrap;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: clamp(1.5rem, 2.5vw, 2.5rem);
-      list-style: none;
-    }
-
-    .nav-link {
-      color: rgba(255, 255, 255, 0.75);
-      text-decoration: none;
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 500;
-      transition: var(--transition-smooth);
-      position: relative;
-      padding: 0.3rem 0;
-    }
-
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0%;
-      height: 1px;
-      background: var(--accent-gold);
-      transition: var(--transition-smooth);
-    }
-
-    .nav-link:hover {
-      color: #ffffff;
-    }
-
-    .nav-link:hover::after {
-      width: 100%;
-    }
-
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      min-width: 44px;
-      min-height: 44px;
-      z-index: 1001;
-    }
-
-    /* ==========================================================================
-       GSAP SCROLLTRIGGER PINNED HERO SECTION (100% FIXED UNTIL LAST FRAME)
-       ========================================================================== */
-    .hero-track {
-      position: relative;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .hero-viewport {
-      position: relative;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      overflow: hidden;
-      background-color: var(--bg-dark);
-      z-index: 1;
-      margin: 0;
-      padding: 0;
-    }
-
-    #hero-canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh;
-      display: block;
-      z-index: 1;
-      filter: brightness(0.75) contrast(1.08) saturate(0.9);
-    }
-
-    /* Hero Cinematic Gradient Overlay */
-    .hero-gradient-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      pointer-events: none;
-      background: linear-gradient(to bottom,
-          rgba(8, 10, 14, 0.72) 0%,
-          rgba(8, 10, 14, 0.35) 50%,
-          rgba(8, 10, 14, 0.50) 100%);
-    }
-
-    /* Hero Overlay Content (Left Aligned, 10% From Left, Vertically Centered) */
-    .hero-overlay {
-      position: absolute;
-      top: 52%;
-      left: clamp(1.5rem, 8vw, 10%);
-      transform: translateY(-50%);
-      z-index: 10;
-      width: 90%;
-      max-width: 600px;
-      text-align: left;
-      pointer-events: auto;
-      transition: opacity 0.15s linear;
-      will-change: opacity;
-    }
-
-    .hero-tag {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent-gold);
-      margin-bottom: 0.85rem;
-    }
-
-    .hero-title {
-      font-family: var(--font-heading);
-      font-size: clamp(2.5rem, 4.2vw, 60px);
-      font-weight: 500;
-      line-height: 1.08;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      margin: 0;
-      max-width: 540px;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-    }
-
-    .hero-description {
-      font-family: var(--font-body);
-      font-size: 17px;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 0.88);
-      max-width: 420px;
-      margin: 16px 0 0 0;
-      line-height: 1.7;
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
-    }
-
-    .hero-actions {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      margin-top: 28px;
-    }
-
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.85rem 2.25rem;
-      min-height: 46px;
-      min-width: 44px;
-      background: var(--accent-gold);
-      color: #08090c;
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: var(--radius-pill);
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(223, 183, 108, 0.25);
-      transition: var(--transition-smooth);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(223, 183, 108, 0.4);
-      background: var(--accent-gold-light);
-    }
-
-    /* Minimal Scroll Indicator */
-    .scroll-hint {
-      position: absolute;
-      bottom: 2.25rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.35rem;
-      opacity: 0.75;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-
-    .scroll-hint-label {
-      font-size: 0.7rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.65);
-      font-weight: 500;
-    }
-
-    .scroll-hint-arrow {
-      font-size: 0.85rem;
-      color: var(--accent-gold);
-      animation: scrollArrowAnim 2s infinite ease-in-out;
-    }
-
-    @keyframes scrollArrowAnim {
-
-      0%,
-      100% {
-        transform: translateY(0);
-        opacity: 0.6;
-      }
-
-      50% {
-        transform: translateY(4px);
-        opacity: 1;
-      }
-    }
-
-    /* ScrollFloat Component Styles (React Bits Luxury Variant) */
-    .hero-scroll-float {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 12;
-      width: 90%;
-      max-width: 1000px;
-      text-align: center;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    .scroll-float {
-      overflow: hidden;
-      display: block;
-    }
-
-    .scroll-float-text {
-      display: inline-block;
-      font-family: var(--font-heading);
-      font-size: clamp(1.8rem, 4.8vw, 4.2rem);
-      font-weight: 400;
-      text-align: center;
-      line-height: 1.25;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      color: #ffffff;
-      white-space: normal;
-      text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
-    }
-
-    .char {
-      display: inline-block;
-      will-change: opacity, transform;
-      transform-origin: 50% 0%;
-      opacity: 0;
-    }
-
-    /* Floating Call Now Button */
-    .floating-call-btn {
-      position: fixed;
-      bottom: 90px;
-      right: 132px;
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-gold, #dfb76c), var(--accent-gold-dark, #b89146));
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45), 0 0 20px rgba(223, 183, 108, 0.35);
-      z-index: 9990;
-      text-decoration: none;
-      transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
-      cursor: pointer;
-    }
-
-    body:not(.loaded) .floating-call-btn {
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-
-    .floating-call-btn:hover {
-      transform: scale(1.12) translateY(-2px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 28px rgba(223, 183, 108, 0.6);
-      background: linear-gradient(135deg, var(--accent-gold-light, #f4d087), var(--accent-gold, #dfb76c));
-      color: #ffffff;
-    }
-
-    .floating-call-btn:active {
-      transform: scale(0.95);
-    }
-
-    @media (max-width: 1024px) {
-      .floating-call-btn {
-        display: none !important;
-      }
-    }
-
-    /* Floating Persistent Primary CTA Button (Enlarged, Bottom Right) */
-    .floating-cta-btn {
-      position: fixed;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      z-index: 999999;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.65rem;
-      padding: 1rem 2.25rem;
-      min-width: 210px;
-      background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-dark));
-      color: #08090c;
-      font-family: var(--font-body);
-      font-size: 0.875rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: var(--radius-pill);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 0 25px rgba(223, 183, 108, 0.4);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-      animation: ctaPulse 4s infinite ease-in-out;
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-
-    .floating-cta-btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 32px rgba(223, 183, 108, 0.6);
-      background: var(--accent-gold-light);
-    }
-
-    @keyframes ctaPulse {
-
-      0%,
-      100% {
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45), 0 0 16px rgba(223, 183, 108, 0.25);
-      }
-
-      50% {
-        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55), 0 0 28px rgba(223, 183, 108, 0.55);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .floating-cta-btn {
-        bottom: 1.5rem;
-        right: 1.5rem;
-        width: auto;
-        padding: 0.75rem 1.35rem;
-        font-size: 0.725rem;
-      }
-    }
-
-
-
-    /* ==========================================================================
-       CONTENT SECTIONS (REVEALED ONLY AFTER VIRTUAL SCRUB REACHES 100%)
-       ========================================================================== */
-    .main-content {
-      position: relative;
-      z-index: 20;
-      background-color: var(--bg-dark);
-      margin: 0;
-      padding: 0;
-      box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.9);
-    }
-
-    .section {
-      padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 5vw, 4rem);
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-      scroll-margin-top: 90px;
-    }
-
-    .section-header {
-      text-align: center;
-      max-width: 760px;
-      margin: 0 auto clamp(3rem, 6vw, 5rem) auto;
-    }
-
-    .section-tag {
-      font-size: 0.85rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--accent-gold);
-      margin-bottom: 1rem;
-      display: block;
-      font-weight: 600;
-    }
-
-    .section-title {
-      font-family: var(--font-heading);
-      font-size: clamp(2rem, 4vw + 0.5rem, 3.8rem);
-      font-weight: 400;
-      line-height: 1.15;
-      color: var(--text-primary);
-      margin-bottom: 1.25rem;
-    }
-
-    .section-subtitle {
-      font-size: clamp(1rem, 1.2vw, 1.15rem);
-      color: var(--text-secondary);
-      font-weight: 300;
-      line-height: 1.7;
-    }
-
-    /* ==========================================================================
-       SECTION 1: DISCOVER THE FOOTHILL (EDITORIAL LUXURY — AMAN & SIX SENSES STYLE)
-       ========================================================================== */
-    .section-overview-brochure {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background-color: #F8F3EA;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)' opacity='0.035'/%3E%3C/svg%3E");
-      color: #4A4A4A;
-      position: relative;
-      overflow: hidden;
-      border-radius: 0;
-      padding: clamp(3.5rem, 5vw, 5rem) clamp(1.5rem, 5vw, 4rem) !important;
-    }
-
-    .overview-brochure-container {
-      width: 100%;
-      max-width: 1540px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .brochure-header {
-      text-align: center;
-      max-width: 680px;
-      margin: 0 auto 2.25rem auto;
-    }
-
-    .brochure-tag {
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #C89740;
-      display: inline-block;
-      margin-bottom: 0.75rem;
-      padding: 0.45rem 1.25rem;
-      background: rgba(200, 151, 64, 0.08);
-      border: 1px solid rgba(200, 151, 64, 0.28);
-      border-radius: 9999px;
-    }
-
-    .brochure-tag span {
-      color: #163523;
-    }
-
-    .brochure-title {
-      font-family: var(--font-heading);
-      font-size: clamp(2rem, 3.5vw, 3.2rem);
-      font-weight: 500;
-      line-height: 1.15;
-      color: #163523;
-      margin: 0 0 0.65rem 0;
-    }
-
-    .brochure-intro {
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 400;
-      line-height: 1.65;
-      color: #4A4A4A;
-      max-width: 520px;
-      margin: 0.5rem auto 0 auto;
-    }
-
-    .brochure-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.85rem;
-      margin: 1.25rem auto 0 auto;
-      color: #C89740;
-      font-size: 0.8rem;
-      opacity: 0.85;
-    }
-
-    .brochure-divider::before,
-    .brochure-divider::after {
-      content: '';
-      height: 1px;
-      width: 60px;
-      background: linear-gradient(90deg, transparent, #C89740, transparent);
-    }
-
-    /* 4 Feature Highlights Cards (Compact 120-140px Height) */
-    .brochure-highlights-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      margin-bottom: 3rem;
-    }
-
-    .highlight-card {
-      background: #ffffff;
-      border: 1px solid rgba(22, 53, 35, 0.08);
-      border-radius: 16px;
-      padding: 1.15rem 1.25rem;
-      min-height: 120px;
-      max-height: 138px;
-      box-shadow: 0 6px 20px rgba(22, 53, 35, 0.04);
-      transition: var(--transition-smooth);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-    }
-
-    .highlight-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 28px rgba(22, 53, 35, 0.10);
-      border-color: rgba(200, 151, 64, 0.35);
-    }
-
-    .highlight-icon-wrapper {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: rgba(22, 53, 35, 0.06);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #163523;
-      margin-bottom: 0.65rem;
-      transition: var(--transition-smooth);
-    }
-
-    .highlight-icon-wrapper svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .highlight-card:hover .highlight-icon-wrapper {
-      background: #163523;
-      color: #C89740;
-    }
-
-    .highlight-card h4 {
-      font-family: var(--font-heading);
-      font-size: 1.15rem;
-      font-weight: 600;
-      color: #163523;
-      margin-bottom: 0.2rem;
-      line-height: 1.2;
-    }
-
-    .highlight-card p {
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      line-height: 1.4;
-      color: #555555;
-      margin: 0;
-    }
-
-    /* Main Content Two-Column Layout (Left Paragraph, Right Image) */
-    .brochure-main-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: clamp(1.5rem, 3.5vw, 3.5rem);
-      align-items: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .brochure-content-col {
-      grid-column: span 5;
-      order: 1;
-    }
-
-    .brochure-content-col h3 {
-      font-family: var(--font-heading);
-      font-size: clamp(1.75rem, 2.8vw, 2.3rem);
-      font-weight: 500;
-      color: #163523;
-      margin-bottom: 1.25rem;
-      line-height: 1.2;
-    }
-
-    .brochure-narrative {
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      line-height: 1.75;
-      color: #4A4A4A;
-      margin-bottom: 1.25rem;
-    }
-
-    .brochure-narrative:last-child {
-      margin-bottom: 0;
-    }
-
-    .brochure-img-col {
-      grid-column: span 7;
-      order: 2;
-    }
-
-    .brochure-img-frame {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(22, 53, 35, 0.10);
-      border: 2px solid #EFE4D2;
-    }
-
-    .brochure-img-frame img {
-      width: 100%;
-      height: 410px;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .brochure-img-frame:hover img {
-      transform: scale(1.03);
-    }
-
-    /* Feature Chips (Compact 8px 14px Padding) */
-    .feature-chips-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.5rem;
-    }
-
-    .feature-chip {
-      background: rgba(200, 151, 64, 0.10);
-      border: 1px solid #C89740;
-      color: #163523;
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 8px 14px;
-      border-radius: 9999px;
-      transition: var(--transition-smooth);
-      cursor: default;
-      user-select: none;
-    }
-
-    .feature-chip:hover {
-      background: #C89740;
-      color: #163523;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(200, 151, 64, 0.35);
-    }
-
-    /* Bottom Information (4 Compact 110px Height Stat Blocks) */
-    .brochure-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      padding-top: 1.75rem;
-      border-top: 1px solid rgba(200, 151, 64, 0.25);
-    }
-
-    .hospitality-card {
-      background: #ffffff;
-      border: 1px solid rgba(200, 151, 64, 0.22);
-      border-radius: 16px;
-      padding: 1.1rem 1rem;
-      max-height: 108px;
-      text-align: center;
-      box-shadow: 0 6px 20px rgba(22, 53, 35, 0.04);
-      transition: var(--transition-smooth);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hospitality-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(22, 53, 35, 0.08);
-      border-color: #C89740;
-    }
-
-    .hospitality-icon {
-      color: #C89740;
-      font-size: 0.95rem;
-      margin-bottom: 0.15rem;
-    }
-
-    .hospitality-number {
-      font-family: var(--font-heading);
-      font-size: clamp(1.6rem, 2.2vw, 2.1rem);
-      font-weight: 700;
-      color: #163523;
-      line-height: 1;
-      margin-bottom: 0.15rem;
-    }
-
-    .hospitality-label {
-      font-family: var(--font-body);
-      font-size: 0.725rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #284A33;
-    }
-
-    .brochure-btn-wrapper {
-      text-align: center;
-      margin-top: 2.5rem;
-    }
-
-    .btn-brochure-primary {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.8rem 2.25rem;
-      background: #163523;
-      color: #ffffff;
-      font-family: var(--font-body);
-      font-size: 0.825rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 9999px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 8px 22px rgba(22, 53, 35, 0.18);
-      transition: var(--transition-smooth);
-    }
-
-    .btn-brochure-primary:hover {
-      background: #C89740;
-      color: #163523;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(200, 151, 64, 0.35);
-    }
-
-    /* Responsive Section 1 Adjustments */
-    @media (max-width: 1024px) {
-      .brochure-highlights-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .highlight-card {
-        max-height: none;
-      }
-
-      .brochure-img-col,
-      .brochure-content-col {
-        grid-column: span 12;
-      }
-
-      .brochure-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .hospitality-card {
-        max-height: none;
-      }
-    }
-
-    @media (max-width: 600px) {
-
-      .brochure-highlights-grid,
-      .brochure-stats-grid {
-        grid-template-columns: repeat(1, 1fr);
-      }
-    }
-
-    /* ==========================================================================
-       SECTION 2: WHAT MAKES THE FOOTHILL FARMSTAY UNIQUE (EXACT REFERENCE LAYOUT)
-       ========================================================================== */
-    .section-uniqueness-foothill {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background-color: #F8F3EA;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise2)' opacity='0.035'/%3E%3C/svg%3E");
-      color: #4A4A4A;
-      position: relative;
-      padding: 120px clamp(1.5rem, 5vw, 4rem) !important;
-      border-radius: 0 !important;
-    }
-
-    .uniqueness-container {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .uniqueness-header {
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 5rem auto;
-    }
-
-    .uniqueness-title {
-      font-family: var(--font-heading);
-      font-size: clamp(42px, 5vw, 60px);
-      font-weight: 500;
-      line-height: 1.1;
-      color: #163523;
-      margin: 0 0 1.25rem 0;
-      text-align: center;
-    }
-
-    .uniqueness-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.85rem;
-      margin: 1.25rem auto 0 auto;
-      color: #C89740;
-      font-size: 0.85rem;
-      opacity: 0.85;
-    }
-
-    .uniqueness-divider::before,
-    .uniqueness-divider::after {
-      content: '';
-      height: 1px;
-      width: 60px;
-      background: linear-gradient(90deg, transparent, #C89740, transparent);
-    }
-
-    /* 2 Columns x 3 Rows Centered Grid */
-    .uniqueness-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(320px, 420px));
-      justify-content: center;
-      column-gap: clamp(3rem, 6vw, 7rem);
-      row-gap: 70px;
-      margin: 0 auto;
-    }
-
-    .uniqueness-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1.75rem;
-    }
-
-    /* Icon Box: 78px x 78px, 22px border radius */
-    .uniqueness-icon-box {
-      width: 78px;
-      height: 78px;
-      min-width: 78px;
-      min-height: 78px;
-      border-radius: 22px;
-      background: rgba(200, 151, 64, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #C89740;
-      transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease;
-    }
-
-    .uniqueness-icon-box svg {
-      width: 32px;
-      height: 32px;
-      transition: transform 0.4s ease;
-    }
-
-    .uniqueness-item:hover .uniqueness-icon-box {
-      background: #163523;
-      color: #ffffff;
-      transform: translateY(-2px);
-    }
-
-    .uniqueness-item:hover .uniqueness-icon-box svg {
-      transform: scale(1.08);
-    }
-
-    .uniqueness-item-content {
-      max-width: 320px;
-    }
-
-    .uniqueness-item-content h3 {
-      font-family: var(--font-heading);
-      font-size: 30px;
-      font-weight: 500;
-      color: #163523;
-      margin-bottom: 0.5rem;
-      line-height: 1.2;
-    }
-
-    .uniqueness-item-content p {
-      font-family: var(--font-body);
-      font-size: 17px;
-      line-height: 1.8;
-      color: #666666;
-      margin: 0;
-    }
-
-    @media (max-width: 1024px) {
-      .uniqueness-grid {
-        column-gap: 50px;
-        row-gap: 60px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .uniqueness-grid {
-        grid-template-columns: 1fr;
-        row-gap: 50px;
-      }
-
-      .uniqueness-item-content {
-        max-width: 100%;
-      }
-    }
-
-    .section-overview-brochure,
-    .section-uniqueness-foothill,
-    .section-cottage-tariffs {
-      border: none !important;
-      border-top: none !important;
-      border-bottom: none !important;
-      outline: none !important;
-      box-shadow: none !important;
-    }
-
-    /* ==========================================================================
-       SECTION 3: COTTAGE COLLECTION & PRICE LIST (OFFICIAL BROCHURE TARIFFS)
-       ========================================================================== */
-    .section-cottage-tariffs {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background-color: #F8F3EA;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise3)' opacity='0.035'/%3E%3C/svg%3E");
-      color: #4A4A4A;
-      position: relative;
-      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
-      border: none !important;
-    }
-
-    .tariffs-container {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .tariffs-header {
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 4rem auto;
-    }
-
-    .tariffs-title {
-      font-family: var(--font-heading);
-      font-size: clamp(38px, 4.5vw, 54px);
-      font-weight: 500;
-      line-height: 1.15;
-      color: #163523;
-      margin: 0 0 0.85rem 0;
-    }
-
-    .tariffs-subtitle {
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.7;
-      color: #555555;
-      max-width: 620px;
-      margin: 0.5rem auto 0 auto;
-    }
-
-    /* Cottage Cards Grid (2x2) */
-    .cottages-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 2.5rem;
-      margin-bottom: 5rem;
-    }
-
-    .cottage-card {
-      background: #ffffff;
-      border: 1px solid rgba(200, 151, 64, 0.28);
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 12px 35px rgba(22, 53, 35, 0.06);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .cottage-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 45px rgba(22, 53, 35, 0.12);
-      border-color: rgba(200, 151, 64, 0.5);
-    }
-
-    .cottage-card-img-wrapper {
-      position: relative;
-      height: 250px;
-      overflow: hidden;
-    }
-
-    .cottage-card-img-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .cottage-card:hover .cottage-card-img-wrapper img {
-      transform: scale(1.05);
-    }
-
-    .cottage-badge {
-      position: absolute;
-      top: 1.25rem;
-      left: 1.25rem;
-      background: #163523;
-      color: #C89740;
-      font-family: var(--font-body);
-      font-size: 0.725rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.4rem 1.1rem;
-      border-radius: 9999px;
-      border: 1px solid rgba(200, 151, 64, 0.4);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .cottage-plan-tag {
-      position: absolute;
-      bottom: 1rem;
-      right: 1.25rem;
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(6px);
-      color: #163523;
-      font-family: var(--font-body);
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      padding: 0.3rem 0.85rem;
-      border-radius: 6px;
-      border: 1px solid rgba(22, 53, 35, 0.15);
-    }
-
-    .cottage-card-body {
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .cottage-card-title {
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      font-weight: 500;
-      color: #163523;
-      margin-bottom: 0.75rem;
-    }
-
-    .cottage-features-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem 0.75rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .cottage-feature-pill {
-      font-family: var(--font-body);
-      font-size: 0.78rem;
-      color: #333333;
-      background: rgba(22, 53, 35, 0.05);
-      border: 1px solid rgba(22, 53, 35, 0.1);
-      padding: 0.3rem 0.75rem;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    /* Price Table inside Card */
-    .cottage-price-matrix {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      background: #FBF8F3;
-      border: 1px solid #EFE4D2;
-      border-radius: 14px;
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
-      margin-top: auto;
-    }
-
-    .price-box-item {
-      text-align: center;
-    }
-
-    .price-box-label {
-      font-family: var(--font-body);
-      font-size: 0.725rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #888888;
-      margin-bottom: 0.25rem;
-    }
-
-    .price-box-amount {
-      font-family: var(--font-heading);
-      font-size: 1.85rem;
-      font-weight: 600;
-      color: #163523;
-      line-height: 1.1;
-    }
-
-    .price-box-sub {
-      font-family: var(--font-body);
-      font-size: 0.725rem;
-      color: #666666;
-      margin-top: 0.2rem;
-    }
-
-    .extra-charges-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      color: #555555;
-      padding-top: 0.75rem;
-      border-top: 1px dashed rgba(200, 151, 64, 0.3);
-    }
-
-    .extra-charge-item span {
-      font-weight: 700;
-      color: #163523;
-    }
-
-    /* Comparison Table Section */
-    .brochure-table-wrapper {
-      background: #ffffff;
-      border: 2px solid #C89740;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 16px 40px rgba(22, 53, 35, 0.08);
-    }
-
-    .brochure-table-header {
-      background: #163523;
-      padding: 1.75rem 2rem;
-      text-align: center;
-      border-bottom: 2px solid #C89740;
-    }
-
-    .brochure-table-header h3 {
-      font-family: var(--font-heading);
-      font-size: 1.85rem;
-      font-weight: 500;
-      color: #C89740;
-      margin: 0 0 0.35rem 0;
-      letter-spacing: 0.06em;
-    }
-
-    .brochure-table-header p {
-      font-family: var(--font-body);
-      font-size: 0.85rem;
-      color: #EFE4D2;
-      margin: 0;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .brochure-table-container {
-      overflow-x: auto;
-    }
-
-    .brochure-price-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      font-family: var(--font-body);
-    }
-
-    .brochure-price-table th {
-      background: #1B3F2B;
-      color: #ffffff;
-      font-family: var(--font-heading);
-      font-size: 0.95rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 1.15rem 1rem;
-      border: 1px solid rgba(200, 151, 64, 0.3);
-    }
-
-    .brochure-price-table th small {
-      display: block;
-      font-family: var(--font-body);
-      font-size: 0.725rem;
-      font-weight: 400;
-      text-transform: none;
-      color: #C89740;
-      margin-top: 0.2rem;
-    }
-
-    .brochure-price-table td {
-      padding: 1.25rem 1rem;
-      border: 1px solid #EFE4D2;
-      font-size: 0.9rem;
-      color: #333333;
-      vertical-align: middle;
-    }
-
-    .brochure-price-table tr:nth-child(even) td {
-      background: #FBF8F3;
-    }
-
-    .brochure-price-table tr:hover td {
-      background: rgba(200, 151, 64, 0.06);
-    }
-
-    .tbl-category-name {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #163523;
-      text-align: left;
-      padding-left: 1.5rem !important;
-    }
-
-    .tbl-category-features {
-      font-family: var(--font-body);
-      font-size: 0.78rem;
-      color: #666666;
-      margin-top: 0.35rem;
-      line-height: 1.45;
-    }
-
-    .tbl-price {
-      font-family: var(--font-heading);
-      font-size: 1.6rem;
-      font-weight: 600;
-      color: #163523;
-      line-height: 1.1;
-    }
-
-    .tbl-price-sub {
-      font-family: var(--font-body);
-      font-size: 0.725rem;
-      color: #777777;
-      margin-top: 0.25rem;
-    }
-
-    @media (max-width: 992px) {
-      .cottages-cards-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-    }
-
-    /* ==========================================================================
-       SECTION 4: EVENT SPACES (CONFERENCE HALL & THE LAWN)
-       ========================================================================== */
-    .section-event-spaces {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background-color: #F8F3EA;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise4'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise4)' opacity='0.035'/%3E%3C/svg%3E");
-      color: #4A4A4A;
-      position: relative;
-      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
-      border: none !important;
-    }
-
-    .events-container {
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .events-header {
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 4.5rem auto;
-    }
-
-    .events-title {
-      font-family: var(--font-heading);
-      font-size: clamp(38px, 4.5vw, 54px);
-      font-weight: 500;
-      line-height: 1.15;
-      color: #163523;
-      margin: 0 0 0.85rem 0;
-      letter-spacing: 0.04em;
-    }
-
-    .events-subtitle {
-      font-family: var(--font-body);
-      font-size: 17px;
-      line-height: 1.6;
-      color: #555555;
-      max-width: 580px;
-      margin: 0.5rem auto 0 auto;
-    }
-
-    /* Event Space Cards Stack */
-    .event-spaces-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 4rem;
-    }
-
-    .event-space-card {
-      display: grid;
-      grid-template-columns: 1fr 1.1fr;
-      gap: 3.5rem;
-      align-items: center;
-      background: #ffffff;
-      border: 1px solid rgba(200, 151, 64, 0.28);
-      border-radius: 24px;
-      padding: 3rem;
-      box-shadow: 0 16px 40px rgba(22, 53, 35, 0.06);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .event-space-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 24px 50px rgba(22, 53, 35, 0.1);
-      border-color: rgba(200, 151, 64, 0.45);
-    }
-
-    .event-space-card.reverse {
-      grid-template-columns: 1.1fr 1fr;
-    }
-
-    .event-space-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .event-icon-badge {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: rgba(200, 151, 64, 0.1);
-      border: 1px solid rgba(200, 151, 64, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #C89740;
-      margin-bottom: 1.25rem;
-    }
-
-    .event-space-title {
-      font-family: var(--font-heading);
-      font-size: 2.25rem;
-      font-weight: 500;
-      color: #163523;
-      margin: 0 0 0.85rem 0;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .event-space-desc {
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.75;
-      color: #555555;
-      margin-bottom: 2rem;
-    }
-
-    .event-specs-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .event-spec-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: #333333;
-      background: #FBF8F3;
-      border: 1px solid #EFE4D2;
-      padding: 0.75rem 1rem;
-      border-radius: 12px;
-    }
-
-    .event-spec-icon {
-      color: #C89740;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-    }
-
-    .event-space-image-wrapper {
-      position: relative;
-      height: 380px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      border: 1px solid rgba(200, 151, 64, 0.2);
-    }
-
-    .event-space-image-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .event-space-card:hover .event-space-image-wrapper img {
-      transform: scale(1.04);
-    }
-
-    @media (max-width: 992px) {
-
-      .event-space-card,
-      .event-space-card.reverse {
-        grid-template-columns: 1fr;
-        padding: 2rem;
-        gap: 2rem;
-      }
-
-      .event-space-card.reverse .event-space-image-wrapper {
-        order: -1;
-      }
-
-      .event-space-image-wrapper {
-        height: 280px;
-      }
-
-      .event-specs-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* ==========================================================================
-       SECTION 5: LOCATION & NEARBY ATTRACTIONS (DIAGONAL ROADMAP TRAIL)
-       ========================================================================== */
-    .section-location-map {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background-color: #F8F3EA;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise5'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise5)' opacity='0.035'/%3E%3C/svg%3E");
-      color: #4A4A4A;
-      position: relative;
-      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
-      border: none !important;
-      overflow: hidden;
-    }
-
-    .location-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .location-header {
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 4rem auto;
-    }
-
-    .location-title {
-      font-family: var(--font-heading);
-      font-size: clamp(38px, 4.5vw, 54px);
-      font-weight: 500;
-      line-height: 1.15;
-      color: #163523;
-      margin: 0 0 0.85rem 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-    }
-
-    .location-title-icon {
-      color: #A45331;
-    }
-
-    .location-subtitle {
-      font-family: var(--font-body);
-      font-size: 17px;
-      line-height: 1.6;
-      color: #555555;
-      margin: 0.5rem auto 0 auto;
-    }
-
-    /* Diagonal Trail Container */
-    .map-trail-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 1000px;
-      min-height: 950px;
-      margin: 0 auto;
-    }
-
-    .map-svg-line {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    /* Individual Nodes on Diagonal Path */
-    .map-node {
-      position: absolute;
-      z-index: 3;
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      transition: transform 0.3s ease;
-    }
-
-    .map-node:hover {
-      transform: translateY(-4px);
-    }
-
-    /* Node Positioning (Diagonal Staircase Layout matching reference) */
-    .node-midubanda {
-      left: 4%;
-      top: 88%;
-    }
-
-    .node-rainbow {
-      left: 24%;
-      top: 76%;
-    }
-
-    .node-farmstay {
-      left: 22%;
-      top: 58%;
-    }
-
-    .node-pine {
-      left: 34%;
-      top: 43%;
-    }
-
-    .node-coffee {
-      left: 46%;
-      top: 29%;
-    }
-
-    .node-daringbadi {
-      left: 60%;
-      top: 15%;
-    }
-
-    .node-sunset {
-      left: 32%;
-      top: 5%;
-    }
-
-    .node-pin-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .node-pin {
-      width: 44px;
-      height: 44px;
-      border-radius: 50% 50% 50% 0;
-      background: #A45331;
-      transform: rotate(-45deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 8px 20px rgba(164, 83, 49, 0.35);
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-
-    .map-node:hover .node-pin {
-      background: #163523;
-      transform: rotate(-45deg) scale(1.1);
-    }
-
-    .node-pin-icon {
-      transform: rotate(45deg);
-      color: #ffffff;
-      font-size: 1.1rem;
-    }
-
-    /* Special Highlight for Foothill Farm Stay Node */
-    .node-farmstay .node-pin {
-      width: 58px;
-      height: 58px;
-      background: #163523;
-      border: 2px solid #C89740;
-      box-shadow: 0 10px 25px rgba(22, 53, 35, 0.4);
-    }
-
-    .node-farmstay .node-pin-icon {
-      color: #C89740;
-      font-size: 1.4rem;
-    }
-
-    .node-card {
-      background: #ffffff;
-      border: 1px solid rgba(200, 151, 64, 0.3);
-      border-radius: 16px;
-      padding: 0.85rem 1.35rem;
-      box-shadow: 0 10px 30px rgba(22, 53, 35, 0.08);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      min-width: 220px;
-    }
-
-    .node-farmstay .node-card {
-      background: #163523;
-      color: #ffffff;
-      border-color: #C89740;
-      box-shadow: 0 12px 35px rgba(22, 53, 35, 0.25);
-    }
-
-    .node-icon-circle {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #FBF8F3;
-      border: 1px solid rgba(200, 151, 64, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      flex-shrink: 0;
-    }
-
-    .node-farmstay .node-icon-circle {
-      background: rgba(200, 151, 64, 0.15);
-      border-color: #C89740;
-    }
-
-    .node-title {
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #163523;
-      margin: 0;
-      line-height: 1.2;
-    }
-
-    .node-farmstay .node-title {
-      color: #C89740;
-      font-size: 1.35rem;
-    }
-
-    .node-dist {
-      font-family: var(--font-body);
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #888888;
-      margin-top: 0.2rem;
-    }
-
-    .node-farmstay .node-dist {
-      color: #EFE4D2;
-    }
-
-    @media (max-width: 868px) {
-      .map-trail-wrapper {
-        min-height: 1100px;
-      }
-
-      .node-midubanda {
-        left: 2%;
-        top: 90%;
-      }
-
-      .node-rainbow {
-        left: 15%;
-        top: 76%;
-      }
-
-      .node-farmstay {
-        left: 10%;
-        top: 60%;
-      }
-
-      .node-pine {
-        left: 25%;
-        top: 45%;
-      }
-
-      .node-coffee {
-        left: 35%;
-        top: 30%;
-      }
-
-      .node-daringbadi {
-        left: 45%;
-        top: 16%;
-      }
-
-      .node-sunset {
-        left: 20%;
-        top: 4%;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .map-trail-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        min-height: auto;
-      }
-
-      .map-svg-line {
-        display: none;
-      }
-
-      .map-node {
-        position: relative;
-        left: 0 !important;
-        top: 0 !important;
-        width: 100%;
-      }
-
-      .node-card {
-        width: 100%;
-      }
-    }
-
-    /* ==========================================================================
-       SECTION: RESORT AMENITIES
-       ========================================================================== */
-    .section-resort-amenities {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background-color: #F8F3EA;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise6'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise6)' opacity='0.035'/%3E%3C/svg%3E");
-      color: #4A4A4A;
-      position: relative;
-      padding: 90px clamp(1.5rem, 5vw, 4rem) !important;
-      border: none !important;
-    }
-
-    .amenities-container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .amenities-header {
-      text-align: center;
-      max-width: 780px;
-      margin: 0 auto 3.5rem auto;
-    }
-
-    .amenities-title {
-      font-family: var(--font-heading);
-      font-size: clamp(38px, 4.5vw, 54px);
-      font-weight: 500;
-      line-height: 1.15;
-      color: #163523;
-      margin: 0 0 0.85rem 0;
-    }
-
-    .amenities-subtitle {
-      font-family: var(--font-body);
-      font-size: 16px;
-      line-height: 1.6;
-      color: #555555;
-      margin: 0.5rem auto 0 auto;
-    }
-
-    /* 2 Columns x 5 Rows Grid matching Brochure Layout */
-    .brochure-amenities-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: clamp(3rem, 7vw, 8rem);
-      row-gap: 2.25rem;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .brochure-amenity-card {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      padding: 1.25rem 1.5rem;
-      background: #ffffff;
-      border: 1px solid rgba(200, 151, 64, 0.25);
-      border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(22, 53, 35, 0.05);
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-
-    .brochure-amenity-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 14px 35px rgba(22, 53, 35, 0.1);
-      border-color: rgba(200, 151, 64, 0.5);
-    }
-
-    .brochure-amenity-icon {
-      width: 52px;
-      height: 52px;
-      min-width: 52px;
-      border-radius: 14px;
-      background: rgba(22, 53, 35, 0.06);
-      border: 1px solid rgba(22, 53, 35, 0.12);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #163523;
-      transition: background 0.3s ease, color 0.3s ease;
-    }
-
-    .brochure-amenity-card:hover .brochure-amenity-icon {
-      background: #163523;
-      color: #C89740;
-    }
-
-    .brochure-amenity-title {
-      font-family: var(--font-heading);
-      font-size: 1.35rem;
-      font-weight: 500;
-      color: #163523;
-      margin: 0;
-      line-height: 1.2;
-    }
-
-    @media (max-width: 768px) {
-      .brochure-amenities-grid {
-        grid-template-columns: 1fr;
-        row-gap: 1.25rem;
-      }
-    }
-
-    /* ==========================================================================
-       BOOK NOW — WHATSAPP CTA BUTTON (rooms + events)
-       ========================================================================== */
-    .btn-book-now {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      margin-top: 1.25rem;
-      padding: 0.85rem 1.6rem;
-      width: 100%;
-      justify-content: center;
-      background: #25D366;
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 12px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-    }
-
-    .btn-book-now:hover {
-      background: #1ebe5d;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
-    }
-
-    .btn-book-now svg {
-      flex-shrink: 0;
-    }
-
-    /* Book Now on event space cards */
-    .event-book-now {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.55rem;
-      margin-top: 1.5rem;
-      padding: 0.85rem 1.8rem;
-      background: #25D366;
-      color: #fff;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
-      box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
-    }
-
-    .event-book-now:hover {
-      background: #1ebe5d;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
-    }
-
-    /* ==========================================================================
-       SECTION: CONTACT US
-       ========================================================================== */
-    .section-contact {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background: #F8F3EA;
-      color: #163523;
-      padding: 100px clamp(1.5rem, 5vw, 4rem) !important;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .contact-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
-      position: relative;
-      z-index: 2;
-    }
-
-    .contact-info-col {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-    }
-
-    .contact-tag {
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: #C89740;
-      margin-bottom: 1rem;
-    }
-
-    .contact-title {
-      font-family: var(--font-heading);
-      font-size: clamp(36px, 4vw, 52px);
-      font-weight: 500;
-      line-height: 1.12;
-      color: #163523;
-      margin: 0 0 0.5rem 0;
-    }
-
-    .contact-title span {
-      color: #C89740;
-    }
-
-    .contact-divider {
-      width: 60px;
-      height: 2px;
-      background: #C89740;
-      margin: 1.5rem 0 2rem 0;
-      border-radius: 2px;
-    }
-
-
-
-    .contact-details-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .contact-detail-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .contact-detail-icon {
-      width: 42px;
-      height: 42px;
-      min-width: 42px;
-      border-radius: 50%;
-      border: 1px solid rgba(200, 151, 64, 0.4);
-      background: rgba(200, 151, 64, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #C89740;
-    }
-
-    .contact-detail-text {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      color: #163523;
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-
-    .contact-detail-text:hover {
-      color: #C89740;
-    }
-
-    /* Contact Form */
-    .contact-form-col {}
-
-    .contact-form-title {
-      font-family: var(--font-heading);
-      font-size: 1.6rem;
-      font-weight: 500;
-      color: #163523;
-      margin: 0 0 1.75rem 0;
-    }
-
-    .contact-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.1rem;
-    }
-
-    .contact-form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .contact-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .contact-field label {
-      font-family: var(--font-body);
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(200, 151, 64, 0.8);
-    }
-
-    .contact-field input,
-    .contact-field select,
-    .contact-field textarea {
-      padding: 0.85rem 1rem;
-      background: #ffffff;
-      border: 1px solid rgba(22, 53, 35, 0.15);
-      border-radius: 10px;
-      color: #163523;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      transition: border-color 0.2s ease, background 0.2s ease;
-      outline: none;
-    }
-
-    .contact-field input:focus,
-    .contact-field select:focus,
-    .contact-field textarea:focus {
-      border-color: #C89740;
-      background: #ffffff;
-    }
-
-    .contact-field input::placeholder,
-    .contact-field textarea::placeholder {
-      color: rgba(22, 53, 35, 0.4);
-    }
-
-    .contact-field select option {
-      background: #ffffff;
-      color: #163523;
-    }
-
-    .contact-field textarea {
-      resize: vertical;
-      min-height: 110px;
-    }
-
-    .contact-submit-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      padding: 1rem 2rem;
-      background: var(--accent-gold);
-      color: #163523;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      margin-top: 0.5rem;
-    }
-
-    .contact-submit-btn:hover {
-      background: var(--accent-gold-dark);
-      color: #ffffff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(200, 151, 64, 0.3);
-    }
-
-    .contact-wa-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.6rem;
-      padding: 1rem 2rem;
-      background: #163523;
-      color: #ffffff;
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.2s ease;
-      margin-top: 0.5rem;
-    }
-
-    .contact-wa-btn:hover {
-      background: #0f2719;
-      color: #ffffff;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(22, 53, 35, 0.3);
-    }
-
-    .contact-btns-row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    /* ==========================================================================
-       SECTION: FAQ (LUXURY ACCORDION THEME)
-       ========================================================================== */
-    .section-faq {
-      width: 100% !important;
-      max-width: 100% !important;
-      margin: 0 !important;
-      background: #F8F3EA;
-      color: #163523;
-      padding: 90px clamp(1.5rem, 5vw, 4rem) !important;
-      position: relative;
-      z-index: 20;
-      overflow: hidden;
-    }
-
-    .faq-container {
-      max-width: 960px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 2;
-    }
-
-    .faq-header {
-      text-align: center;
-      margin-bottom: 3.5rem;
-    }
-
-    .faq-tag {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: #C89740;
-      margin-bottom: 0.85rem;
-      font-weight: 700;
-    }
-
-    .faq-title {
-      font-family: var(--font-heading);
-      font-size: clamp(32px, 3.8vw, 48px);
-      font-weight: 500;
-      color: #163523;
-      margin-bottom: 0.85rem;
-      line-height: 1.15;
-    }
-
-    .faq-subtitle {
-      font-family: var(--font-body);
-      color: rgba(22, 53, 35, 0.75);
-      font-size: 1.05rem;
-      max-width: 640px;
-      margin: 0 auto;
-      line-height: 1.65;
-    }
-
-    .faq-accordion {
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .faq-item {
-      background: #ffffff;
-      border: 1px solid rgba(200, 151, 64, 0.25);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(22, 53, 35, 0.05);
-      transition: border-color 0.35s ease, background-color 0.35s ease, box-shadow 0.35s ease, transform 0.3s ease;
-    }
-
-    .faq-item:hover {
-      border-color: #C89740;
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(200, 151, 64, 0.18);
-    }
-
-    .faq-item[open] {
-      border-color: #C89740;
-      background: #F5EFE4;
-      box-shadow: 0 12px 35px rgba(22, 53, 35, 0.08), 0 0 20px rgba(200, 151, 64, 0.12);
-    }
-
-    .faq-question {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.25rem;
-      padding: 1.45rem 1.85rem;
-      font-family: var(--font-heading);
-      font-size: 1.15rem;
-      font-weight: 500;
-      color: #163523;
-      cursor: pointer;
-      list-style: none !important;
-      user-select: none;
-      transition: color 0.3s ease;
-    }
-
-    /* Reset default browser summary disclosure markers completely */
-    .faq-question::-webkit-details-marker,
-    .faq-question::marker {
-      display: none !important;
-      content: "" !important;
-    }
-
-    .faq-item[open] .faq-question {
-      color: #C89740;
-    }
-
-    .faq-icon-badge {
-      width: 34px;
-      height: 34px;
-      min-width: 34px;
-      border-radius: 50%;
-      background: rgba(200, 151, 64, 0.1);
-      border: 1px solid rgba(200, 151, 64, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #C89740;
-      font-size: 0.9rem;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
-
-    .faq-item[open] .faq-icon-badge {
-      transform: rotate(180deg);
-      background: #C89740;
-      color: #ffffff;
-      border-color: #C89740;
-      box-shadow: 0 4px 15px rgba(200, 151, 64, 0.3);
-    }
-
-    .faq-answer {
-      padding: 0 1.85rem 1.65rem 1.85rem;
-      font-family: var(--font-body);
-      color: rgba(22, 53, 35, 0.82);
-      font-size: 0.975rem;
-      line-height: 1.75;
-      border-top: 1px solid rgba(200, 151, 64, 0.15);
-      margin-top: 0.2rem;
-      padding-top: 1.15rem;
-    }
-
-    /* Live Google Maps Integration */
-    .map-embed-wrapper {
-      margin-top: 3.5rem;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 12px 40px rgba(22, 53, 35, 0.12);
-      border: 1px solid rgba(200, 151, 64, 0.3);
-      position: relative;
-      background: #ffffff;
-    }
-
-    .map-embed-iframe {
-      width: 100%;
-      height: 420px;
-      border: 0;
-      display: block;
-      filter: saturate(0.95) contrast(1.02);
-    }
-
-    .map-embed-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.25rem 2rem;
-      background: #ffffff;
-      border-top: 1px solid rgba(22, 53, 35, 0.08);
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .map-embed-info {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      color: #163523;
-      font-family: var(--font-heading);
-      font-size: 1.1rem;
-      font-weight: 500;
-    }
-
-    .map-embed-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.75rem 1.6rem;
-      background: #163523;
-      color: #ffffff;
-      font-family: var(--font-body);
-      font-size: 0.875rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(22, 53, 35, 0.2);
-    }
-
-    .map-embed-btn:hover {
-      background: #C89740;
-      color: #163523;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(200, 151, 64, 0.3);
-    }
-
-    @media (max-width: 900px) {
-      .contact-container {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      .contact-form-row {
-        grid-template-columns: 1fr;
-      }
-    }
-
-
-    .image-card {
-      position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      box-shadow: var(--shadow-md);
-    }
-
-    .image-card img {
-      width: 100%;
-      height: 100%;
-      max-height: 520px;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .image-card:hover img {
-      transform: scale(1.04);
-    }
-
-    /* Section 2: Villas Showcase Cards */
-    .villas-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: clamp(1.5rem, 3vw, 2.5rem);
-    }
-
-    .villa-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      transition: var(--transition-smooth);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .villa-card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-color-hover);
-      transform: translateY(-8px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .villa-img-wrapper {
-      position: relative;
-      height: 260px;
-      overflow: hidden;
-    }
-
-    .villa-img-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .villa-card:hover .villa-img-wrapper img {
-      transform: scale(1.06);
-    }
-
-    .villa-badge {
-      position: absolute;
-      top: 1.25rem;
-      right: 1.25rem;
-      padding: 0.4rem 1rem;
-      background: rgba(8, 9, 12, 0.8);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border-color-gold);
-      border-radius: var(--radius-pill);
-      color: var(--accent-gold);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .villa-body {
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
-    }
-
-    .villa-title {
-      font-family: var(--font-heading);
-      font-size: clamp(1.5rem, 2vw, 1.85rem);
-      font-weight: 500;
-      margin-bottom: 0.75rem;
-      color: var(--text-primary);
-    }
-
-    .villa-desc {
-      color: var(--text-secondary);
-      font-size: 0.95rem;
-      line-height: 1.65;
-      margin-bottom: 1.5rem;
-      font-weight: 300;
-    }
-
-    .villa-specs {
-      display: flex;
-      gap: 1.25rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border-color);
-      margin-top: auto;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .villa-specs span {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    /* Section 3: Amenities Grid */
-    .amenities-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.75rem;
-    }
-
-    .amenity-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 2.25rem 1.75rem;
-      transition: var(--transition-smooth);
-    }
-
-    .amenity-item:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-color-hover);
-      transform: translateY(-5px);
-    }
-
-    .amenity-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: rgba(223, 183, 108, 0.1);
-      border: 1px solid rgba(223, 183, 108, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-gold);
-      font-size: 1.35rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .amenity-title {
-      font-family: var(--font-heading);
-      font-size: 1.4rem;
-      font-weight: 500;
-      margin-bottom: 0.75rem;
-    }
-
-    .amenity-text {
-      color: var(--text-secondary);
-      font-size: 0.925rem;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    /* Section 4: Visual Gallery */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 1.5rem;
-    }
-
-    .gallery-item {
-      position: relative;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--border-color);
-      height: 320px;
-    }
-
-    .gallery-item.col-4 {
-      grid-column: span 4;
-    }
-
-    .gallery-item.col-8 {
-      grid-column: span 8;
-    }
-
-    .gallery-item.col-6 {
-      grid-column: span 6;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.05);
-    }
-
-    .gallery-caption {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(8, 9, 12, 0.85) 0%, transparent 60%);
-      padding: 1.5rem;
-      display: flex;
-      align-items: flex-end;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .gallery-item:hover .gallery-caption {
-      opacity: 1;
-    }
-
-    .gallery-caption-text {
-      font-family: var(--font-heading);
-      font-size: 1.25rem;
-      color: var(--text-primary);
-    }
-
-    /* Section 5: Inquiry & Reservation Form */
-    .inquiry-box {
-      background: linear-gradient(135deg, rgba(14, 16, 23, 0.9), rgba(8, 9, 12, 0.95));
-      border: 1px solid var(--border-color-gold);
-      border-radius: var(--radius-lg);
-      padding: clamp(2rem, 5vw, 4rem);
-      box-shadow: var(--shadow-md), var(--shadow-glow);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .form-group.full-width {
-      grid-column: span 2;
-    }
-
-    .form-label {
-      font-size: 0.85rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    .form-input,
-    .form-select,
-    .form-textarea {
-      width: 100%;
-      padding: 0.9rem 1.25rem;
-      min-height: 48px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      transition: var(--transition-smooth);
-    }
-
-    .form-input:focus,
-    .form-select:focus,
-    .form-textarea:focus {
-      border-color: var(--accent-gold);
-      background: rgba(255, 255, 255, 0.06);
-      box-shadow: 0 0 15px rgba(223, 183, 108, 0.15);
-    }
-
-    .form-select option {
-      background: var(--bg-surface);
-      color: var(--text-primary);
-    }
-
-    /* Modal Confirmation */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(8, 9, 12, 0.85);
-      backdrop-filter: blur(12px);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: var(--transition-smooth);
-    }
-
-    .modal-overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .modal-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color-gold);
-      border-radius: var(--radius-lg);
-      padding: 3rem 2.5rem;
-      max-width: 480px;
-      width: 90%;
-      text-align: center;
-      box-shadow: var(--shadow-md), var(--shadow-glow);
-    }
-
-    .modal-icon {
-      font-size: 3rem;
-      color: var(--accent-gold);
-      margin-bottom: 1rem;
-    }
-
-    .modal-title {
-      font-family: var(--font-heading);
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    .modal-desc {
-      color: var(--text-secondary);
-      font-weight: 300;
-      margin-bottom: 2rem;
-    }
-
-    /* Footer */
-    .footer {
-      border-top: 1px solid var(--border-color);
-      padding: 4rem 1.25rem 2rem 1.25rem;
-      background: #050608;
-    }
-
-    .footer-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-    }
-
-    .footer-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
-
-    .footer-logo-text {
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-      flex-wrap: wrap;
-    }
-
-    .footer-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: var(--transition-smooth);
-    }
-
-    .footer-link:hover {
-      color: var(--accent-gold);
-    }
-
-    .footer-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-top: 2rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    /* ==========================================================================
-       INTERSECTION OBSERVER REVEAL ANIMATIONS
-       ========================================================================== */
-    .reveal {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.4s ease-out, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      will-change: opacity, transform;
-    }
-
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .delay-1 {
-      transition-delay: 0.08s;
-    }
-
-    .delay-2 {
-      transition-delay: 0.15s;
-    }
-
-    .delay-3 {
-      transition-delay: 0.22s;
-    }
-
-    .delay-4 {
-      transition-delay: 0.29s;
-    }
-
-    .delay-5 {
-      transition-delay: 0.36s;
-    }
-
-    .delay-6 {
-      transition-delay: 0.43s;
-    }
-
-    .delay-7 {
-      transition-delay: 0.50s;
-    }
-
-    .delay-8 {
-      transition-delay: 0.57s;
-    }
-
-    .delay-9 {
-      transition-delay: 0.64s;
-    }
-
-    .delay-10 {
-      transition-delay: 0.70s;
-    }
-
-    /* ==========================================================================
-       RESPONSIVE BREAKPOINTS & MOBILE DRAWER CSS
-       ========================================================================== */
-    .mobile-menu-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 10, 10, 0.95);
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
-    }
-
-    .mobile-menu-overlay.active {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    .mobile-menu-close {
-      position: absolute;
-      top: 1.5rem;
-      right: 1.5rem;
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 2rem;
-      cursor: pointer;
-    }
-
-    .mobile-nav-links {
-      list-style: none;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      gap: 1.75rem;
-    }
-
-    .mobile-nav-link {
-      color: var(--text-primary);
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .mobile-nav-link:hover {
-      color: var(--accent-gold);
-    }
-
-    @media (max-width: 1024px) {
-      .navbar {
-        width: 90%;
-        padding: 0.65rem 1.25rem;
-      }
-
-      .nav-links {
-        display: none !important;
-      }
-
-      .menu-toggle {
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .overview-text-col,
-      .overview-image-col {
-        grid-column: span 12;
-      }
-
-      .gallery-item.col-4,
-      .gallery-item.col-8,
-      .gallery-item.col-6 {
-        grid-column: span 6;
-      }
-    }
-
-    @media (max-width: 768px) {
-      html {
-        font-size: 14px !important;
-      }
-
-      /* Compact Mobile Section Padding */
-      .section {
-        padding: 3rem 1.15rem !important;
-      }
-
-      .section-contact,
-      .section-faq {
-        padding: 3.25rem 1.15rem !important;
-      }
-
-      /* Compact Mobile Heading Typography */
-      .brochure-title,
-      .uniqueness-title,
-      .tariffs-title,
-      .amenities-title,
-      .events-title,
-      .location-title,
-      .faq-title,
-      .contact-title {
-        font-size: clamp(1.45rem, 5vw, 1.95rem) !important;
-        margin-bottom: 0.45rem !important;
-        line-height: 1.25 !important;
-      }
-
-      .brochure-subtitle,
-      .events-subtitle,
-      .location-subtitle,
-      .faq-subtitle {
-        font-size: 0.85rem !important;
-        margin-bottom: 1.35rem !important;
-        line-height: 1.5 !important;
-      }
-
-      .brochure-tag,
-      .faq-tag,
-      .contact-tag {
-        font-size: 0.65rem !important;
-        margin-bottom: 0.45rem !important;
-        letter-spacing: 0.16em !important;
-      }
-
-      .uniqueness-divider {
-        font-size: 0.7rem !important;
-        margin: 0.6rem 0 1.25rem 0 !important;
-      }
-
-      /* Compact Mobile Cards Layout */
-      .brochure-highlights-grid,
-      .uniqueness-grid,
-      .tariffs-grid,
-      .brochure-amenities-grid,
-      .faq-accordion {
-        gap: 0.75rem !important;
-      }
-
-      .highlight-card,
-      .uniqueness-item,
-      .cottage-card,
-      .brochure-amenity-card,
-      .event-space-card,
-      .faq-item {
-        padding: 1rem 1.15rem !important;
-        border-radius: 14px !important;
-      }
-
-      /* Compact Card Headers & Text */
-      .highlight-title,
-      .uniqueness-item h3,
-      .cottage-title,
-      .brochure-amenity-title,
-      .event-space-title,
-      .faq-question {
-        font-size: 1rem !important;
-        padding: 0.95rem 1.15rem !important;
-      }
-
-      .highlight-desc,
-      .uniqueness-item p,
-      .cottage-desc,
-      .event-space-desc,
-      .faq-answer {
-        font-size: 0.85rem !important;
-        line-height: 1.5 !important;
-        padding: 0 1.15rem 1rem 1.15rem !important;
-      }
-
-      /* Compact Icon Badges */
-      .highlight-icon-badge,
-      .uniqueness-icon-badge,
-      .event-icon-badge,
-      .faq-icon-badge {
-        width: 34px !important;
-        height: 34px !important;
-        min-width: 34px !important;
-        font-size: 0.85rem !important;
-      }
-
-      /* Compact Mobile Buttons */
-      .btn-primary,
-      .btn-secondary,
-      .btn-brochure-primary,
-      .contact-submit-btn,
-      .contact-wa-btn,
-      .map-embed-btn,
-      .event-book-now {
-        padding: 0.7rem 1.25rem !important;
-        font-size: 0.8rem !important;
-        border-radius: 10px !important;
-      }
-
-      .contact-btns-row {
-        flex-direction: column !important;
-        gap: 0.75rem !important;
-      }
-
-      .map-embed-iframe {
-        height: 270px !important;
-      }
-
-      .map-embed-bar {
-        padding: 0.9rem 1.15rem !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-      }
-
-      .map-embed-btn {
-        width: 100% !important;
-        justify-content: center !important;
-      }
-
-      .navbar {
-        width: 92%;
-        padding: 0.45rem 0.9rem;
-      }
-
-      .nav-container {
-        gap: 0.5rem;
-      }
-
-      .nav-logo {
-        gap: 0.4rem;
-      }
-
-      .nav-logo img {
-        height: 26px;
-      }
-
-      .nav-logo-text {
-        display: inline-block !important;
-        font-size: clamp(0.62rem, 2.4vw, 0.75rem) !important;
-        letter-spacing: 0.05em !important;
-        white-space: nowrap !important;
-      }
-
-      .stats-row {
-        grid-template-columns: repeat(1, 1fr);
-        gap: 1.25rem;
-      }
-
-      .gallery-item.col-6,
-      .gallery-item.col-4,
-      .gallery-item.col-8 {
-        grid-column: span 12;
-        height: 240px;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .form-group.full-width {
-        grid-column: span 1;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-        width: 100%;
-      }
-
-      .btn-primary,
-      .btn-secondary {
-        width: 100%;
-      }
-    }
-
-    /* Landscape Phone Optimization (~740x360) */
-    @media (max-height: 480px) and (orientation: landscape) {
-      .hero-subtitle {
-        margin-bottom: 0.5rem;
-      }
-
-      .hero-title {
-        font-size: 2.2rem;
-        margin-bottom: 0.5rem;
-      }
-
-      .hero-description {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
-
-      .hero-actions {
-        flex-direction: row;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -3430,17 +40,16 @@
   <!-- Navigation Bar -->
   <header class="navbar" id="navbar">
     <div class="nav-container">
-      <a href="#" class="nav-logo" aria-label="The Foothill Farmstay Homepage">
+      <a href="index.html" class="nav-logo" aria-label="The Foothill Farmstay Homepage">
         <img src="logo new.png" alt="Foothill Logo">
-        <span class="nav-logo-text">The Foothill Farmstay</span>
+        <span class="nav-logo-text">The Foothill Farm Stay</span>
       </a>
       <ul class="nav-links">
-        <li><a href="#" class="nav-link">Home</a></li>
-        <li><a href="#stay" class="nav-link">Stay</a></li>
-        <li><a href="#amenities" class="nav-link">Amenities</a></li>
-        <li><a href="#events" class="nav-link">Events</a></li>
-        <li><a href="#faq" class="nav-link">FAQ</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
+        <li><a href="index.html" class="nav-link active">Home</a></li>
+        <li><a href="stay.html" class="nav-link">Stay</a></li>
+        <li><a href="index.html#about" class="nav-link">About Us</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+        <li><a href="index.html#contact" class="nav-link">Contact</a></li>
       </ul>
       <button class="menu-toggle" aria-label="Toggle Mobile Menu" onclick="toggleMobileMenu()">☰</button>
     </div>
@@ -3452,23 +61,52 @@
          ========================================================================== -->
     <div id="hero-track" class="hero-track">
       <div id="hero-viewport" class="hero-viewport">
-        <!-- Main Canvas for Frame-by-Frame Intercepted Scrubbing -->
-        <canvas id="hero-canvas" role="img"
-          aria-label="Cinematic interactive 3D mountain landscape scroll experience"></canvas>
+        <!-- Hero Background Carousel (Auto-rotates right to left every 3s + manual arrows) -->
+        <div class="hero-carousel" id="heroCarousel" aria-label="Hero image carousel">
+          <div class="hero-carousel-track" id="heroCarouselTrack">
+            <div class="hero-carousel-slide" data-index="0">
+              <img src="IMG_9711.PNG" alt="The Foothill Farmstay — Luxury Grounds at Dusk" class="hero-carousel-img">
+            </div>
+            <div class="hero-carousel-slide" data-index="1">
+              <img src="IMG_9712.PNG" alt="The Foothill Farmstay — Cottage Garden View" class="hero-carousel-img">
+            </div>
+            <div class="hero-carousel-slide" data-index="2">
+              <img src="IMG_9713.PNG" alt="The Foothill Farmstay — Pool & Cottages" class="hero-carousel-img">
+            </div>
+          </div>
+        </div>
 
         <!-- Hero Subtle Dark Gradient Overlay -->
         <div class="hero-gradient-overlay" aria-hidden="true"></div>
 
-        <!-- Hero Overlay Content (Left Aligned, Editorial Style) -->
+        <!-- Hero Overlay Content (Centered Luxury Editorial Layout) -->
         <div id="hero-overlay" class="hero-overlay">
-          <span class="hero-tag">LUXURY FARMSTAY • ODISHA</span>
+          <!-- Top Golden Emblem Line -->
+          <div class="hero-top-emblem">
+            <span class="emblem-line"></span>
+            <svg class="emblem-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M12 2C10.5 4.8 9 7.8 9 10.8C9 13.8 10.5 15.8 12 17.5C13.5 15.8 15 13.8 15 10.8C15 7.8 13.5 4.8 12 2ZM6.5 10.5C5.5 12.5 5 14.5 5.5 16.5C6 18.5 8 19.5 10 19C8.5 17.5 8 15.5 8 13.5C8 12.3 8.5 11.3 9 10.5C8 10.5 7 10.5 6.5 10.5ZM17.5 10.5C17 10.5 16 10.5 15 10.5C15.5 11.3 16 12.3 16 13.5C16 15.5 15.5 17.5 14 19C16 19.5 18 18.5 18.5 16.5C19 14.5 18.5 12.5 17.5 10.5Z" />
+            </svg>
+            <span class="emblem-line"></span>
+          </div>
+
+          <!-- Hero Tag with Flanking Gold Lines -->
+          <div class="hero-tag-wrapper">
+            <span class="tag-line"></span>
+            <span class="hero-tag">LUXURY FARMSTAY • ODISHA</span>
+            <span class="tag-line"></span>
+          </div>
+
           <h1 class="hero-title">Reserve Your Escape <br>to Nature</h1>
+
           <p class="hero-description">
             Escape into handcrafted luxury villas surrounded by peaceful landscapes, private pools, and unforgettable
             countryside experiences.
           </p>
+
           <div class="hero-actions">
-            <a href="#stay" class="btn-primary">Book Your Stay</a>
+            <a href="stay.html" class="btn-primary">Book Your Stay</a>
           </div>
         </div>
 
@@ -3484,12 +122,91 @@
           <span class="scroll-hint-label">SCROLL</span>
           <span class="scroll-hint-arrow">↓</span>
         </div>
+
+        <!-- Arrow Navigation Controls (Placed at top of DOM order inside hero-viewport) -->
+        <button class="hero-carousel-arrow hero-arrow-prev" id="heroPrev" aria-label="Previous Slide"
+          onclick="window.heroPrevSlide && window.heroPrevSlide(event)">‹</button>
+        <button class="hero-carousel-arrow hero-arrow-next" id="heroNext" aria-label="Next Slide"
+          onclick="window.heroNextSlide && window.heroNextSlide(event)">›</button>
+
+        <!-- Dot Indicators -->
+        <div class="hero-carousel-dots" role="tablist" aria-label="Slide indicators">
+          <button class="hero-dot active" data-target="0" role="tab" aria-label="Slide 1" aria-selected="true"
+            onclick="window.heroGoTo && window.heroGoTo(0, event)"></button>
+          <button class="hero-dot" data-target="1" role="tab" aria-label="Slide 2" aria-selected="false"
+            onclick="window.heroGoTo && window.heroGoTo(1, event)"></button>
+          <button class="hero-dot" data-target="2" role="tab" aria-label="Slide 3" aria-selected="false"
+            onclick="window.heroGoTo && window.heroGoTo(2, event)"></button>
+        </div>
       </div>
     </div>
 
     <!-- ==========================================================================
-         MAIN CONTENT SECTIONS (REVEALED ONLY AFTER VIRTUAL SCRUB REACHES 100%)
+         ABOUT US SECTION
          ========================================================================== -->
+    <section id="about" class="section-about">
+      <div class="about-container">
+
+        <!-- Left: Decorative Image Stack -->
+        <div class="about-visual reveal">
+          <div class="about-img-main">
+            <img src="IMG_9711.PNG" alt="The Foothill Farmstay — Grounds at Dusk">
+          </div>
+          <div class="about-img-accent">
+            <img src="IMG_9713.PNG" alt="The Foothill Farmstay — Pool View">
+          </div>
+          <div class="about-badge">
+            <span class="about-badge-line"></span>
+            <span class="about-badge-text">EST. DARINGBADI</span>
+            <span class="about-badge-line"></span>
+          </div>
+        </div>
+
+        <!-- Right: Content -->
+        <div class="about-content reveal delay-1">
+
+          <div class="about-tag-row">
+            <span class="about-tag-line"></span>
+            <span class="about-tag">About Us</span>
+            <span class="about-tag-line"></span>
+          </div>
+
+          <h2 class="about-title">Welcome to<br><em>The Foothill Farm Stay</em></h2>
+
+          <p class="about-text">
+            Nestled in the serene hills of <strong>Daringbadi, Odisha</strong>, The Foothill Farm Stay is more than just
+            a place to stay — it is an experience rooted in nature, culture, and the warm hospitality of Kandhamal.
+          </p>
+          <p class="about-text">
+            Set against the beautiful foothills and surrounded by lush greenery, our farm stay brings you closer to the
+            natural beauty and indigenous heritage of this unique region. Inspired by the traditions and lifestyle of
+            the local tribal communities, we have thoughtfully designed our property to offer a stay that feels
+            authentic, peaceful, and memorable.
+          </p>
+          <p class="about-text">
+            From the refreshing aroma of local coffee and the vibrant character of turmeric cultivation to the
+            surrounding pine forests, rolling hills, and cool mountain air — every element of Daringbadi has inspired
+            our vision. Our aim is to let guests <em>experience</em> the destination, not simply visit it.
+          </p>
+
+          <!-- Philosophy Block -->
+          <div class="about-philosophy">
+            <div class="philosophy-accent"></div>
+            <div class="philosophy-body">
+              <span class="philosophy-label">Our Philosophy</span>
+              <p class="philosophy-quote">"Stay close to nature. Connect with culture. Leave with memories."</p>
+              <p class="philosophy-sub">We believe true hospitality is about making guests feel at home while giving
+                them something they cannot experience anywhere else.</p>
+            </div>
+          </div>
+
+          <a href="stay.html" class="btn-primary about-cta">Book Your Stay</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Main Content Sections -->
     <div id="main-content" class="main-content">
 
       <!-- SECTION 1: DISCOVER THE FOOTHILL (OFFICIAL BROCHURE HOSPITALITY THEME) -->
@@ -3584,7 +301,7 @@
 
           <!-- Action Button -->
           <div class="brochure-btn-wrapper reveal">
-            <a href="#stay" class="btn-brochure-primary">Explore Experiences & Book</a>
+            <a href="stay.html" class="btn-brochure-primary">Book Your Stay</a>
           </div>
 
         </div>
@@ -3739,199 +456,7 @@
         </div>
       </section>
 
-      <!-- SECTION 3: COTTAGE COLLECTION & PRICE LIST -->
-      <section id="stay" class="section section-cottage-tariffs">
-        <div class="tariffs-container">
 
-          <!-- Section Header -->
-          <div class="tariffs-header reveal">
-            <span class="brochure-tag">ACCOMMODATIONS & TARIFFS</span>
-            <h2 class="tariffs-title">Cottage Collection & Price List</h2>
-            <p class="tariffs-subtitle">
-              Handcrafted luxury cottages nestled in the scenic hills of Daringbadi, featuring bespoke interiors,
-              private sit-outs, and farm-to-table dining experiences.
-            </p>
-            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
-          </div>
-
-          <!-- 4 Cottage Cards Grid (2x2 Layout) -->
-          <div class="cottages-cards-grid">
-
-            <!-- Deluxe Cottage -->
-            <div class="cottage-card reveal delay-1">
-              <div class="cottage-card-img-wrapper">
-                <img src="deluxe_cottage.png" alt="Deluxe Cottage at Foothill Farmstay" loading="lazy">
-                <span class="cottage-badge">DELUXE COTTAGE</span>
-              </div>
-              <div class="cottage-card-body">
-                <h3 class="cottage-card-title">Deluxe Cottage</h3>
-                <div class="cottage-features-list">
-                  <span class="cottage-feature-pill">🛏️ King Bed</span>
-                  <span class="cottage-feature-pill">🌿 Private Sit-out</span>
-                  <span class="cottage-feature-pill">✨ Premium Interiors</span>
-                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
-                </div>
-
-                <div class="cottage-price-matrix">
-                  <div class="price-box-item">
-                    <div class="price-box-label">Mon – Thu</div>
-                    <div class="price-box-amount">₹ 4,499</div>
-                    <div class="price-box-sub">Per Night (2 Persons)</div>
-                  </div>
-                  <div class="price-box-item">
-                    <div class="price-box-label">Fri – Sun</div>
-                    <div class="price-box-amount">₹ 4,999</div>
-                    <div class="price-box-sub">Per Night (2 Persons)</div>
-                  </div>
-                </div>
-
-                <div class="extra-charges-row">
-                  <div class="extra-charge-item">Extra Adult: <span>₹ 1,499</span></div>
-                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
-                </div>
-                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Deluxe%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
-                  target="_blank" rel="noopener" class="btn-book-now">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Book Now on WhatsApp
-                </a>
-              </div>
-            </div>
-
-            <!-- Superior Cottage -->
-            <div class="cottage-card reveal delay-2">
-              <div class="cottage-card-img-wrapper">
-                <img src="superior_cottage.png" alt="Superior Cottage at Foothill Farmstay" loading="lazy">
-                <span class="cottage-badge">SUPERIOR COTTAGE</span>
-              </div>
-              <div class="cottage-card-body">
-                <h3 class="cottage-card-title">Superior Cottage</h3>
-                <div class="cottage-features-list">
-                  <span class="cottage-feature-pill">🛏️ King Bed + Single Bed</span>
-                  <span class="cottage-feature-pill">🌿 Private Sit-out</span>
-                  <span class="cottage-feature-pill">✨ Premium Interiors</span>
-                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
-                </div>
-
-                <div class="cottage-price-matrix">
-                  <div class="price-box-item">
-                    <div class="price-box-label">Mon – Thu</div>
-                    <div class="price-box-amount">₹ 5,499</div>
-                    <div class="price-box-sub">Per Night (3 Persons)</div>
-                  </div>
-                  <div class="price-box-item">
-                    <div class="price-box-label">Fri – Sun</div>
-                    <div class="price-box-amount">₹ 5,999</div>
-                    <div class="price-box-sub">Per Night (3 Persons)</div>
-                  </div>
-                </div>
-
-                <div class="extra-charges-row">
-                  <div class="extra-charge-item">Extra Adult: <span>₹ 1,499</span></div>
-                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
-                </div>
-                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Superior%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
-                  target="_blank" rel="noopener" class="btn-book-now">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Book Now on WhatsApp
-                </a>
-              </div>
-            </div>
-
-            <!-- Family Cottage -->
-            <div class="cottage-card reveal delay-3">
-              <div class="cottage-card-img-wrapper">
-                <img src="family_cottage.png" alt="Family Cottage Suite at Foothill Farmstay" loading="lazy">
-                <span class="cottage-badge">FAMILY COTTAGE</span>
-              </div>
-              <div class="cottage-card-body">
-                <h3 class="cottage-card-title">Family Cottage</h3>
-                <div class="cottage-features-list">
-                  <span class="cottage-feature-pill">🛏️ 2 Queen Beds</span>
-                  <span class="cottage-feature-pill">✨ Premium Interiors</span>
-                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
-                  <span class="cottage-feature-pill">👨‍👩‍👧‍👦 Family Suite</span>
-                </div>
-
-                <div class="cottage-price-matrix">
-                  <div class="price-box-item">
-                    <div class="price-box-label">Mon – Thu</div>
-                    <div class="price-box-amount">₹ 6,499</div>
-                    <div class="price-box-sub">Per Night (4 Persons)</div>
-                  </div>
-                  <div class="price-box-item">
-                    <div class="price-box-label">Fri – Sun</div>
-                    <div class="price-box-amount">₹ 6,999</div>
-                    <div class="price-box-sub">Per Night (4 Persons)</div>
-                  </div>
-                </div>
-
-                <div class="extra-charges-row">
-                  <div class="extra-charge-item">Extra Adult: <span>—</span></div>
-                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
-                </div>
-                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Family%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
-                  target="_blank" rel="noopener" class="btn-book-now">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Book Now on WhatsApp
-                </a>
-              </div>
-            </div>
-
-            <!-- Premium Cottage -->
-            <div class="cottage-card reveal delay-4">
-              <div class="cottage-card-img-wrapper">
-                <img src="premium_cottage.png" alt="Premium Mountain View Cottage at Foothill Farmstay" loading="lazy">
-                <span class="cottage-badge">PREMIUM COTTAGE</span>
-              </div>
-              <div class="cottage-card-body">
-                <h3 class="cottage-card-title">Premium Cottage</h3>
-                <div class="cottage-features-list">
-                  <span class="cottage-feature-pill">🛏️ King Bed</span>
-                  <span class="cottage-feature-pill">⛰️ Private Balcony (Mountain View)</span>
-                  <span class="cottage-feature-pill">🛋️ Spacious Living Area</span>
-                  <span class="cottage-feature-pill">🚿 Modern Bathroom</span>
-                </div>
-
-                <div class="cottage-price-matrix">
-                  <div class="price-box-item">
-                    <div class="price-box-label">Mon – Thu</div>
-                    <div class="price-box-amount">₹ 6,499</div>
-                    <div class="price-box-sub">Per Night (2 Persons)</div>
-                  </div>
-                  <div class="price-box-item">
-                    <div class="price-box-label">Fri – Sun</div>
-                    <div class="price-box-amount">₹ 6,999</div>
-                    <div class="price-box-sub">Per Night (2 Persons)</div>
-                  </div>
-                </div>
-
-                <div class="extra-charges-row">
-                  <div class="extra-charge-item">Extra Adult: <span>₹ 1,999</span></div>
-                  <div class="extra-charge-item">Extra Child (6-12 yr): <span>₹ 499</span></div>
-                </div>
-                <a href="https://wa.me/918249659996?text=Hi%2C%20I%20would%20like%20to%20book%20the%20Premium%20Cottage%20at%20The%20Foothill%20Farmstay.%20Please%20share%20availability."
-                  target="_blank" rel="noopener" class="btn-book-now">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Book Now on WhatsApp
-                </a>
-              </div>
-            </div>
-
-          </div>
-
-      </section>
 
       <!-- SECTION: RESORT AMENITIES -->
       <section id="amenities" class="section section-resort-amenities">
@@ -4083,122 +608,7 @@
         </div>
       </section>
 
-      <!-- SECTION 4: EVENT SPACES -->
-      <section id="events" class="section section-event-spaces">
-        <div class="events-container">
 
-          <!-- Section Header -->
-          <div class="events-header reveal">
-            <span class="brochure-tag">VENUE & CELEBRATIONS</span>
-            <h2 class="events-title">Event Spaces</h2>
-            <p class="events-subtitle">Perfect settings for every occasion</p>
-            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
-          </div>
-
-          <!-- Event Spaces Stack -->
-          <div class="event-spaces-stack">
-
-            <!-- Event 1: Conference Hall -->
-            <div class="event-space-card reveal delay-1">
-              <div class="event-space-info">
-                <div class="event-icon-badge">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                    <line x1="8" y1="21" x2="16" y2="21"></line>
-                    <line x1="12" y1="17" x2="12" y2="21"></line>
-                  </svg>
-                </div>
-                <h3 class="event-space-title">Conference Hall</h3>
-                <p class="event-space-desc">
-                  A modern, well-equipped hall ideal for meetings, seminars, workshops, and corporate events.
-                </p>
-
-                <div class="event-specs-grid">
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">👥</span>
-                    <span>Capacity: 150 Guests</span>
-                  </div>
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">📺</span>
-                    <span>Audio-Visual Setup</span>
-                  </div>
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">📶</span>
-                    <span>Wi-Fi & Projection</span>
-                  </div>
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">🪑</span>
-                    <span>Custom Seating</span>
-                  </div>
-                </div>
-                <a href="https://wa.me/918249659996?text=Hi%2C%20I%27m%20interested%20in%20booking%20the%20Conference%20Hall%20at%20The%20Foothill%20Farmstay.%20Please%20share%20details."
-                  target="_blank" rel="noopener" class="event-book-now">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Enquire on WhatsApp
-                </a>
-              </div>
-
-              <div class="event-space-image-wrapper">
-                <img src="conference_hall.png" alt="Foothill Conference Hall and Event Space" loading="lazy">
-              </div>
-            </div>
-
-            <!-- Event 2: The Lawn -->
-            <div class="event-space-card reverse reveal delay-2">
-              <div class="event-space-image-wrapper">
-                <img src="the_lawn.png" alt="Foothill Outdoor Celebration Lawn" loading="lazy">
-              </div>
-
-              <div class="event-space-info">
-                <div class="event-icon-badge">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                  </svg>
-                </div>
-                <h3 class="event-space-title">The Lawn</h3>
-                <p class="event-space-desc">
-                  A sprawling open lawn surrounded by nature – perfect for outdoor celebrations, ceremonies, and grand
-                  gatherings.
-                </p>
-
-                <div class="event-specs-grid">
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">👥</span>
-                    <span>Capacity: 300+ Guests</span>
-                  </div>
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">🎪</span>
-                    <span>Stage & Lighting Setup</span>
-                  </div>
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">🌿</span>
-                    <span>Open Air Experience</span>
-                  </div>
-                  <div class="event-spec-item">
-                    <span class="event-spec-icon">✨</span>
-                    <span>Fully Customizable</span>
-                  </div>
-                </div>
-                <a href="https://wa.me/918249659996?text=Hi%2C%20I%27m%20interested%20in%20booking%20The%20Lawn%20at%20The%20Foothill%20Farmstay.%20Please%20share%20details."
-                  target="_blank" rel="noopener" class="event-book-now">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                  </svg>
-                  Enquire on WhatsApp
-                </a>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
 
       <!-- SECTION 5: LOCATION & NEARBY ATTRACTIONS -->
       <section id="location" class="section section-location-map">
@@ -4258,7 +668,8 @@
             </div>
 
             <!-- Node 3: The Foothill Farm Stay (Main Anchor Hub) -->
-            <a href="https://share.google/FoBXsTpv2UvCgC68r" target="_blank" rel="noopener" class="map-node node-farmstay" style="text-decoration: none;">
+            <a href="https://share.google/FoBXsTpv2UvCgC68r" target="_blank" rel="noopener"
+              class="map-node node-farmstay">
               <div class="node-pin-wrapper">
                 <div class="node-pin"><span class="node-pin-icon">🏡</span></div>
               </div>
@@ -4349,76 +760,432 @@
         </div>
       </section>
 
+
+      <!-- SECTION 6: LIVE RESORT CLIMATE & WEATHER -->
+      <section id="weather" class="section section-weather">
+        <div class="weather-container">
+
+          <!-- Section Header -->
+          <div class="weather-header reveal">
+            <h2 class="weather-title">
+              <span class="weather-title-icon">🌤️</span> LIVE RESORT CLIMATE
+            </h2>
+            <p class="weather-subtitle">Real-time atmospheric conditions & activity recommendations at Daringbadi</p>
+            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <!-- Glassmorphic Weather Card -->
+          <div class="weather-card reveal delay-1" id="weather-card">
+
+            <!-- Loading State -->
+            <div id="weather-loading" class="weather-state-box">
+              <div class="weather-spinner"></div>
+              <p>Fetching live climate data for Daringbadi...</p>
+            </div>
+
+            <!-- Error / Fallback State -->
+            <div id="weather-error" class="weather-state-box weather-hidden">
+              <div class="weather-error-icon">⛰️</div>
+              <h3>Daringbadi Hill Sanctuary</h3>
+              <p>Live atmospheric data is currently updating. Daringbadi enjoys a cool, invigorating mountain climate
+                year-round.</p>
+              <button class="weather-retry-btn" onclick="fetchResortWeather()">Retry Climate Sync 🔄</button>
+            </div>
+
+            <!-- Live Weather Display Content -->
+            <div id="weather-content" class="weather-content weather-hidden">
+
+              <!-- Main Hero Row -->
+              <div class="weather-hero-row">
+                <div class="weather-main-info">
+                  <div class="weather-icon-large" id="weather-icon">☀️</div>
+                  <div>
+                    <div class="weather-temp-wrap">
+                      <span class="weather-temp" id="weather-temp">--</span>
+                      <span class="weather-unit">°C</span>
+                    </div>
+                    <div class="weather-condition" id="weather-condition">Loading...</div>
+                    <div class="weather-location-tag">📍 Daringbadi Hill Station • Elevation 915m</div>
+                  </div>
+                </div>
+
+                <!-- Dynamic Activity Recommendation Banner -->
+                <div class="weather-recommendation-card" id="weather-rec-card">
+                  <div class="rec-badge">BESPOKE RESORT ADVISORY</div>
+                  <div class="rec-text" id="weather-rec-text">Updating activity suggestions...</div>
+                </div>
+              </div>
+
+              <!-- Metrics Grid -->
+              <div class="weather-metrics-grid">
+
+                <!-- Feels Like -->
+                <div class="weather-metric-item">
+                  <div class="metric-icon">🌡️</div>
+                  <div class="metric-info">
+                    <span class="metric-label">Feels Like</span>
+                    <span class="metric-value" id="weather-feels">--</span>
+                  </div>
+                </div>
+
+                <!-- Humidity -->
+                <div class="weather-metric-item">
+                  <div class="metric-icon">💧</div>
+                  <div class="metric-info">
+                    <span class="metric-label">Humidity</span>
+                    <span class="metric-value" id="weather-humidity">--</span>
+                  </div>
+                </div>
+
+                <!-- Wind Speed -->
+                <div class="weather-metric-item">
+                  <div class="metric-icon">💨</div>
+                  <div class="metric-info">
+                    <span class="metric-label">Wind Speed</span>
+                    <span class="metric-value" id="weather-wind">--</span>
+                  </div>
+                </div>
+
+                <!-- UV Index -->
+                <div class="weather-metric-item">
+                  <div class="metric-icon">☀️</div>
+                  <div class="metric-info">
+                    <span class="metric-label">UV Index</span>
+                    <span class="metric-value" id="weather-uv">--</span>
+                  </div>
+                </div>
+
+                <!-- Sunrise -->
+                <div class="weather-metric-item">
+                  <div class="metric-icon">🌅</div>
+                  <div class="metric-info">
+                    <span class="metric-label">Sunrise</span>
+                    <span class="metric-value" id="weather-sunrise">--</span>
+                  </div>
+                </div>
+
+                <!-- Sunset -->
+                <div class="weather-metric-item">
+                  <div class="metric-icon">🌇</div>
+                  <div class="metric-info">
+                    <span class="metric-label">Sunset</span>
+                    <span class="metric-value" id="weather-sunset">--</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Status Footer -->
+              <div class="weather-card-footer">
+                <span class="weather-update-tag">
+                  <span class="live-dot"></span> Live Open-Meteo Sync • Refreshed <span id="weather-last-updated">just
+                    now</span>
+                </span>
+                <span class="weather-auto-tag">Auto-updates every 30 mins</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+
+      <!-- SECTION: GUEST REVIEWS & TESTIMONIALS -->
+      <section id="reviews" class="section section-reviews">
+        <div class="reviews-container">
+
+          <!-- Section Header -->
+          <div class="reviews-header reveal">
+            <span class="brochure-tag">GUEST EXPERIENCES & STORIES</span>
+            <h2 class="reviews-title">Loved by Travelers & Families</h2>
+            <div class="reviews-rating-summary">
+              <span class="summary-stars">★★★★★</span>
+              <span class="summary-score">4.9 / 5.0</span>
+              <span class="summary-count">(50+ Verified Reviews)</span>
+            </div>
+            <div class="uniqueness-divider">◇ ─── ❖ ─── ◇</div>
+          </div>
+
+          <!-- Reviews Grid (7 Real Reviews) -->
+          <div class="reviews-grid">
+
+            <!-- Review 1 -->
+            <div class="review-card reveal delay-1">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"Unmatched tranquility and luxury!"</h3>
+              <p class="review-card-text">
+                Our stay at The Foothill Farmstay was an absolute dream. Waking up to pine-scented mountain air and
+                serene gardens was magical. The staff made us feel like royalty, and the authentic Odia cuisine was
+                divine!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">PM</div>
+                <div class="author-info">
+                  <h4 class="author-name">Priyadarshini Mohanty</h4>
+                  <span class="author-location">Bhubaneswar, Odisha</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="review-card reveal delay-2">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"The ultimate private luxury getaway"</h3>
+              <p class="review-card-text">
+                The Deluxe Cottage with private sit-out surpassed all expectations. Super clean, beautifully crafted
+                wooden interiors, and the infinity pool views of the surrounding hills were breathtaking. Will
+                definitely visit again!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">RG</div>
+                <div class="author-info">
+                  <h4 class="author-name">Rohan & Sneha Gupta</h4>
+                  <span class="author-location">Kolkata, WB</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="review-card reveal delay-3">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★☆</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"Peaceful retreat with top-notch service"</h3>
+              <p class="review-card-text">
+                Spent 3 nights here with family. Very peaceful atmosphere surrounded by pine forests and coffee
+                plantations. Prompt service and delicious farm-to-table breakfast. Highly recommended!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">AR</div>
+                <div class="author-info">
+                  <h4 class="author-name">Anish Roy</h4>
+                  <span class="author-location">Hyderabad, TS</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 4 -->
+            <div class="review-card reveal delay-4">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"Perfect venue for our celebration!"</h3>
+              <p class="review-card-text">
+                We hosted a private family event on the celebration lawn. Everything from decor to catering was handled
+                seamlessly by the team. Our guests were blown away by the scenic beauty and luxury amenities!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">SD</div>
+                <div class="author-info">
+                  <h4 class="author-name">Dr. Soumya Ranjan Dash</h4>
+                  <span class="author-location">Cuttack, Odisha</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 5 -->
+            <div class="review-card reveal delay-5">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"A hidden gem nestled in Daringbadi"</h3>
+              <p class="review-card-text">
+                Daringbadi is known as the Kashmir of Odisha, and Foothill Farmstay makes the experience 10x better!
+                Loved relaxing by the pool, birdwatching in the morning, and exploring nearby waterfalls.
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">MJ</div>
+                <div class="author-info">
+                  <h4 class="author-name">Meera & Vikram Joshi</h4>
+                  <span class="author-location">Bengaluru, KA</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 6 -->
+            <div class="review-card reveal delay-6">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★☆</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"Spacious cottages and great food"</h3>
+              <p class="review-card-text">
+                The Family Cottage was spacious and comfortable. Kids enjoyed the open lawns and outdoor games. The chef
+                prepared customized meals for us. Great hospitality overall!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">RS</div>
+                <div class="author-info">
+                  <h4 class="author-name">Rajesh Sharma</h4>
+                  <span class="author-location">Rourkela, Odisha</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 7 -->
+            <div class="review-card reveal delay-7">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"5-Star experience amidst nature"</h3>
+              <p class="review-card-text">
+                Attention to detail in every corner—from plush bedding to organic tea options. Watching the sunset over
+                the valley from the cottage balcony was the highlight of our holiday. Exceptional stay!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">TK</div>
+                <div class="author-info">
+                  <h4 class="author-name">Tanvi Kulkarni</h4>
+                  <span class="author-location">Mumbai, MH</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 8 -->
+            <div class="review-card reveal delay-8">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★★</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"Unforgettable weekend in pine hills"</h3>
+              <p class="review-card-text">
+                From the moment we arrived, we were charmed by the tranquil garden pathways, warm Odia hospitality, and
+                peaceful villa atmosphere. The outdoor pool and campfire evening made our anniversary unforgettable!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">DJ</div>
+                <div class="author-info">
+                  <h4 class="author-name">Debabrata & Sunita Jena</h4>
+                  <span class="author-location">Berhampur, Odisha</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 9 -->
+            <div class="review-card reveal delay-9">
+              <div class="review-card-top">
+                <div class="review-stars">★★★★☆</div>
+                <span class="verified-badge">✓ Verified Guest</span>
+              </div>
+              <h3 class="review-card-title">"Bespoke cottage comfort & hill views"</h3>
+              <p class="review-card-text">
+                A serene getaway far away from city noise. The cottage bedrooms are cozy with premium linens, and the
+                farm-to-table breakfast with fresh hill-grown coffee was fantastic. Highly recommended stay!
+              </p>
+              <div class="review-author">
+                <div class="author-avatar">AS</div>
+                <div class="author-info">
+                  <h4 class="author-name">Amitav & Riya Sengupta</h4>
+                  <span class="author-location">New Delhi, DL</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
       <!-- SECTION: FREQUENTLY ASKED QUESTIONS (FAQ) -->
       <section id="faq" class="section section-faq">
         <div class="faq-container">
-          <div class="faq-header reveal">
-            <span class="faq-tag">Need Assistance?</span>
-            <h2 class="faq-title">Frequently Asked Questions</h2>
-            <p class="faq-subtitle">Everything you need to know about your stay, amenities, bookings, and location at The Foothill Farmstay.</p>
+
+          <!-- Left Column: Title & Info -->
+          <div class="faq-left reveal">
+            <span class="faq-tag">NEED ASSISTANCE?</span>
+            <h2 class="faq-title">Frequently asked<br>questions</h2>
+            <p class="faq-subtitle">Everything you need to know about your stay, bespoke amenities, bookings, and
+              location at The Foothill Farmstay.</p>
           </div>
 
-          <div class="faq-accordion reveal delay-1">
-            <details class="faq-item" open>
-              <summary class="faq-question">
-                <span>What are the check-in and check-out times?</span>
-                <div class="faq-icon-badge">▾</div>
-              </summary>
-              <div class="faq-answer">
-                Standard check-in time is from 12:00 PM onwards and check-out time is until 11:00 AM. Early check-in or late check-out options are available subject to room availability and prior notice.
-              </div>
-            </details>
+          <!-- Right Column: Accordion List -->
+          <div class="faq-right reveal delay-1">
+            <div class="faq-accordion">
 
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>Where is The Foothill Farmstay located and how do I reach there?</span>
-                <div class="faq-icon-badge">▾</div>
-              </summary>
-              <div class="faq-answer">
-                We are nestled in the serene elevated landscapes of Daringbadi, Odisha ("The Kashmir of Odisha"). We offer assistance with private transfers from Berhampur / Bhubaneswar railway stations or airports upon request.
-              </div>
-            </details>
+              <details class="faq-item" open>
+                <summary class="faq-question">
+                  <span class="faq-icon" aria-hidden="true"></span>
+                  <span class="faq-question-text">What are the check-in and check-out times?</span>
+                </summary>
+                <div class="faq-answer">
+                  Standard check-in time is from 12:00 PM onwards and check-out time is until 11:00 AM. Early check-in
+                  or late check-out options are available subject to room availability and prior notice.
+                </div>
+              </details>
 
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>What types of cottages and accommodations are available?</span>
-                <div class="faq-icon-badge">▾</div>
-              </summary>
-              <div class="faq-answer">
-                We offer four handcrafted luxury cottage categories: Deluxe Cottages, Superior Cottages, Family Suites, and Premium Mountain View Cottages — each featuring private sit-outs, king beds, and modern luxury amenities.
-              </div>
-            </details>
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span class="faq-icon" aria-hidden="true"></span>
+                  <span class="faq-question-text">Where is The Foothill Farmstay located and how do I reach
+                    there?</span>
+                </summary>
+                <div class="faq-answer">
+                  We are nestled in the serene elevated landscapes of Daringbadi, Odisha ("The Kashmir of Odisha"). We
+                  offer assistance with private transfers from Berhampur / Bhubaneswar railway stations or airports upon
+                  request.
+                </div>
+              </details>
 
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>Are meals included in the stay?</span>
-                <div class="faq-icon-badge">▾</div>
-              </summary>
-              <div class="faq-answer">
-                Yes! We offer farm-to-table dining experiences featuring authentic local Odia cuisine, North & South Indian dishes, and customized dining plans upon request.
-              </div>
-            </details>
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span class="faq-icon" aria-hidden="true"></span>
+                  <span class="faq-question-text">What types of cottages and accommodations are available?</span>
+                </summary>
+                <div class="faq-answer">
+                  We offer four handcrafted luxury cottage categories: Deluxe Cottages, Superior Cottages, Family
+                  Suites, and Premium Mountain View Cottages — each featuring private sit-outs, king beds, and modern
+                  luxury amenities.
+                </div>
+              </details>
 
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>What activities and amenities are available for guests?</span>
-                <div class="faq-icon-badge">▾</div>
-              </summary>
-              <div class="faq-answer">
-                Guests can enjoy our private swimming pool, campfire & barbecue sessions, pine forest and coffee plantation tours, tribal cultural events, conference facilities, and expansive lawn spaces.
-              </div>
-            </details>
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span class="faq-icon" aria-hidden="true"></span>
+                  <span class="faq-question-text">Are meals included in the stay?</span>
+                </summary>
+                <div class="faq-answer">
+                  Yes! We offer farm-to-table dining experiences featuring authentic local Odia cuisine, North & South
+                  Indian dishes, and customized dining plans upon request.
+                </div>
+              </details>
 
-            <details class="faq-item">
-              <summary class="faq-question">
-                <span>How can I book or check room availability?</span>
-                <div class="faq-icon-badge">▾</div>
-              </summary>
-              <div class="faq-answer">
-                You can book directly via WhatsApp (+91 8249659996), call our reservations team directly, or fill out the enquiry form in the contact section below.
-              </div>
-            </details>
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span class="faq-icon" aria-hidden="true"></span>
+                  <span class="faq-question-text">What activities and amenities are available for guests?</span>
+                </summary>
+                <div class="faq-answer">
+                  Guests can enjoy our private swimming pool, campfire & barbecue sessions, pine forest and coffee
+                  plantation tours, tribal cultural events, conference facilities, and expansive lawn spaces.
+                </div>
+              </details>
+
+              <details class="faq-item">
+                <summary class="faq-question">
+                  <span class="faq-icon" aria-hidden="true"></span>
+                  <span class="faq-question-text">How can I book or check room availability?</span>
+                </summary>
+                <div class="faq-answer">
+                  You can book directly via WhatsApp (+91 8249659996), call our reservations team directly, or fill out
+                  the enquiry form in the contact section below.
+                </div>
+              </details>
+
+            </div>
           </div>
+
         </div>
       </section>
 
@@ -4543,9 +1310,9 @@
             <div class="footer-logo-text">The Foothill <span>Farmstay</span></div>
             <ul class="footer-links">
               <li><a href="#" class="footer-link">Home</a></li>
-              <li><a href="#stay" class="footer-link">Stay</a></li>
-              <li><a href="#amenities" class="footer-link">Amenities</a></li>
-              <li><a href="#events" class="footer-link">Events</a></li>
+              <li><a href="stay.html" class="footer-link">Stay</a></li>
+              <li><a href="#about" class="footer-link">About Us</a></li>
+              <li><a href="gallery.html" class="footer-link">Gallery</a></li>
               <li><a href="#contact" class="footer-link">Contact</a></li>
             </ul>
           </div>
@@ -4570,297 +1337,45 @@
     (function () {
       'use strict';
 
-      // WEBP FRAME CONFIGURATION (hdframes_webp/002.webp ... hdframes_webp/200.webp)
-      const FRAMES_DIR = 'hdframes_webp/';
-      const START_FRAME = 2;
-      const END_FRAME = 200;
-      const TOTAL_FRAMES = END_FRAME - START_FRAME + 1; // 199 frames (002 to 200)
-
       // DOM Elements
       const preloader = document.getElementById('preloader');
       const loaderFill = document.getElementById('loader-fill');
       const loaderPercentage = document.getElementById('loader-percentage');
       const navbar = document.getElementById('navbar');
       const heroTrack = document.getElementById('hero-track');
-      const heroCanvas = document.getElementById('hero-canvas');
       const heroOverlay = document.getElementById('hero-overlay');
       const scrollHint = document.getElementById('scroll-hint');
-      const heroScrollFloat = document.getElementById('hero-scroll-float');
       const scrollFloatText = document.querySelector('.scroll-float-text');
-      let charElements = [];
 
-      // Production-safe canvas context (avoiding experimental desynchronized flag which causes GPU compositing loss on Vercel)
-      const ctx = heroCanvas.getContext('2d', {
-        alpha: false
-      });
-
-      // State Variables
-      const frameImages = new Array(TOTAL_FRAMES);
-      let loadedCount = 0;
-      let currentFrameFloat = 0;
-      let targetFrameFloat = 0;
-      let lastDrawnFrame = -1;
-      let dpr = 1;
-
-      // Telemetry metrics
-      const preloadStartTime = performance.now();
-      let totalPreloadTimeMs = 0;
-
-      // Helper function to build frame path e.g. hdframes_webp/002.webp
-      function getFrameUrl(index) {
-        const frameNum = (START_FRAME + index).toString().padStart(3, '0');
-        return `${FRAMES_DIR}${frameNum}.webp`;
-      }
-
-      // Safe image ready check (verifies element exists, fully loaded, and bitmap decoded)
-      function isImageReady(img) {
-        return Boolean(img && img.complete && img.naturalWidth > 0);
-      }
-
-      /* ------------------------------------------------------------------------
-         1. SCROLLFLOAT CHARACTER SPLITTER (REACT BITS COMPONENT INTEGRATION)
-         ------------------------------------------------------------------------ */
-      function setupScrollFloat() {
-        if (scrollFloatText) {
-          const htmlContent = scrollFloatText.innerHTML;
-          const lines = htmlContent.split(/<br\s*\/?>/i);
-          scrollFloatText.innerHTML = '';
-          lines.forEach((lineText, lineIdx) => {
-            if (lineIdx > 0) {
-              scrollFloatText.appendChild(document.createElement('br'));
-            }
-            const cleanText = lineText.replace(/<[^>]*>/g, '').trim();
-            cleanText.split('').forEach((char, index) => {
-              const span = document.createElement('span');
-              span.className = 'char';
-              span.textContent = char === ' ' ? '\u00A0' : char;
-              scrollFloatText.appendChild(span);
-            });
-          });
-          charElements = Array.from(scrollFloatText.querySelectorAll('.char'));
-        }
-      }
-
-      /* ------------------------------------------------------------------------
-         2. HIGH-PERFORMANCE WEBP PROGRESSIVE PRELOADER ENGINE
-         ------------------------------------------------------------------------ */
-      const ESSENTIAL_FRAMES_COUNT = 15; // 15 WebP frames (~2 MB) load in <300ms
       let preloaderDismissed = false;
-      let preloaderTimer = null;
-
-      function loadSingleFrame(index) {
-        return new Promise((resolve) => {
-          if (isImageReady(frameImages[index])) {
-            return resolve(frameImages[index]);
-          }
-          const img = new Image();
-          img.src = getFrameUrl(index);
-          const done = () => {
-            frameImages[index] = img;
-            if (img.decode) {
-              img.decode().then(() => resolve(img)).catch(() => resolve(img));
-            } else {
-              resolve(img);
-            }
-          };
-          if (isImageReady(img)) {
-            done();
-          } else {
-            img.onload = done;
-            img.onerror = () => {
-              if (img.src.endsWith('.webp')) {
-                img.src = img.src.replace('.webp', '.png').replace('hdframes_webp', 'hdframes');
-                img.onload = done;
-                img.onerror = done;
-              } else {
-                done();
-              }
-            };
-          }
-        });
-      }
-
-      function preloadFrames() {
-        let essentialLoaded = 0;
-
-        preloaderTimer = setTimeout(() => {
-          dismissPreloader();
-        }, 1200);
-
-        for (let i = 0; i < ESSENTIAL_FRAMES_COUNT; i++) {
-          loadSingleFrame(i).then(() => {
-            essentialLoaded++;
-            loadedCount++;
-            const pct = Math.min(100, Math.round((essentialLoaded / ESSENTIAL_FRAMES_COUNT) * 100));
-            loaderFill.style.width = pct + '%';
-            loaderPercentage.textContent = pct + '%';
-
-            if (essentialLoaded >= ESSENTIAL_FRAMES_COUNT) {
-              dismissPreloader();
-            }
-          });
-        }
-
-        setTimeout(() => {
-          let batchIndex = ESSENTIAL_FRAMES_COUNT;
-          function loadNextBatch() {
-            if (batchIndex >= TOTAL_FRAMES) return;
-            const batchEnd = Math.min(TOTAL_FRAMES, batchIndex + 8);
-            const promises = [];
-            for (let b = batchIndex; b < batchEnd; b++) {
-              promises.push(loadSingleFrame(b).then(() => { loadedCount++; }));
-            }
-            batchIndex = batchEnd;
-            Promise.all(promises).then(() => {
-              if (window.requestIdleCallback) {
-                requestIdleCallback(loadNextBatch, { timeout: 800 });
-              } else {
-                setTimeout(loadNextBatch, 40);
-              }
-            });
-          }
-          loadNextBatch();
-        }, 200);
-      }
 
       function dismissPreloader() {
         if (preloaderDismissed) return;
         preloaderDismissed = true;
-        if (preloaderTimer) clearTimeout(preloaderTimer);
 
-        loaderFill.style.width = '100%';
-        loaderPercentage.textContent = '100%';
+        if (loaderFill) loaderFill.style.width = '100%';
+        if (loaderPercentage) loaderPercentage.textContent = '100%';
 
         setTimeout(() => {
-          preloader.classList.add('loader-hidden');
+          if (preloader) preloader.classList.add('loader-hidden');
           document.body.classList.add('loaded');
-
-          resizeCanvas();
-
-          const firstAvailable = frameImages.find(img => isImageReady(img));
-          if (firstAvailable && drawCoverImage(firstAvailable)) {
-            const idx = frameImages.indexOf(firstAvailable);
-            if (idx !== -1) lastDrawnFrame = idx;
-          }
-
-          requestAnimationFrame(renderLoop);
-        }, 150);
+        }, 200);
       }
 
-      /* ------------------------------------------------------------------------
-         3. OPTIMIZED CANVAS RESIZING & COVER ALGORITHM
-         ------------------------------------------------------------------------ */
-      function resizeCanvas() {
-        const viewportW = window.innerWidth;
-        const viewportH = window.innerHeight;
-        dpr = viewportW <= 768 ? 1 : Math.min(window.devicePixelRatio || 1, 2);
-
-        heroCanvas.width = Math.floor(viewportW * dpr);
-        heroCanvas.height = Math.floor(viewportH * dpr);
-
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = 'medium';
-
-        const currentFrameIndex = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
-        let imgToDraw = frameImages[currentFrameIndex];
-        if (!isImageReady(imgToDraw)) {
-          imgToDraw = (lastDrawnFrame >= 0 && isImageReady(frameImages[lastDrawnFrame]))
-            ? frameImages[lastDrawnFrame]
-            : frameImages.find(i => isImageReady(i));
-        }
-        if (imgToDraw) {
-          drawCoverImage(imgToDraw);
-        }
+      function preloadFrames() {
+        dismissPreloader();
       }
 
-      function drawCoverImage(img) {
-        if (!isImageReady(img)) return false;
-
-        const canvasW = heroCanvas.width;
-        const canvasH = heroCanvas.height;
-        if (canvasW === 0 || canvasH === 0) return false;
-
-        const imgW = img.naturalWidth;
-        const imgH = img.naturalHeight;
-        const imgRatio = imgW / imgH;
-        const canvasRatio = canvasW / canvasH;
-
-        let renderW, renderH, offsetX, offsetY;
-
-        if (canvasRatio > imgRatio) {
-          renderW = canvasW;
-          renderH = canvasW / imgRatio;
-          offsetX = 0;
-          offsetY = (canvasH - renderH) / 2;
-        } else {
-          renderH = canvasH;
-          renderW = canvasH * imgRatio;
-          offsetX = (canvasW - renderW) / 2;
-          offsetY = 0;
-        }
-
-        try {
-          ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
-          return true;
-        } catch (err) {
-          console.warn('[HeroCanvas] drawImage failed:', err, { src: img.src, canvasW, canvasH });
-          return false;
-        }
+      function setupScrollFloat() {
+        // Disabled for standard static image hero background
       }
-
-      /* ------------------------------------------------------------------------
-         4. GSAP SCROLLTRIGGER FIXED PINNING & FRAME SCRUBBER ENGINE
-         ------------------------------------------------------------------------ */
-      const PIN_DISTANCE_PX = 3600; // Pinned scroll distance (3600px vertical scroll = 100% frame progress)
 
       function setupGSAPScrollTrigger() {
-        if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-          gsap.registerPlugin(ScrollTrigger);
-
-          ScrollTrigger.create({
-            trigger: '#hero-track',
-            pin: '#hero-viewport',
-            start: 'top top',
-            end: `+=${PIN_DISTANCE_PX}`,
-            pinSpacing: true, // Pushes next section completely out of view until 100% unpin
-            scrub: true,
-            onUpdate: (self) => {
-              const progress = Math.max(0, Math.min(1, self.progress));
-              targetFrameFloat = progress * (TOTAL_FRAMES - 1);
-            }
-          });
-        } else {
-          setupNativePinningFallback();
-        }
+        // Disabled for standard hero background
       }
 
       function setupNativePinningFallback() {
-        if (!heroTrack || !heroViewport) return;
-        heroTrack.style.height = `calc(100vh + ${PIN_DISTANCE_PX}px)`;
-
-        function updateNativePin() {
-          const scrolled = Math.max(0, window.pageYOffset || document.documentElement.scrollTop);
-
-          if (scrolled <= PIN_DISTANCE_PX) {
-            heroViewport.style.position = 'fixed';
-            heroViewport.style.top = '0px';
-            heroViewport.style.left = '0px';
-            heroViewport.style.width = '100vw';
-            heroViewport.style.height = '100vh';
-
-            const progress = Math.max(0, Math.min(1, scrolled / PIN_DISTANCE_PX));
-            targetFrameFloat = progress * (TOTAL_FRAMES - 1);
-          } else {
-            heroViewport.style.position = 'absolute';
-            heroViewport.style.top = PIN_DISTANCE_PX + 'px';
-            heroViewport.style.left = '0px';
-
-            targetFrameFloat = TOTAL_FRAMES - 1;
-          }
-        }
-
-        window.addEventListener('scroll', updateNativePin, { passive: true });
-        updateNativePin();
+        // Disabled for standard hero background
       }
 
       const heroViewport = document.getElementById('hero-viewport');
@@ -4873,92 +1388,7 @@
         }
       }, { passive: true });
 
-      /* ------------------------------------------------------------------------
-         5. CONTINUOUS HIGH-FPS ANIMATION RENDER LOOP (RAF)
-         ------------------------------------------------------------------------ */
-      function renderLoop() {
-        currentFrameFloat += (targetFrameFloat - currentFrameFloat) * 0.25;
 
-        const roundedFrame = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
-
-        navbar.style.opacity = '1';
-        navbar.style.pointerEvents = 'auto';
-
-        const initialTextOpacity = Math.max(0, 1 - roundedFrame / 25);
-        heroOverlay.style.opacity = initialTextOpacity.toFixed(3);
-        heroOverlay.style.pointerEvents = initialTextOpacity <= 0.05 ? 'none' : 'auto';
-
-        if (scrollHint) {
-          scrollHint.style.opacity = Math.max(0, 1 - (roundedFrame / 25) * 2.5).toFixed(3);
-        }
-
-        if (charElements.length > 0) {
-          const numChars = charElements.length;
-          let floatPhaseProgress = 0;
-
-          if (roundedFrame >= 25 && roundedFrame < 85) {
-            floatPhaseProgress = (roundedFrame - 25) / 60;
-          } else if (roundedFrame >= 85 && roundedFrame <= 140) {
-            floatPhaseProgress = 1;
-          } else if (roundedFrame > 140 && roundedFrame <= 175) {
-            floatPhaseProgress = Math.max(0, 1 - (roundedFrame - 140) / 35);
-          } else {
-            floatPhaseProgress = 0;
-          }
-
-          charElements.forEach((charEl, idx) => {
-            const staggerDelay = (idx / numChars) * 0.35;
-            let charProgress = 0;
-
-            if (floatPhaseProgress > 0) {
-              charProgress = Math.min(1, Math.max(0, (floatPhaseProgress - staggerDelay) / (1 - staggerDelay)));
-            }
-
-            const easeProgress = charProgress < 0.5
-              ? 4 * charProgress * charProgress * charProgress
-              : 1 - Math.pow(-2 * charProgress + 2, 3) / 2;
-
-            const opacity = easeProgress;
-            const yPercent = (1 - easeProgress) * 120;
-            const scaleY = 2.3 - 1.3 * easeProgress;
-            const scaleX = 0.7 + 0.3 * easeProgress;
-
-            charEl.style.opacity = opacity.toFixed(3);
-            charEl.style.transform = `translate3d(0, ${yPercent.toFixed(1)}%, 0) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
-          });
-        }
-
-        if (roundedFrame !== lastDrawnFrame) {
-          let img = frameImages[roundedFrame];
-          if (isImageReady(img)) {
-            if (drawCoverImage(img)) {
-              lastDrawnFrame = roundedFrame;
-            }
-          } else {
-            // Target frame image is mid-flight downloading/decoding over network.
-            // Do NOT update lastDrawnFrame = roundedFrame, so that as soon as the image loads,
-            // (roundedFrame !== lastDrawnFrame) remains true and draws it immediately.
-            // If no frame has been drawn yet at start, fallback to nearest ready frame.
-            if (lastDrawnFrame === -1) {
-              let fallbackImg = null;
-              for (let i = roundedFrame - 1; i >= 0; i--) {
-                if (isImageReady(frameImages[i])) { fallbackImg = frameImages[i]; break; }
-              }
-              if (!fallbackImg) {
-                for (let i = roundedFrame + 1; i < TOTAL_FRAMES; i++) {
-                  if (isImageReady(frameImages[i])) { fallbackImg = frameImages[i]; break; }
-                }
-              }
-              if (fallbackImg && drawCoverImage(fallbackImg)) {
-                const idx = frameImages.indexOf(fallbackImg);
-                if (idx !== -1) lastDrawnFrame = idx;
-              }
-            }
-          }
-        }
-
-        requestAnimationFrame(renderLoop);
-      }
 
       /* ------------------------------------------------------------------------
          6. INTERSECTION OBSERVER FOR REVEAL ANIMATIONS
@@ -4966,8 +1396,8 @@
       function setupIntersectionObserver() {
         const observerOptions = {
           root: null,
-          rootMargin: '0px 0px 40px 0px',
-          threshold: 0.02
+          rootMargin: '0px 0px 180px 0px',
+          threshold: 0.01
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -4985,7 +1415,6 @@
          7. ATTACH EVENT LISTENERS
          ------------------------------------------------------------------------ */
       window.addEventListener('resize', () => {
-        resizeCanvas();
         if (typeof ScrollTrigger !== 'undefined') {
           ScrollTrigger.refresh();
         }
@@ -5024,31 +1453,6 @@
         preloadFrames();
         setupGSAPScrollTrigger();
       });
-
-      window.__FOOTHILL_METRICS__ = function () {
-        return {
-          totalFramesLoaded: loadedCount,
-          totalPreloadTimeMs: totalPreloadTimeMs.toFixed(0) + 'ms',
-          averagePreloadTimePerFrame: (totalPreloadTimeMs / TOTAL_FRAMES).toFixed(1) + 'ms',
-          firstFrame: getFrameUrl(0),
-          lastFrame: getFrameUrl(TOTAL_FRAMES - 1)
-        };
-      };
-
-      window.__FOOTHILL_DEBUG__ = function () {
-        const reqFrame = Math.min(TOTAL_FRAMES - 1, Math.max(0, Math.round(currentFrameFloat)));
-        const img = frameImages[reqFrame];
-        return {
-          currentRequestedFrame: reqFrame,
-          lastDrawnFrame: lastDrawnFrame,
-          isImageDecoded: isImageReady(img),
-          canvasWidth: heroCanvas.width,
-          canvasHeight: heroCanvas.height,
-          dpr: dpr,
-          totalLoaded: loadedCount,
-          totalFrames: TOTAL_FRAMES
-        };
-      };
 
     })();
 
@@ -5089,6 +1493,250 @@
       const waUrl = `https://wa.me/918249659996?text=${encodeURIComponent(text)}`;
       window.open(waUrl, '_blank');
     }
+
+    // ── Hero Background Carousel (Right-to-left slide every 3s + Manual Arrows) ──
+    document.addEventListener('DOMContentLoaded', function () {
+      const track = document.getElementById('heroCarouselTrack');
+      const slides = document.querySelectorAll('.hero-carousel-slide');
+      const dots = document.querySelectorAll('.hero-dot');
+      const prevBtn = document.getElementById('heroPrev');
+      const nextBtn = document.getElementById('heroNext');
+      const carousel = document.getElementById('heroCarousel');
+
+      if (!slides.length || !track) return;
+
+      let current = 0;
+      let timer = null;
+      const DELAY = 3000; // Auto-slides every 3 seconds
+
+      function goTo(index) {
+        current = ((index % slides.length) + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+
+        dots.forEach((dot, idx) => {
+          if (idx === current) {
+            dot.classList.add('active');
+            dot.setAttribute('aria-selected', 'true');
+          } else {
+            dot.classList.remove('active');
+            dot.setAttribute('aria-selected', 'false');
+          }
+        });
+      }
+
+      function nextSlide() {
+        goTo(current + 1);
+      }
+
+      function prevSlide() {
+        goTo(current - 1);
+      }
+
+      function stopAuto() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      function startAuto() {
+        stopAuto();
+        timer = setInterval(nextSlide, DELAY);
+      }
+
+      function restartAuto() {
+        stopAuto();
+        startAuto();
+      }
+
+      window.heroPrevSlide = function (e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        prevSlide();
+        restartAuto();
+      };
+
+      window.heroNextSlide = function (e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        nextSlide();
+        restartAuto();
+      };
+
+      window.heroGoTo = function (target, e) {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        goTo(target);
+        restartAuto();
+      };
+
+      // Prev & Next Arrow Button Click & Touch Handlers
+      if (prevBtn) {
+        prevBtn.addEventListener('click', window.heroPrevSlide);
+        prevBtn.addEventListener('touchend', window.heroPrevSlide);
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', window.heroNextSlide);
+        nextBtn.addEventListener('touchend', window.heroNextSlide);
+      }
+
+      // Dot Indicator Click Handler
+      dots.forEach(function (dot) {
+        dot.addEventListener('click', function (e) {
+          const target = parseInt(this.dataset.target, 10);
+          window.heroGoTo(target, e);
+        });
+      });
+
+      // Touch Swipe (Mobile) & Continuous Auto-Slide (3s)
+      if (carousel) {
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener('touchstart', function (e) {
+          touchStartX = e.changedTouches[0].screenX;
+          stopAuto();
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', function (e) {
+          touchEndX = e.changedTouches[0].screenX;
+          const diff = touchStartX - touchEndX;
+          if (Math.abs(diff) > 40) {
+            if (diff > 0) {
+              nextSlide(); // swipe left -> next slide
+            } else {
+              prevSlide(); // swipe right -> prev slide
+            }
+          }
+          startAuto();
+        }, { passive: true });
+      }
+
+      // Restart auto-slide when page becomes visible again
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          stopAuto();
+        } else {
+          startAuto();
+        }
+      });
+
+      startAuto();
+    });
+    // ─────────────────────────────────────────────────────────────────────
+
+
+    // ─────────────────────────────────────────────────────────────────────
+    // LIVE OPEN-METEO WEATHER WIDGET SCRIPT
+    // ─────────────────────────────────────────────────────────────────────
+    (function () {
+      const WEATHER_API_URL = 'https://api.open-meteo.com/v1/forecast?latitude=19.86063497715361&longitude=84.09845811193672&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&timezone=auto';
+
+      const weatherMap = {
+        0: { label: 'Clear Sky', icon: '☀️', rec: '☀️ Perfect for Pool & Outdoor Games' },
+        1: { label: 'Mainly Clear', icon: '🌤️', rec: '🌤️ Great for Sightseeing & Nature Walks' },
+        2: { label: 'Partly Cloudy', icon: '⛅', rec: '🌤️ Great for Sightseeing & Nature Walks' },
+        3: { label: 'Overcast', icon: '☁️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        45: { label: 'Fog', icon: '🌫️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        48: { label: 'Depositing Rime Fog', icon: '🌫️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        51: { label: 'Light Drizzle', icon: '🌦️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        53: { label: 'Moderate Drizzle', icon: '🌦️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        55: { label: 'Dense Drizzle', icon: '🌦️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        61: { label: 'Slight Rain', icon: '🌧️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        63: { label: 'Moderate Rain', icon: '🌧️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        65: { label: 'Heavy Rain', icon: '🌧️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        80: { label: 'Rain Showers', icon: '🌧️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        81: { label: 'Moderate Showers', icon: '🌧️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        82: { label: 'Violent Showers', icon: '🌧️', rec: '🌧️ Best enjoyed indoors with a warm meal' },
+        71: { label: 'Slight Snow', icon: '❄️', rec: '⛈️ Outdoor activities not recommended' },
+        73: { label: 'Moderate Snow', icon: '❄️', rec: '⛈️ Outdoor activities not recommended' },
+        75: { label: 'Heavy Snow', icon: '❄️', rec: '⛈️ Outdoor activities not recommended' },
+        85: { label: 'Snow Showers', icon: '❄️', rec: '⛈️ Outdoor activities not recommended' },
+        95: { label: 'Thunderstorm', icon: '⛈️', rec: '⛈️ Outdoor activities not recommended' },
+        96: { label: 'Thunderstorm with Hail', icon: '⛈️', rec: '⛈️ Outdoor activities not recommended' },
+        99: { label: 'Heavy Thunderstorm', icon: '⛈️', rec: '⛈️ Outdoor activities not recommended' }
+      };
+
+      function formatTimeISO(isoStr) {
+        if (!isoStr) return '--';
+        try {
+          const date = new Date(isoStr);
+          return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+        } catch (e) {
+          return isoStr.split('T')[1] || isoStr;
+        }
+      }
+
+      window.fetchResortWeather = async function () {
+        const loadingEl = document.getElementById('weather-loading');
+        const errorEl = document.getElementById('weather-error');
+        const contentEl = document.getElementById('weather-content');
+
+        if (!loadingEl || !errorEl || !contentEl) return;
+
+        loadingEl.classList.remove('weather-hidden');
+        errorEl.classList.add('weather-hidden');
+        contentEl.classList.add('weather-hidden');
+
+        try {
+          const response = await fetch(WEATHER_API_URL);
+          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+          const data = await response.json();
+          const current = data.current;
+          const daily = data.daily;
+
+          if (!current) throw new Error("Invalid current weather payload");
+
+          const code = current.weather_code ?? 0;
+          const info = weatherMap[code] || {
+            label: 'Pleasant Hill Climate',
+            icon: '🌤️',
+            rec: '🌤️ Great for Sightseeing & Nature Walks'
+          };
+
+          document.getElementById('weather-temp').textContent = Math.round(current.temperature_2m);
+          document.getElementById('weather-condition').textContent = info.label;
+          document.getElementById('weather-icon').textContent = info.icon;
+          document.getElementById('weather-rec-text').textContent = info.rec;
+
+          document.getElementById('weather-feels').textContent = `${Math.round(current.apparent_temperature)}°C`;
+          document.getElementById('weather-humidity').textContent = `${Math.round(current.relative_humidity_2m)}%`;
+          document.getElementById('weather-wind').textContent = `${Math.round(current.wind_speed_10m)} km/h`;
+          document.getElementById('weather-uv').textContent = (current.uv_index !== undefined) ? current.uv_index.toFixed(1) : '3.5';
+
+          const sunriseTime = daily && daily.sunrise && daily.sunrise[0] ? formatTimeISO(daily.sunrise[0]) : '--';
+          const sunsetTime = daily && daily.sunset && daily.sunset[0] ? formatTimeISO(daily.sunset[0]) : '--';
+
+          document.getElementById('weather-sunrise').textContent = sunriseTime;
+          document.getElementById('weather-sunset').textContent = sunsetTime;
+
+          const now = new Date();
+          document.getElementById('weather-last-updated').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+          loadingEl.classList.add('weather-hidden');
+          contentEl.classList.remove('weather-hidden');
+
+        } catch (err) {
+          console.warn("Weather fetch fallback triggered:", err);
+          loadingEl.classList.add('weather-hidden');
+          errorEl.classList.remove('weather-hidden');
+        }
+      };
+
+      document.addEventListener('DOMContentLoaded', function () {
+        fetchResortWeather();
+        setInterval(fetchResortWeather, 30 * 60 * 1000);
+      });
+    })();
+
   </script>
 
   <!-- Mobile Navigation Drawer Overlay -->
@@ -5097,10 +1745,9 @@
       onclick="toggleMobileMenu()">✕</button>
     <ul class="mobile-nav-links">
       <li><a href="#" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a></li>
-      <li><a href="#stay" class="mobile-nav-link" onclick="toggleMobileMenu()">Stay</a></li>
-      <li><a href="#amenities" class="mobile-nav-link" onclick="toggleMobileMenu()">Amenities</a></li>
-      <li><a href="#events" class="mobile-nav-link" onclick="toggleMobileMenu()">Events</a></li>
-      <li><a href="#faq" class="mobile-nav-link" onclick="toggleMobileMenu()">FAQ</a></li>
+      <li><a href="stay.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Stay</a></li>
+      <li><a href="#about" class="mobile-nav-link" onclick="toggleMobileMenu()">About Us</a></li>
+      <li><a href="gallery.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Gallery</a></li>
       <li><a href="#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a></li>
     </ul>
   </div>
