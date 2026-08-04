@@ -242,10 +242,18 @@ body {
 }
 
 .nav-logo img {
-  height: 38px;
-  width: auto;
+  height: 56px !important;
+  width: 56px !important;
+  min-width: 56px !important;
   object-fit: contain;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+  border-radius: 50%;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.45));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.nav-logo:hover img {
+  transform: scale(1.06);
+  filter: drop-shadow(0 6px 18px rgba(200, 151, 64, 0.4));
 }
 
 .nav-logo-text {
@@ -5685,6 +5693,12 @@ details[open] .faq-question {
 /* Mobile Screens Optimization (<= 768px) */
 @media (max-width: 768px) {
 
+  .nav-logo img {
+    height: 48px !important;
+    width: 48px !important;
+    min-width: 48px !important;
+  }
+
   .section-overview-brochure,
   .section-uniqueness-foothill,
   .section-cottage-tariffs,
@@ -5866,22 +5880,59 @@ details[open] .faq-question {
     font-size: 1.4rem !important;
   }
 
-  /* Event Space Cards Stack on Mobile */
+  /* Event Space Cards Stack on Mobile — Symmetrical Padded Cards */
   .event-spaces-stack {
     gap: 1.75rem !important;
+    width: 100% !important;
   }
 
   .event-space-card,
   .event-space-card.reverse {
-    grid-template-columns: 1fr !important;
-    gap: 1.25rem !important;
+    display: flex !important;
+    flex-direction: column !important;
     padding: 1.25rem !important;
-    border-radius: 16px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(200, 151, 64, 0.25) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 30px rgba(22, 53, 35, 0.06) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .event-space-image-wrapper {
-    min-height: 200px !important;
-    border-radius: 12px !important;
+    width: 100% !important;
+    height: 220px !important;
+    min-height: 220px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  .event-space-info {
+    padding: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .event-specs-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem 0.6rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .event-spec-item {
+    font-size: 0.78rem !important;
+    white-space: normal !important;
+  }
+
+  .event-book-now {
+    width: 100% !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    padding: 0.85rem 1rem !important;
+    font-size: 0.85rem !important;
+    margin-top: 1rem !important;
   }
 }
 
