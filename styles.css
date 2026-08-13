@@ -4673,8 +4673,19 @@ body.page-light .mobile-menu-close {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.75rem;
+}
+
+/* Center single last card in a 3-column grid */
+@media (min-width: 901px) {
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .gallery-grid .gallery-card:last-child:nth-child(3n + 1) {
+    grid-column: 2;
+  }
 }
 
 .gallery-card {
@@ -4724,7 +4735,7 @@ body.page-light .mobile-menu-close {
 .gallery-card-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(22, 53, 35, 0.1) 0%, rgba(22, 53, 35, 0.65) 100%);
+  background: linear-gradient(180deg, rgba(12, 12, 12, 0.05) 0%, rgba(12, 12, 12, 0.55) 100%);
   opacity: 0;
   transition: var(--transition-smooth);
   display: flex;
@@ -4737,21 +4748,7 @@ body.page-light .mobile-menu-close {
 }
 
 .zoom-icon-badge {
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: rgba(251, 249, 245, 0.95);
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  transform: scale(0.85);
-  transition: var(--transition-smooth);
-}
-
-.gallery-card:hover .zoom-icon-badge {
-  transform: scale(1);
+  display: none !important;
 }
 
 .gallery-card-info {
