@@ -22,17 +22,21 @@
   <!-- Noise Grain Overlay -->
   <div class="grain-overlay" aria-hidden="true"></div>
 
-  <!-- Preloader UI -->
+  <!-- Preloader UI (Framer-Style Luxury Animation) -->
   <div id="preloader" role="status" aria-live="polite">
+    <div class="framer-glow-orb orb-top-right"></div>
+    <div class="framer-glow-orb orb-bottom-left"></div>
+
     <div class="loader-content">
-      <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farmstay Logo" class="loader-logo" width="100" height="100">
-      <h1 class="loader-brand">The Foothill <span>Farmstay</span></h1>
-      <div class="loader-bar-bg">
-        <div id="loader-fill" class="loader-bar-fill"></div>
+      <div class="loader-logo-wrapper">
+        <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farmstay Logo" class="loader-logo" width="95" height="95">
       </div>
-      <div class="loader-status">
-        <span>Loading Experience</span>
-        <span id="loader-percentage" class="loader-percentage">0%</span>
+      <h1 class="loader-brand-title">THE FOOTHILL FARMSTAY</h1>
+      <div class="loader-tagline-container">
+        <p id="loader-tagline" class="loader-tagline">Handcrafted Luxury Retreat</p>
+      </div>
+      <div class="loader-bar-wrapper">
+        <div id="loader-fill" class="loader-bar-fill"></div>
       </div>
     </div>
   </div>
@@ -1455,19 +1459,59 @@
       const scrollHint = document.getElementById('scroll-hint');
       const scrollFloatText = document.querySelector('.scroll-float-text');
 
+      // Framer-Inspired Luxury Preloader Logic
       let preloaderDismissed = false;
 
       function dismissPreloader() {
-        if (preloaderDismissed) return;
-        preloaderDismissed = true;
+        if (preloaderDismissed || !preloader) return;
 
-        if (loaderFill) loaderFill.style.width = '100%';
-        if (loaderPercentage) loaderPercentage.textContent = '100%';
+        const loaderTagline = document.getElementById('loader-tagline');
+        const taglines = [
+          'Handcrafted Luxury Retreat',
+          'Daringbadi, Odisha'
+        ];
+        let taglineIdx = 0;
 
+        // Cycle tagline midway
         setTimeout(() => {
-          if (preloader) preloader.classList.add('loader-hidden');
-          document.body.classList.add('loaded');
-        }, 200);
+          if (loaderTagline) {
+            loaderTagline.style.opacity = '0';
+            loaderTagline.style.transform = 'translateY(-12px)';
+            setTimeout(() => {
+              taglineIdx = (taglineIdx + 1) % taglines.length;
+              loaderTagline.textContent = taglines[taglineIdx];
+              loaderTagline.style.transform = 'translateY(12px)';
+              setTimeout(() => {
+                loaderTagline.style.opacity = '1';
+                loaderTagline.style.transform = 'translateY(0)';
+              }, 50);
+            }, 300);
+          }
+        }, 1600);
+
+        // Progress Animation & Slide-Up Dismissal
+        let startTime = null;
+        const duration = 3200; // 3.2s luxury presentation duration
+
+        function animateProgress(currentTime) {
+          if (!startTime) startTime = currentTime;
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(100, Math.floor((elapsed / duration) * 100));
+
+          if (loaderFill) loaderFill.style.width = progress + '%';
+
+          if (progress < 100) {
+            requestAnimationFrame(animateProgress);
+          } else {
+            preloaderDismissed = true;
+            setTimeout(() => {
+              preloader.classList.add('loader-hidden');
+              document.body.classList.add('loaded');
+            }, 300);
+          }
+        }
+
+        requestAnimationFrame(animateProgress);
       }
 
       function preloadFrames() {
