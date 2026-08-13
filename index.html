@@ -25,7 +25,7 @@
   <!-- Preloader UI -->
   <div id="preloader" role="status" aria-live="polite">
     <div class="loader-content">
-      <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farmstay Logo" class="loader-logo">
+      <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farmstay Logo" class="loader-logo" width="100" height="100">
       <h1 class="loader-brand">The Foothill <span>Farmstay</span></h1>
       <div class="loader-bar-bg">
         <div id="loader-fill" class="loader-bar-fill"></div>
@@ -41,13 +41,13 @@
   <header class="navbar" id="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo" aria-label="The Foothill Farmstay Homepage">
-        <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farm Stay Logo">
+        <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farm Stay Logo" width="52" height="52">
         <span class="nav-logo-text">The Foothill Farm Stay</span>
       </a>
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link active">Home</a></li>
         <li><a href="stay.html" class="nav-link">Stay</a></li>
-        <li><a href="index.html#about" class="nav-link">About Us</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
         <li><a href="gallery.html" class="nav-link">Gallery</a></li>
         <li><a href="index.html#contact" class="nav-link">Contact</a></li>
       </ul>
@@ -65,13 +65,16 @@
         <div class="hero-carousel" id="heroCarousel" aria-label="Hero image carousel">
           <div class="hero-carousel-track" id="heroCarouselTrack">
             <div class="hero-carousel-slide" data-index="0">
-              <img src="IMG_9711.PNG" alt="The Foothill Farmstay — Luxury Grounds at Dusk" class="hero-carousel-img">
+              <img src="IMG_9711.PNG" alt="The Foothill Farmstay — Luxury Grounds at Dusk" class="hero-carousel-img"
+                fetchpriority="high" decoding="async" loading="eager" width="1920" height="1080">
             </div>
             <div class="hero-carousel-slide" data-index="1">
-              <img src="IMG_9712.PNG" alt="The Foothill Farmstay — Cottage Garden View" class="hero-carousel-img">
+              <img src="IMG_9712.PNG" alt="The Foothill Farmstay — Cottage Garden View" class="hero-carousel-img"
+                decoding="async" loading="lazy" width="1920" height="1080">
             </div>
             <div class="hero-carousel-slide" data-index="2">
-              <img src="IMG_9713.PNG" alt="The Foothill Farmstay — Pool & Cottages" class="hero-carousel-img">
+              <img src="IMG_9713.PNG" alt="The Foothill Farmstay — Pool & Cottages" class="hero-carousel-img"
+                decoding="async" loading="lazy" width="1920" height="1080">
             </div>
           </div>
         </div>
@@ -138,12 +141,14 @@
       <div class="about-container">
 
         <!-- Left: Decorative Image Stack -->
-        <div class="about-visual reveal">
+        <div class="about-visual">
           <div class="about-img-main">
-            <img src="IMG_9711.PNG" alt="The Foothill Farmstay — Grounds at Dusk">
+            <img src="IMG_9711.PNG" alt="The Foothill Farmstay — Grounds at Dusk" loading="lazy" decoding="async"
+              width="800" height="600">
           </div>
           <div class="about-img-accent">
-            <img src="IMG_9713.PNG" alt="The Foothill Farmstay — Pool View">
+            <img src="IMG_9713.PNG" alt="The Foothill Farmstay — Pool View" loading="lazy" decoding="async" width="800"
+              height="600">
           </div>
           <div class="about-badge">
             <span class="about-badge-line"></span>
@@ -165,18 +170,11 @@
 
           <p class="about-text">
             Nestled in the serene hills of <strong>Daringbadi, Odisha</strong>, The Foothill Farm Stay is more than just
-            a place to stay — it is an experience rooted in nature, culture, and the warm hospitality of Kandhamal.
+            a place to stay — it is an experience rooted in nature, culture, and warm countryside hospitality.
           </p>
           <p class="about-text">
-            Set against the beautiful foothills and surrounded by lush greenery, our farm stay brings you closer to the
-            natural beauty and indigenous heritage of this unique region. Inspired by the traditions and lifestyle of
-            the local tribal communities, we have thoughtfully designed our property to offer a stay that feels
-            authentic, peaceful, and memorable.
-          </p>
-          <p class="about-text">
-            From the refreshing aroma of local coffee and the vibrant character of turmeric cultivation to the
-            surrounding pine forests, rolling hills, and cool mountain air — every element of Daringbadi has inspired
-            our vision. Our aim is to let guests <em>experience</em> the destination, not simply visit it.
+            Set against the beautiful foothills and surrounded by lush greenery, our sanctuary offers handcrafted luxury
+            villas, private pools, and authentic countryside living crafted for peace and rejuvenation.
           </p>
 
           <!-- Philosophy Block -->
@@ -185,12 +183,16 @@
             <div class="philosophy-body">
               <span class="philosophy-label">Our Philosophy</span>
               <p class="philosophy-quote">"Stay close to nature. Connect with culture. Leave with memories."</p>
-              <p class="philosophy-sub">We believe true hospitality is about making guests feel at home while giving
-                them something they cannot experience anywhere else.</p>
             </div>
           </div>
 
-          <a href="stay.html" class="btn-primary about-cta">Book Your Stay</a>
+          <div class="about-cta-group"
+            style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-top: 1.25rem;">
+            <a href="about.html" class="btn-primary about-cta">Read More</a>
+            <a href="stay.html" class="btn-secondary-link"
+              style="color: var(--accent-gold); font-size: 0.92rem; font-weight: 600; text-decoration: none; padding: 0.75rem 1.25rem; border: 1px solid rgba(223, 183, 108, 0.4); border-radius: var(--radius-pill); transition: var(--transition-smooth);">Book
+              Your Stay →</a>
+          </div>
         </div>
 
       </div>
@@ -284,7 +286,8 @@
 
             <div class="brochure-img-col reveal delay-1">
               <div class="brochure-img-frame">
-                <img src="IMG_9712.PNG" alt="Foothill Farmstay Luxury Cottages and Gardens" loading="lazy">
+                <img src="IMG_9712.PNG" alt="Foothill Farmstay Luxury Cottages and Gardens" loading="lazy"
+                  decoding="async" width="800" height="600">
               </div>
             </div>
           </div>
@@ -625,7 +628,8 @@
             <div class="gallery-card reveal delay-1" data-src="gallery/IMG_0368.PNG"
               data-title="Lush Hillside & Valley View">
               <div class="gallery-card-img-wrapper">
-                <img src="gallery/IMG_0368.PNG" alt="Lush Hillside & Valley View at Foothill Farmstay" loading="lazy">
+                <img src="gallery/IMG_0368.PNG" alt="Lush Hillside & Valley View at Foothill Farmstay" loading="lazy"
+                  decoding="async" width="800" height="533">
                 <div class="gallery-card-overlay">
                   <div class="zoom-icon-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -643,7 +647,8 @@
             <div class="gallery-card reveal delay-2" data-src="gallery/IMG_0369.PNG"
               data-title="Serene Villa Architecture">
               <div class="gallery-card-img-wrapper">
-                <img src="gallery/IMG_0369.PNG" alt="Serene Villa Architecture" loading="lazy">
+                <img src="gallery/IMG_0369.PNG" alt="Serene Villa Architecture" loading="lazy" decoding="async"
+                  width="800" height="533">
                 <div class="gallery-card-overlay">
                   <div class="zoom-icon-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -661,7 +666,8 @@
             <div class="gallery-card reveal delay-3" data-src="gallery/IMG_0375.PNG"
               data-title="Sunset Horizon & Twilight Vistas">
               <div class="gallery-card-img-wrapper">
-                <img src="gallery/IMG_0375.PNG" alt="Sunset Horizon & Twilight Vistas" loading="lazy">
+                <img src="gallery/IMG_0375.PNG" alt="Sunset Horizon & Twilight Vistas" loading="lazy" decoding="async"
+                  width="800" height="533">
                 <div class="gallery-card-overlay">
                   <div class="zoom-icon-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -679,7 +685,8 @@
             <div class="gallery-card reveal delay-4" data-src="gallery/IMG_9710.PNG"
               data-title="Private Villa Courtyard & Sit-Out">
               <div class="gallery-card-img-wrapper">
-                <img src="gallery/IMG_9710.PNG" alt="Private Villa Courtyard" loading="lazy">
+                <img src="gallery/IMG_9710.PNG" alt="Private Villa Courtyard" loading="lazy" decoding="async"
+                  width="800" height="533">
                 <div class="gallery-card-overlay">
                   <div class="zoom-icon-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -694,10 +701,10 @@
             </div>
 
             <!-- 5. IMG_9711 -->
-            <div class="gallery-card reveal delay-5" data-src="gallery/IMG_9711.PNG"
-              data-title="Main Farmstay Estate at Dusk">
+            <div class="gallery-card reveal delay-5" data-src="IMG_9711.PNG" data-title="Main Farmstay Estate at Dusk">
               <div class="gallery-card-img-wrapper">
-                <img src="gallery/IMG_9711.PNG" alt="Main Farmstay Estate at Dusk" loading="lazy">
+                <img src="IMG_9711.PNG" alt="Main Farmstay Estate at Dusk" loading="lazy" decoding="async" width="800"
+                  height="533">
                 <div class="gallery-card-overlay">
                   <div class="zoom-icon-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -712,10 +719,10 @@
             </div>
 
             <!-- 6. IMG_9712 -->
-            <div class="gallery-card reveal delay-6" data-src="gallery/IMG_9712.PNG"
-              data-title="Manicured Gardens & Pathways">
+            <div class="gallery-card reveal delay-6" data-src="IMG_9712.PNG" data-title="Manicured Gardens & Pathways">
               <div class="gallery-card-img-wrapper">
-                <img src="gallery/IMG_9712.PNG" alt="Manicured Gardens & Pathways" loading="lazy">
+                <img src="IMG_9712.PNG" alt="Manicured Gardens & Pathways" loading="lazy" decoding="async" width="800"
+                  height="533">
                 <div class="gallery-card-overlay">
                   <div class="zoom-icon-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -730,10 +737,11 @@
             </div>
 
             <!-- 7. IMG_9713 -->
-            <div class="gallery-card reveal delay-7" data-src="gallery/IMG_9713.PNG"
+            <div class="gallery-card reveal delay-7" data-src="IMG_9713.PNG"
               data-title="Swimming Pool & Evening Reflection">
               <div class="gallery-card-img-wrapper">
-                <img src="gallery/IMG_9713.PNG" alt="Swimming Pool & Evening Reflection" loading="lazy">
+                <img src="IMG_9713.PNG" alt="Swimming Pool & Evening Reflection" loading="lazy" decoding="async"
+                  width="800" height="533">
                 <div class="gallery-card-overlay">
                   <div class="zoom-icon-badge">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1411,7 +1419,7 @@
             <ul class="footer-links">
               <li><a href="#" class="footer-link">Home</a></li>
               <li><a href="stay.html" class="footer-link">Stay</a></li>
-              <li><a href="#about" class="footer-link">About Us</a></li>
+              <li><a href="about.html" class="footer-link">About Us</a></li>
               <li><a href="gallery.html" class="footer-link">Gallery</a></li>
               <li><a href="#contact" class="footer-link">Contact</a></li>
             </ul>
@@ -1480,15 +1488,30 @@
 
       const heroViewport = document.getElementById('hero-viewport');
 
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 80) {
-          navbar.classList.add('scrolled');
-        } else {
-          navbar.classList.remove('scrolled');
+      let lastScrollY = window.scrollY;
+
+      function updateNavbarScroll() {
+        const currentScrollY = window.scrollY;
+        const scrollDiff = currentScrollY - lastScrollY;
+
+        if (currentScrollY <= 60) {
+          navbar.classList.remove('scrolled', 'nav-hidden');
+          lastScrollY = currentScrollY;
+          return;
         }
-      }, { passive: true });
 
+        navbar.classList.add('scrolled');
 
+        if (scrollDiff > 4) {
+          navbar.classList.add('nav-hidden');
+        } else if (scrollDiff < -4) {
+          navbar.classList.remove('nav-hidden');
+        }
+
+        lastScrollY = currentScrollY;
+      }
+      updateNavbarScroll();
+      window.addEventListener('scroll', updateNavbarScroll, { passive: true });
 
       /* ------------------------------------------------------------------------
          6. INTERSECTION OBSERVER FOR REVEAL ANIMATIONS
@@ -1508,7 +1531,13 @@
           });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        document.querySelectorAll('.reveal').forEach(el => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight + 100) {
+            el.classList.add('is-visible');
+          }
+          observer.observe(el);
+        });
       }
 
       /* ------------------------------------------------------------------------
@@ -1994,8 +2023,15 @@
         if (!activeLocation || !activeLocation.images[activePhotoIndex]) return;
         const img = document.getElementById('locModalImg');
         if (img) {
-          img.src = activeLocation.images[activePhotoIndex];
+          img.src = encodeURI(activeLocation.images[activePhotoIndex]);
           img.alt = `${activeLocation.title} photo ${activePhotoIndex + 1}`;
+        }
+
+        // Background preloader for next photo in carousel
+        const nextIndex = (activePhotoIndex + 1) % activeLocation.images.length;
+        if (activeLocation.images[nextIndex]) {
+          const nextPreloader = new Image();
+          nextPreloader.src = encodeURI(activeLocation.images[nextIndex]);
         }
 
         const dots = document.querySelectorAll('#locModalDots .loc-dot');
@@ -2144,7 +2180,7 @@
     <ul class="mobile-nav-links">
       <li><a href="#" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a></li>
       <li><a href="stay.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Stay</a></li>
-      <li><a href="#about" class="mobile-nav-link" onclick="toggleMobileMenu()">About Us</a></li>
+      <li><a href="about.html" class="mobile-nav-link" onclick="toggleMobileMenu()">About Us</a></li>
       <li><a href="gallery.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Gallery</a></li>
       <li><a href="#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a></li>
     </ul>

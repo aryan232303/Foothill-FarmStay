@@ -25,13 +25,13 @@
   <header class="navbar" id="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo" aria-label="The Foothill Farmstay Homepage">
-        <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farm Stay Logo">
+        <img src="foothill_logo_circle_transparent.png" alt="The Foothill Farm Stay Logo" width="52" height="52">
         <span class="nav-logo-text">The Foothill Farm Stay</span>
       </a>
       <ul class="nav-links">
         <li><a href="index.html" class="nav-link">Home</a></li>
         <li><a href="stay.html" class="nav-link active">Stay</a></li>
-        <li><a href="index.html#about" class="nav-link">About Us</a></li>
+        <li><a href="about.html" class="nav-link">About Us</a></li>
         <li><a href="gallery.html" class="nav-link">Gallery</a></li>
         <li><a href="index.html#contact" class="nav-link">Contact</a></li>
       </ul>
@@ -60,7 +60,8 @@
         <!-- 1. Deluxe Cottage -->
         <div class="cottage-card">
           <div class="cottage-card-img-wrapper">
-            <img src="deluxe_cottage.png" alt="Deluxe Cottage at Foothill Farmstay" loading="lazy">
+            <img src="deluxe_cottage.png" alt="Deluxe Cottage at Foothill Farmstay" loading="lazy" decoding="async"
+              width="800" height="600">
             <span class="cottage-badge">DELUXE COTTAGE</span>
           </div>
           <div class="cottage-card-body">
@@ -103,7 +104,8 @@
         <!-- 2. Superior Cottage -->
         <div class="cottage-card">
           <div class="cottage-card-img-wrapper">
-            <img src="superior_cottage.png" alt="Superior Cottage at Foothill Farmstay" loading="lazy">
+            <img src="superior_cottage.png" alt="Superior Cottage at Foothill Farmstay" loading="lazy" decoding="async"
+              width="800" height="600">
             <span class="cottage-badge">SUPERIOR COTTAGE</span>
           </div>
           <div class="cottage-card-body">
@@ -146,7 +148,8 @@
         <!-- 3. Family Cottage -->
         <div class="cottage-card">
           <div class="cottage-card-img-wrapper">
-            <img src="family_cottage.png" alt="Family Cottage Suite at Foothill Farmstay" loading="lazy">
+            <img src="family_cottage.png" alt="Family Cottage Suite at Foothill Farmstay" loading="lazy"
+              decoding="async" width="800" height="600">
             <span class="cottage-badge">FAMILY COTTAGE</span>
           </div>
           <div class="cottage-card-body">
@@ -189,7 +192,8 @@
         <!-- 4. Premium Cottage -->
         <div class="cottage-card">
           <div class="cottage-card-img-wrapper">
-            <img src="premium_cottage.png" alt="Premium Mountain View Cottage at Foothill Farmstay" loading="lazy">
+            <img src="premium_cottage.png" alt="Premium Mountain View Cottage at Foothill Farmstay" loading="lazy"
+              decoding="async" width="800" height="600">
             <span class="cottage-badge">PREMIUM COTTAGE</span>
           </div>
           <div class="cottage-card-body">
@@ -265,7 +269,8 @@
           <!-- Event 1: Conference Hall -->
           <div class="event-space-card">
             <div class="event-space-image-wrapper">
-              <img src="conference_hall.png" alt="Foothill Conference Hall and Event Space" loading="lazy">
+              <img src="conference_hall.png" alt="Foothill Conference Hall and Event Space" loading="lazy"
+                decoding="async" width="800" height="600">
             </div>
 
             <div class="event-space-info">
@@ -314,7 +319,8 @@
           <!-- Event 2: The Lawn -->
           <div class="event-space-card">
             <div class="event-space-image-wrapper">
-              <img src="the_lawn.png" alt="Foothill Outdoor Celebration Lawn" loading="lazy">
+              <img src="the_lawn.png" alt="Foothill Outdoor Celebration Lawn" loading="lazy" decoding="async"
+                width="800" height="600">
             </div>
 
             <div class="event-space-info">
@@ -393,7 +399,7 @@
         <ul class="footer-links">
           <li><a href="index.html" class="footer-link">Home</a></li>
           <li><a href="stay.html" class="footer-link">Stay</a></li>
-          <li><a href="index.html#about" class="footer-link">About Us</a></li>
+          <li><a href="about.html" class="footer-link">About Us</a></li>
           <li><a href="gallery.html" class="footer-link">Gallery</a></li>
           <li><a href="index.html#contact" class="footer-link">Contact</a></li>
         </ul>
@@ -412,7 +418,7 @@
     <ul class="mobile-nav-links">
       <li><a href="index.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Home</a></li>
       <li><a href="stay.html" class="mobile-nav-link active" onclick="toggleMobileMenu()">Stay</a></li>
-      <li><a href="index.html#about" class="mobile-nav-link" onclick="toggleMobileMenu()">About Us</a></li>
+      <li><a href="about.html" class="mobile-nav-link" onclick="toggleMobileMenu()">About Us</a></li>
       <li><a href="gallery.html" class="mobile-nav-link" onclick="toggleMobileMenu()">Gallery</a></li>
       <li><a href="index.html#contact" class="mobile-nav-link" onclick="toggleMobileMenu()">Contact</a></li>
     </ul>
@@ -420,13 +426,30 @@
 
   <script>
     const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
+    let lastScrollY = window.scrollY;
+
+    function updateNavbarScroll() {
+      const currentScrollY = window.scrollY;
+      const scrollDiff = currentScrollY - lastScrollY;
+
+      if (currentScrollY <= 60) {
+        navbar.classList.remove('scrolled', 'nav-hidden');
+        lastScrollY = currentScrollY;
+        return;
       }
-    }, { passive: true });
+
+      navbar.classList.add('scrolled');
+
+      if (scrollDiff > 4) {
+        navbar.classList.add('nav-hidden');
+      } else if (scrollDiff < -4) {
+        navbar.classList.remove('nav-hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    }
+    updateNavbarScroll();
+    window.addEventListener('scroll', updateNavbarScroll, { passive: true });
 
     function toggleMobileMenu() {
       const overlay = document.getElementById('mobile-menu-overlay');
