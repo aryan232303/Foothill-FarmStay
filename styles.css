@@ -1020,7 +1020,7 @@ body:not(.loaded) .floating-call-btn {
 
 .brochure-header {
   text-align: center;
-  max-width: 680px;
+  max-width: 900px;
   margin: 0 auto 2.25rem auto;
 }
 
@@ -1045,11 +1045,12 @@ body:not(.loaded) .floating-call-btn {
 
 .brochure-title {
   font-family: var(--font-heading);
-  font-size: clamp(2rem, 3.5vw, 3.2rem);
+  font-size: clamp(1.2rem, 3.6vw, 3.2rem);
   font-weight: 500;
   line-height: 1.15;
   color: #163523;
   margin: 0 0 0.65rem 0;
+  white-space: nowrap;
 }
 
 .brochure-intro {
@@ -1382,18 +1383,25 @@ body:not(.loaded) .floating-call-btn {
 
 .uniqueness-header {
   text-align: center;
-  max-width: 780px;
-  margin: 0 auto 5rem auto;
+  max-width: 950px;
+  margin: 0 auto 4rem auto;
 }
 
 .uniqueness-title {
-  font-family: var(--font-heading);
-  font-size: clamp(42px, 5vw, 60px);
-  font-weight: 500;
-  line-height: 1.1;
+  font-family: 'Cormorant Garamond', 'Marcellus', 'Playfair Display', serif;
+  font-size: clamp(32px, 4.8vw, 58px);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: 0.02em;
   color: #163523;
   margin: 0 0 1.25rem 0;
   text-align: center;
+}
+
+.uniqueness-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: #C89740;
 }
 
 .uniqueness-divider {
@@ -1697,9 +1705,9 @@ body:not(.loaded) .floating-call-btn {
 }
 
 .price-box-amount {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-size: 1.85rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #163523;
   line-height: 1.1;
 }
@@ -1829,9 +1837,9 @@ body:not(.loaded) .floating-call-btn {
 }
 
 .tbl-price {
-  font-family: var(--font-heading);
+  font-family: var(--font-body);
   font-size: 1.6rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #163523;
   line-height: 1.1;
 }
@@ -2195,7 +2203,7 @@ a.map-node * {
   font-size: 1.1rem;
 }
 
-/* Special Highlight for Foothill Farm Stay Node */
+/* Special Highlight for Foothill Farmstay Node */
 .node-farmstay .node-pin {
   width: 58px;
   height: 58px;
@@ -2593,6 +2601,24 @@ a.map-node * {
   box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
 }
 
+.opening-soon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(200, 151, 64, 0.12);
+  border: 1px solid rgba(200, 151, 64, 0.4);
+  color: #C89740;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 14px rgba(200, 151, 64, 0.08);
+}
+
 /* ==========================================================================
        SECTION: CONTACT US
        ========================================================================== */
@@ -2928,13 +2954,15 @@ a.map-node * {
   transform: scale(1.04);
 }
 
-/* Section 2: Villas Showcase Cards */
+/* Section 2: Cottages Showcase Cards */
+.cottages-grid,
 .villas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
+.cottage-card,
 .villa-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -2945,6 +2973,7 @@ a.map-node * {
   flex-direction: column;
 }
 
+.cottage-card:hover,
 .villa-card:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-color-hover);
@@ -2952,12 +2981,14 @@ a.map-node * {
   box-shadow: var(--shadow-md);
 }
 
+.cottage-img-wrapper,
 .villa-img-wrapper {
   position: relative;
   height: 260px;
   overflow: hidden;
 }
 
+.cottage-img-wrapper img,
 .villa-img-wrapper img {
   width: 100%;
   height: 100%;
@@ -2965,10 +2996,12 @@ a.map-node * {
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.cottage-card:hover .cottage-img-wrapper img,
 .villa-card:hover .villa-img-wrapper img {
   transform: scale(1.06);
 }
 
+.cottage-badge,
 .villa-badge {
   position: absolute;
   top: 1.25rem;
@@ -2985,6 +3018,7 @@ a.map-node * {
   font-weight: 600;
 }
 
+.cottage-body,
 .villa-body {
   padding: 2rem;
   display: flex;
@@ -2992,6 +3026,7 @@ a.map-node * {
   flex-grow: 1;
 }
 
+.cottage-title,
 .villa-title {
   font-family: var(--font-heading);
   font-size: clamp(1.5rem, 2vw, 1.85rem);
@@ -3000,6 +3035,7 @@ a.map-node * {
   color: var(--text-primary);
 }
 
+.cottage-desc,
 .villa-desc {
   color: var(--text-secondary);
   font-size: 0.95rem;
@@ -3008,6 +3044,7 @@ a.map-node * {
   font-weight: 300;
 }
 
+.cottage-specs,
 .villa-specs {
   display: flex;
   gap: 1.25rem;
@@ -3018,6 +3055,7 @@ a.map-node * {
   color: var(--text-muted);
 }
 
+.cottage-specs span,
 .villa-specs span {
   display: flex;
   align-items: center;
@@ -4132,10 +4170,10 @@ body.page-light .mobile-menu-close {
 }
 
 .cottage-starting-price {
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--accent-gold-dark);
   white-space: nowrap;
@@ -5276,7 +5314,7 @@ body.page-light .mobile-menu-close {
 }
 
 .weather-container {
-  max-width: 1050px;
+  max-width: 920px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -5285,7 +5323,7 @@ body.page-light .mobile-menu-close {
 
 .weather-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.25rem;
 }
 
 .weather-title {
@@ -5317,7 +5355,7 @@ body.page-light .mobile-menu-close {
   background: #FFFFFF;
   border: 1px solid rgba(200, 151, 64, 0.35);
   border-radius: 20px;
-  padding: clamp(1.25rem, 3vw, 2.5rem);
+  padding: clamp(1.5rem, 3.5vw, 2.25rem);
   box-shadow: 0 15px 45px rgba(22, 53, 35, 0.08);
   transition: var(--transition-smooth);
   position: relative;
@@ -5406,10 +5444,7 @@ body.page-light .mobile-menu-close {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(22, 53, 35, 0.08);
-  margin-bottom: 1.25rem;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 
@@ -5420,7 +5455,7 @@ body.page-light .mobile-menu-close {
 }
 
 .weather-icon-large {
-  font-size: clamp(3rem, 6vw, 4rem);
+  font-size: clamp(3rem, 5.5vw, 4rem);
   line-height: 1;
   filter: drop-shadow(0 4px 12px rgba(200, 151, 64, 0.3));
   flex-shrink: 0;
@@ -5434,7 +5469,7 @@ body.page-light .mobile-menu-close {
 
 .weather-temp {
   font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 600;
   color: #163523;
 }
@@ -5443,22 +5478,105 @@ body.page-light .mobile-menu-close {
   font-family: var(--font-heading);
   font-size: clamp(1.25rem, 2.5vw, 1.75rem);
   color: #C89740;
-  margin-top: 0.4rem;
+  margin-top: 0.3rem;
   margin-left: 0.2rem;
 }
 
 .weather-condition {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1rem, 2vw, 1.15rem);
   font-weight: 600;
   color: #C89740;
-  margin-top: 0.3rem;
+  margin-top: 0.35rem;
 }
 
 .weather-location-tag {
   font-size: 0.85rem;
   color: #6E7D75;
-  margin-top: 0.25rem;
+  margin-top: 0.3rem;
+}
+
+/* 2-Day Hill Forecast Widget */
+.weather-forecast-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.45rem;
+  background: rgba(22, 53, 35, 0.03);
+  border: 1px solid rgba(200, 151, 64, 0.3);
+  border-radius: 16px;
+  padding: 0.85rem 1.25rem;
+  box-shadow: 0 4px 15px rgba(22, 53, 35, 0.03);
+}
+
+.forecast-header {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-gold-dark);
+  margin-bottom: 0.1rem;
+}
+
+.forecast-days-grid {
+  display: flex;
+  gap: 1.15rem;
+  align-items: center;
+}
+
+.forecast-day-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.forecast-day-card:not(:last-child) {
+  padding-right: 1.15rem;
+  border-right: 1px solid rgba(22, 53, 35, 0.12);
+}
+
+.forecast-day-name {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #163523;
+}
+
+.forecast-day-main {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.forecast-day-icon {
+  font-size: 1.25rem;
+}
+
+.forecast-day-temp {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.f-max {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #163523;
+}
+
+.f-min {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: #777777;
+}
+
+.forecast-day-desc {
+  font-family: var(--font-body);
+  font-size: 0.725rem;
+  color: #555555;
+  white-space: nowrap;
 }
 
 /* Activity Recommendation Box */
@@ -5553,6 +5671,7 @@ body.page-light .mobile-menu-close {
   font-size: 0.82rem;
   color: #6E7D75;
   padding-top: 1.25rem;
+  margin-top: 1.25rem;
   border-top: 1px solid rgba(22, 53, 35, 0.08);
   flex-wrap: wrap;
   gap: 0.75rem;
