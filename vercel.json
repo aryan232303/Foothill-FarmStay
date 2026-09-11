@@ -1,0 +1,22 @@
+{
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "statusCode": 301 },
+    { "source": "/about.html", "destination": "/about-us/", "statusCode": 301 },
+    { "source": "/stay.html", "destination": "/cottages/", "statusCode": 301 },
+    { "source": "/gallery.html", "destination": "/gallery/", "statusCode": 301 }
+  ],
+  "rewrites": [
+    { "source": "/about-us", "destination": "/about.html" },
+    { "source": "/about-us/", "destination": "/about.html" },
+    { "source": "/cottages", "destination": "/stay.html" },
+    { "source": "/cottages/", "destination": "/stay.html" },
+    { "source": "/gallery", "destination": "/gallery.html" },
+    { "source": "/gallery/", "destination": "/gallery.html" },
+    { "source": "/about-us/:file", "destination": "/:file" },
+    { "source": "/cottages/:file", "destination": "/:file" },
+    { "source": "/gallery/styles.css", "destination": "/styles.css" },
+    { "source": "/gallery/foothill_logo_circle_transparent.png", "destination": "/foothill_logo_circle_transparent.png" },
+    { "source": "/gallery/gallery/:file*", "destination": "/gallery/:file*" }
+  ]
+}
