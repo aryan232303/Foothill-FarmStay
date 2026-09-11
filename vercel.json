@@ -17,6 +17,7 @@
     { "source": "/cottages/:file", "destination": "/:file" },
     { "source": "/gallery/styles.css", "destination": "/styles.css" },
     { "source": "/gallery/foothill_logo_circle_transparent.png", "destination": "/foothill_logo_circle_transparent.png" },
-    { "source": "/gallery/gallery/:file*", "destination": "/gallery/:file*" }
+    { "source": "/gallery/gallery/:file*", "destination": "/gallery/:file*" },
+    { "source": "/favicon.ico", "destination": "/foothill_logo_circle_transparent.png" }
   ]
 }

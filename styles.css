@@ -4029,6 +4029,7 @@ body.page-light .mobile-menu-close {
   text-transform: uppercase;
   color: var(--accent-gold-dark);
   margin-bottom: 1.25rem;
+  animation: heroBadgeDrop 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .stay-hero-title {
@@ -4038,12 +4039,18 @@ body.page-light .mobile-menu-close {
   line-height: 1.12;
   color: var(--text-primary);
   margin-bottom: 1.25rem;
+  animation: heroTitleReveal 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
 .stay-hero-title em {
+  display: inline-block;
   font-style: italic;
-  color: var(--accent-gold);
   font-weight: 400;
+  background: linear-gradient(120deg, #9E7326 0%, #C89740 30%, #F5DEB3 50%, #C89740 70%, #9E7326 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: heroGoldShimmer 4.5s ease-in-out infinite, heroAccentFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
 }
 
 .stay-hero-desc {
@@ -4053,6 +4060,7 @@ body.page-light .mobile-menu-close {
   font-weight: 400;
   max-width: 700px;
   margin: 0 auto;
+  animation: heroDescFade 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
 }
 
 .stay-divider {
@@ -4064,6 +4072,7 @@ body.page-light .mobile-menu-close {
   color: var(--accent-gold);
   font-size: 0.85rem;
   opacity: 0.85;
+  animation: heroDividerExpand 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
 
 .stay-divider::before,
@@ -4667,6 +4676,7 @@ body.page-light .mobile-menu-close {
   text-transform: uppercase;
   color: var(--accent-gold-dark);
   margin-bottom: 1.25rem;
+  animation: heroBadgeDrop 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .gallery-hero-title {
@@ -4676,12 +4686,18 @@ body.page-light .mobile-menu-close {
   line-height: 1.12;
   color: var(--text-primary);
   margin-bottom: 1.25rem;
+  animation: heroTitleReveal 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
 }
 
 .gallery-hero-title em {
+  display: inline-block;
   font-style: italic;
-  color: var(--accent-gold);
   font-weight: 400;
+  background: linear-gradient(120deg, #9E7326 0%, #C89740 30%, #F5DEB3 50%, #C89740 70%, #9E7326 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: heroGoldShimmer 4.5s ease-in-out infinite, heroAccentFade 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
 }
 
 .gallery-hero-desc {
@@ -4691,6 +4707,7 @@ body.page-light .mobile-menu-close {
   font-weight: 400;
   max-width: 680px;
   margin: 0 auto;
+  animation: heroDescFade 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
 }
 
 .gallery-divider {
@@ -4702,6 +4719,7 @@ body.page-light .mobile-menu-close {
   color: var(--accent-gold);
   font-size: 0.85rem;
   opacity: 0.85;
+  animation: heroDividerExpand 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
 }
 
 .gallery-divider::before,
@@ -4710,6 +4728,96 @@ body.page-light .mobile-menu-close {
   height: 1px;
   width: 70px;
   background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+
+/* ==========================================================================
+   PAGE HERO ANIMATION KEYFRAMES (ABOUT, STAY, GALLERY)
+   ========================================================================== */
+@keyframes heroTitleReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes heroBadgeDrop {
+  0% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroDescFade {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroDividerExpand {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes heroAccentFade {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroGoldShimmer {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stay-hero-badge,
+  .stay-hero-title,
+  .stay-hero-title em,
+  .stay-hero-desc,
+  .stay-divider,
+  .gallery-hero-badge,
+  .gallery-hero-title,
+  .gallery-hero-title em,
+  .gallery-hero-desc,
+  .gallery-divider {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 /* Category Filter Tabs */
